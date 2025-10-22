@@ -11,7 +11,7 @@ author: wdarko1
 
 # Use Virtual Machines node pools in Azure Kubernetes Service (AKS)
 
-In this article, you'll learn about the new Virtual Machines node pool type for AKS. 
+In this article, you learn about the new Virtual Machines node pool type for AKS. 
 
 With Virtual Machines node pools, AKS directly manages the provisioning and bootstrapping of every single node. For Virtual Machine Scale Sets node pools, AKS manages the model of the Virtual Machine Scale Sets and uses it to achieve consistency across all nodes in the node pool. Virtual Machines node pools enable you to orchestrate your cluster with virtual machines that best fit your individual workloads. 
 
@@ -19,14 +19,14 @@ With Virtual Machines node pools, AKS directly manages the provisioning and boot
 
 ### How it works
 
-A node pool consists of a set of virtual machines, where different virtual machine sizes are designated to support different types of workloads. These virtual machine sizes, referred to as SKUs, are categorized into different families that are optimized for specific purposes. For more information, see [VM SKUs][vm-SKU]. With Virtual Machine node pools, you can perform multi-SKU manual scaling, or single SKU autoscaling. 
+A node pool consists of a set of virtual machines (VM), where different virtual machine sizes are designated to support different types of workloads. These virtual machine sizes, referred to as SKUs, are categorized into different families that are optimized for specific purposes. For more information, see [VM SKUs][vm-SKU]. With Virtual Machine node pools, you can perform multi-SKU manual scaling, or single SKU autoscaling. 
 
-To enable scaling of multiple virtual machine sizes, the Virtual Machines node pool type uses a `ScaleProfile` that contains configurations indicating how the node pool can scale, specifically the desired list of virtual machine size and the count of each size. A `ManualScaleProfile` is a scale profile that specifies one desired virtual machine size and the total count of that type in the nodepool. Only one virtual machine size is allowed in a `ManualScaleProfile`. You need to create a separate `ManualScaleProfile` for each virtual machine size in your node pool. When creating a new Virtual Machines node pool, you add an initial manual scale profile for a virtual machine size using the `vm-size` field and including a `node-count`, per the instructions below. You can also add additional manual scale profiles following the instructions for [adding manual scale profiles][add-a-manual-scale-profile-to-a-node-pool].
+To enable scaling of multiple virtual machine sizes, the Virtual Machines node pool type uses a `ScaleProfile` that contains configurations indicating how the node pool can scale, specifically the desired list of virtual machine size and the count of each size. A `ManualScaleProfile` is a scale profile that specifies one desired virtual machine size and the total count of that type in the nodepool. Only one virtual machine size is allowed in a `ManualScaleProfile`. You need to create a separate `ManualScaleProfile` for each virtual machine size in your node pool. When creating a new Virtual Machines node pool, you add an initial manual scale profile for a virtual machine size using the `vm-size` field and including a `node-count`. You can also add more manual scale profiles following the instructions for [adding manual scale profiles][add-a-manual-scale-profile-to-a-node-pool].
 
 Virtual Machine node pools also allows `Auto` mode, which means the node pool can use [cluster autoscaler][cluster-autoscaler]. Any Virtual Machine node pools in `Auto` mode can only use one Virtual Machine size at a time. 
 
 > [!NOTE]
-> When creating a new Virtual Machines node pool, you can have multiple scale profiles, and you need at least one manual scale profile in your nodepool. When enabling cluster autoscaler with Virtual Machine node pools, you must remove all but one scale profile that the node pool will use for scaling action. 
+> When creating a new Virtual Machines node pool, you can have multiple scale profiles, and you need at least one manual scale profile in your nodepool. When enabling cluster autoscaler with Virtual Machine node pools, you must remove all but one scale profile that the node pool uses for scaling action. 
 
 ### Advantages
 
@@ -36,7 +36,7 @@ Advantages of the Virtual Machines node pool type include:
 - **Fine-tuned control**: Single node-level controls allow specifying and mixing nodes of different specs to lift restrictions from a single model and improve consistency.
 - **Efficiency**: You can reduce the node footprint for your cluster, simplifying your operational requirements.
 
-Virtual Machines node pools provide a better experience for dynamic workloads and high availability requirements. Virtual Machines node pools enable you to set up multiple similar-family virtual machines in one node pool. Your workload will be automatically scheduled on the available resources that you configure.
+Virtual Machines node pools provide a better experience for dynamic workloads and high availability requirements. Virtual Machines node pools enable you to set up multiple similar-family virtual machines in one node pool. Your workload is automatically scheduled on the available resources that you configure.
 
 
 ### Feature comparison
@@ -45,7 +45,7 @@ The following table highlights how Virtual Machines node pools compare with stan
 
 | Node pool type | Capabilities |
 | ----------------- | ------------- |
-| Virtual Machines node pool | You can add, remove, or update nodes in a node pool. Virtual machine types can be any virtual machine of the same family type (for example, D-series, A-Series, etc.). Virtual Machine node pools also allows for multi-SKU manual scaling. |
+| Virtual Machines node pool | You can add, remove, or update nodes in a node pool. Virtual machine types can be any virtual machine of the same family type (for example, D-series, A-Series, etc.). Virtual Machine node pools also allow for multi-SKU manual scaling. |
 | Virtual Machine Scale Set based node pool | You can add or remove nodes of the same size and type in a node pool. If you add a new virtual machine size to the cluster, you need to create a new node pool. |
 
 #### Which compute scaling experience should I choose on AKS? 
@@ -202,8 +202,8 @@ Virtual Machine node pools are available in Windows enabled clusters. The follow
 Virtual Machines node pools support [cluster autoscaler][cluster-autoscaler]. This can be enabled using the flag `--enable-cluster-autoscaler` during cluster creation, while adding a new node pool, or in updating an existing manual node pool.
 
 When using cluster autoscaler with Virtual Machine node pools, 
-- Scale up: autoscaler will respond to pending pod pressure, and scale up a the node count of a node pool with the same type of single SKU in that node pool. 
-- Scale down: a specific node will be chosen by autoscaler based on the utilization of node. you can configure `scale-down-utilization-threshold`to adjust when cluster autoscaling triggers a scaling action. See [cluster autoscaler documentation][cluster-autoscaler] for more information on configuring autoscaling. 
+- Scale up: autoscaler responds to pending pod pressure, and scale up the node count of a node pool with the same type of single SKU in that node pool. 
+- Scale down: a specific node is chosen by autoscaler based on the utilization of node. you can configure `scale-down-utilization-threshold`to adjust when cluster autoscaling triggers a scaling action. See [cluster autoscaler documentation][cluster-autoscaler] for more information on configuring autoscaling. 
 
 ### Requirements
 - To enable cluster autoscaler with Virtual Machine node pools, the node pool must only use one VM size. All other manual scale profiles must be deleted before enabling cluster autoscaler.
@@ -239,9 +239,9 @@ The following example creates a cluster named *myAKSCluster* with a Virtual Mach
 ```
 
 ### Add a Virtual Machines node pool with cluster autoscaler enabled to an existing cluster
-- Create a Virtual Machines node pools using the [`az aks nodepool add`][az aks nodepool add] command with the `--vm-set-type` flag set to `"VirtualMachines"` and with the flag `--enable-cluster-autoscaler`.
+- Create a Virtual Machines node pool using the [`az aks nodepool add`][az aks nodepool add] command with the `--vm-set-type` flag set to `"VirtualMachines"` and with the flag `--enable-cluster-autoscaler`.
 
-The following example adds VIrtual Machines nodepool *myvmpool* to a cluster named *myAKSCluster* using virtual machine size of "Standard_D4s_v3":
+The following example adds Virtual Machines node pool *myvmpool* to a cluster named *myAKSCluster* using virtual machine size of "Standard_D4s_v3":
 
 ```azurecli-interactive
     az aks nodepool add \
@@ -255,9 +255,9 @@ The following example adds VIrtual Machines nodepool *myvmpool* to a cluster nam
 
 ### Update cluster autoscaler settings for a Virtual Machines node pool with cluster autoscaler enabled
 
-- Update the [cluster autoscaler][cluster-autoscaler] node count settings for a Virtual Machines node pools using the [`az aks nodepool update`][az aks nodepool update] command with the `--vm-set-type` flag set to `"VirtualMachines"` and with the flag `--update-cluster-autoscaler`.
+- Update the [cluster autoscaler][cluster-autoscaler] node count settings for a Virtual Machines node pool using the [`az aks nodepool update`][az aks nodepool update] command with the `--vm-set-type` flag set to `"VirtualMachines"` and with the flag `--update-cluster-autoscaler`.
 
-The following example updates settings for VIrtual Machines nodepool *myvmpool* in cluster named *myAKSCluster* using virtual machine size of "Standard_D4s_v3":
+The following example updates settings for Virtual Machines node pool *myvmpool* in cluster named *myAKSCluster* using virtual machine size of "Standard_D4s_v3":
 
 ```azurecli-interactive
     az aks nodepool update \
@@ -275,7 +275,7 @@ The following example updates settings for VIrtual Machines nodepool *myvmpool* 
 >[!Note]
 > Updating a manual mode Virtual Machines node pool to auto is only allowed when the node pool only has one manual scale profile.
 
-If your Virtual Machine node pool has multiple manual scale profiles, you must remove all manual scale profiles except for the selected size you want for autoscaling purposes. See the following example which deletes the manual scale profile in node pool "myvmpool" for VM size `Standard_D8s_v3`:
+If your Virtual Machine node pool has multiple manual scale profiles, you must remove all manual scale profiles except for the selected size you want for autoscaling purposes. See the following example that deletes the manual scale profile in node pool "myvmpool" for VM size `Standard_D8s_v3`:
 
 ```azurecli-interactive
     az aks nodepool manual-scale delete \
@@ -285,7 +285,7 @@ If your Virtual Machine node pool has multiple manual scale profiles, you must r
         --current-vm-sizes "Standard_D8s_v3"
 ```
 
-The following example updates VIrtual Machines nodepool *myvmpool* in the cluster named *myAKSCluster* from `Manual` mode to `Auto` mode:
+The following example updates VIrtual Machines node pool *myvmpool* in the cluster named *myAKSCluster* from `Manual` mode to `Auto` mode:
 
 ```azurecli-interactive
     az aks nodepool update \
@@ -301,7 +301,7 @@ The following example updates VIrtual Machines nodepool *myvmpool* in the cluste
 
 You can disable [cluster autoscaler][cluster-autoscaler], or change the cluster from `Auto` mode to `Manual` mode.
 
-The following example updates VIrtual Machines nodepool *myvmpool* in the cluster named *myAKSCluster* from `Manual` mode to `Auto` mode:
+The following example updates VIrtual Machines node pool *myvmpool* in the cluster named *myAKSCluster* from `Manual` mode to `Auto` mode:
 
 ```azurecli-interactive
     az aks nodepool update \
