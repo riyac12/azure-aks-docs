@@ -3,7 +3,7 @@ title: Migrate for Cluster Autoscaler to Node auto provisioning
 description: Learn about how to migrate your Azure Kubernetes Service (AKS) cluster from cluster autoscaler to node autoprovisioning.
 ms.topic: how-to
 ms.custom: devx-track-azurecli
-ms.date: 09/01/2025
+ms.date: 10/01/2025
 ms.author: wilsondarko
 author: wdarko1
 
