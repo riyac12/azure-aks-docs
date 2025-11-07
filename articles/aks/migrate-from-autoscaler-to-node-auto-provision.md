@@ -157,12 +157,15 @@ The following table maps Cluster Autoscaler profile settings to Node Auto Provis
 | `max-node-provision-time` | Max time to wait for node provisioning (default: 15m) | N/A | NAP provisions nodes immediately based on pending pods | **CLI:**<br>`az aks update --cluster-autoscaler-profile max-node-provision-time=15m`<br>**YAML:**<br>`# Not applicable in NAP` |
 | `ok-total-unready-count` / `max-total-unready-percentage` | Limits unready nodes during autoscaling | `budgets` | Can enforce disruption limits during maintenance windows | **CLI:**<br>`az aks update --cluster-autoscaler-profile ok-total-unready-count=3`<br>**YAML:**<br>`disruption:`<br>`  budgets:`<br>`    percentage: 20%` |
 
->[!NOTE]
-> Unlike cluster autoscaler NAP does not use Azure CLI commands to manage node behavior, so all decion making for NAP-managed nodes is determiend by the CRDs.
 
-For more on configuring your cluster specifications for NAP, visit our [NodePool documentation](./node-auto-provisioning-node-pools.md) and [AKSNodeClass documentation](./node-auto-provisioning-aksnodeclass.md).
+>[!NOTE]
+> Unlike cluster autoscaler, NAP does not use Azure CLI commands to manage node behavior, so all decision making for NAP-managed nodes is determiend by the CRDs.
+> For more on configuring your cluster specifications for NAP, visit our [NodePool documentation](./node-auto-provisioning-node-pools.md) and [AKSNodeClass documentation](./node-auto-provisioning-aksnodeclass.md).
 
 ## Migrate workloads from fixed pools to node auto provisioning managed nodes
+
+>[!NOTE]
+> Consider setting node affinity to ensure that your workloads can tolerate NAP, and will be scheduled to the NAP-managed nodes when desired.
 
 Now scale down user pools gradually (keep the system pool):
 
