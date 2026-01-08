@@ -163,45 +163,9 @@ The `--http-proxy-config` parameter should be set to a new JSON file with update
     cat /etc/environment
     ```
 
-## Disable HTTP proxy on an existing cluster (Preview)
+## Disable HTTP proxy on an existing cluster
 
-### Install `aks-preview` extension
-
-1. Install the `aks-preview` Azure CLI extension using the [`az extension add`](/cli/azure/extension#az-extension-add) command.
-
-    [!INCLUDE [preview features callout](~/reusable-content/ce-skilling/azure/includes/aks/includes/preview/preview-callout.md)]
-
-    ```azurecli-interactive
-    az extension add --name aks-preview
-    ```
-
-1. Update to the latest version of the extension using the [`az extension update`](/cli/azure/extension#az-extension-update) command. **Disable HTTP Proxy requires a minimum of 18.0.0b13**.
-
-    ```azurecli-interactive
-    az extension update --name aks-preview
-    ```
-
-### Register `DisableHTTPProxyPreview` feature flag
-
-1. Register the `DisableHTTPProxyPreview` feature flag using the [`az feature register`](/cli/azure/feature#az-feature-register) command.
-
-    ```azurecli-interactive
-    az feature register --namespace Microsoft.ContainerService --name DisableHTTPProxyPreview
-    ```
-
-1. Verify the registration status using the [`az feature show`](/cli/azure/feature#az-feature-show) command. It takes a few minutes for the status to show *Registered*.
-
-    ```azurecli-interactive
-    az feature show --namespace Microsoft.ContainerService --name DisableHTTPProxyPreview
-    ```
-
-1. When the status reflects *Registered*, refresh the registration of the *Microsoft.ContainerService* resource provider using the [`az provider register`](/cli/azure/provider#az-provider-register) command.
-
-    ```azurecli-interactive
-    az provider register --namespace Microsoft.ContainerService
-    ```
-
-### Update cluster to disable HTTP proxy (preview)
+### Update cluster to disable HTTP proxy
 
 1. Update your cluster to disable HTTP proxy using the [`az aks update`][az-aks-update] command with `--disable-http-proxy` flag.
 
@@ -335,43 +299,7 @@ The `--http-proxy-config` parameter should be set to a new JSON file with update
     cat /etc/environment
     ```
 
-## Disable HTTP proxy on an existing cluster using an ARM template (Preview)
-
-### Install `aks-preview` extension
-  
-1. Install the `aks-preview` Azure CLI extension using the [`az extension add`](/cli/azure/extension#az-extension-add) command.
-
-    [!INCLUDE [preview features callout](~/reusable-content/ce-skilling/azure/includes/aks/includes/preview/preview-callout.md)]
-  
-    ```azurecli-interactive
-    az extension add --name aks-preview
-    ```
-  
-1. Update to the latest version of the extension using the [`az extension update`](/cli/azure/extension#az-extension-update) command. **Disable HTTP Proxy requires a minimum of 18.0.0b13**.
-  
-    ```azurecli-interactive
-    az extension update --name aks-preview
-    ```
-  
-### Register `DisableHTTPProxyPreview` feature flag
-  
-1. Register the `DisableHTTPProxyPreview` feature flag using the [`az feature register`](/cli/azure/feature#az-feature-register) command.
-  
-    ```azurecli-interactive
-    az feature register --namespace Microsoft.ContainerService --name DisableHTTPProxyPreview
-    ```
-  
-1. Verify the registration status using the [`az feature show`](/cli/azure/feature#az-feature-show) command. It takes a few minutes for the status to show *Registered*.
-  
-    ```azurecli-interactive
-    az feature show --namespace Microsoft.ContainerService --name DisableHTTPProxyPreview
-    ```
-  
-1. When the status reflects *Registered*, refresh the registration of the *Microsoft.ContainerService* resource provider using the [`az provider register`](/cli/azure/provider#az-provider-register) command.
-  
-    ```azurecli-interactive
-    az provider register --namespace Microsoft.ContainerService
-    ```
+## Disable HTTP proxy on an existing cluster using an ARM template
 
 ### Update cluster to disable HTTP proxy  
 
