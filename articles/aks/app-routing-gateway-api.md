@@ -450,7 +450,7 @@ openssl x509 -req -sha256 -days 365 -CA httpbin_certs/example.com.crt -CAkey htt
 
 The application routing Gateway API implementation deploys and upgrades the Istio control plane based on the AKS cluster Kubernetes version **for both minor version and patch version upgrades**.
 
-The Istio version is the maximum supported Istio minor version for the AKS version, which can be found in the follwoing table. For instance, if you are on AKS version `1.29`, the maximum supported Istio minor version that is installed is `1.27`. Keep in mind that the maximum supported Istio version for a given Kubernetes version could differ between [Long-Term Support (LTS) clusters][aks-lts] and non-LTS clusters.
+The Istio version is the maximum supported Istio minor version for the AKS version, which can be found in the following table. For instance, if you are on AKS version `1.29`, the maximum supported Istio minor version that is installed is `1.27`. Keep in mind that the maximum supported Istio version for a given Kubernetes version could differ between [Long-Term Support (LTS) clusters][aks-lts] and non-LTS clusters.
 
 | Istio version | Upstream release | AKS release | End of life | Compatible AKS versions | Compatible AKS LTS versions |
 |--------------|-------------------|--------------|---------|-------------|-----------------------|-----------------------|
@@ -471,10 +471,6 @@ It's possible that traffic disruptions could occur during the upgrade process. T
 ## Resource customizations
 
 The application routing Gateway API implementation supports customization of the `Gateway` resources via annotations and ConfigMaps. Application routing uses the same resource customization allowlist as the Istio service mesh add-on for Gateway API resource customization. Follow the steps in the [Istio add-on Gateway API docs][istio-gateway-resource-customization] to configure resources generated for the `Gateways` and to see which fields fall under the [allowlist][resource-customization-allowlist].
-
-## MeshConfig customizations
-
-The application routing Gateway API implementation supports configuration of the Istio control plane and gateway proxies through the Istio MeshConfig. Application routing uses the same [MeshConfig allowlist][istio-meshconfig] as the Istio add-on for [`allowed`, `supported`, and `disallowed` fields][istio-support-policy]. However, because the Istio control plane for application routing is not revisioned, the name of the `ConfigMap` for the MeshConfig should just be `istio-shared-configmap`.
 
 ## Disable the application routing Gateway API implementation
 

@@ -20,7 +20,7 @@ The Istio service mesh add-on supports both [Istio's own ingress traffic managem
 
 * The Istio service mesh add-on and the [application routing Gateway API implementation][app-routing-gateway-api] cannot be enabled simultaneously. You must disable one first and enable the other in a separate operation.
 * Using the Kubernetes Gateway API for [egress traffic management][istio-deploy-egress] with the Istio add-on is only supported for the [manual deployment model][istio-gateway-manual-deployment].
-* ConfigMap customizations for `Gateway` resources must fall within the [resource customization allowlist](#resource-customization-allowlist). Fields not on the allowlist are disallowed and blocked via add-on managed webhooks. See the [Istio add-on support policy][istio-support-policy] for more information `allowed`, `blocked`, and `supported` features.
+* ConfigMap customizations for `Gateway` resources must fall within the [resource customization allowlist](#resource-customization-allowlist). Fields not on the allowlist are disallowed and blocked via add-on managed webhooks. See the [Istio add-on support policy][istio-support-policy] for more information on `allowed`, `blocked`, and `supported` features.
 * Configuring HTTPS ingress access to HTTPS services - i.e Server Name Indication (SNI) Passthrough - via the `TLSRoute` resource is currently unsupported.
 
 ## Prerequisites
@@ -41,21 +41,16 @@ Set the following environment variables to use throughout this article:
 
 ## Deploy sample application
 
-- Deploy the sample `httpbin` application in the `default` namespace using the [`kubectl apply`][kubectl-apply] command.
+- First, deploy the sample `httpbin` application in the `default` namespace using the [`kubectl apply`][kubectl-apply] command.
 
     ```bash
-    kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.26/samples/httpbin/httpbin.yaml
+    export ISTIO_RELEASE="release-1.27"
+    kubectl apply -f https://raw.githubusercontent.com/istio/istio/$ISTIO_RELEASE/samples/httpbin/httpbin.yaml
     ```
 
 ## Create Kubernetes Gateway and HTTPRoute
 
 The example manifest creates an external ingress load balancer service that's accessible from outside the cluster. You can add [annotations][annotation-customizations] to create an internal load balancer and customize other load balancer settings.
-
-> [!NOTE]
-> By default, the Istio control plane will append the `GatewayClass` name `istio` to the name of the resources that it provisions for the `Gateway`. You can annotate your `Gateway` resource with `gateway.istio.io/name-override` to override the name of the provisioned resources. The resource names must be less than `63` characters and must be a valid DNS name.
-
-> [!NOTE]
-> If you are performing a [minor revision upgrade][istio-upgrade] and have two Istio add-on revisions installed on your cluster simultaneously, by default the control plane for the higher minor revision takes ownership of the `Gateways`. You can add the `istio.io/rev` label to the `Gateway` to control which control plane revision owns it. If you add the revision label, make sure that you update it accordingly to the appropriate control plane revision before rolling back or completing the upgrade operation.
 
     ```bash
     kubectl apply -f - <<EOF
@@ -76,8 +71,7 @@ The example manifest creates an external ingress load balancer service that's ac
     apiVersion: gateway.networking.k8s.io/v1
     kind: HTTPRoute
     metadata:
-      name: http
-      namespace: default
+      name: httpbin
     spec:
       parentRefs:
       - name: httpbin-gateway
@@ -92,6 +86,12 @@ The example manifest creates an external ingress load balancer service that's ac
           port: 8000
     EOF
     ```
+
+    > [!NOTE]
+    > By default, the Istio control plane will append the `GatewayClass` name `istio` to the name of the resources that it provisions for the `Gateway`. You can annotate your `Gateway` resource with `gateway.istio.io/name-override` to override the name of the provisioned resources. The resource names must be less than `63` characters and must be a valid DNS name.
+
+    > [!NOTE]
+    > If you are performing a [minor revision upgrade][istio-upgrade] and have two Istio add-on revisions installed on your cluster simultaneously, by default the control plane for the higher minor revision takes ownership of the `Gateways`. You can add the `istio.io/rev` label to the `Gateway` to control which control plane revision owns it. If you add the revision label, make sure that you update it accordingly to the appropriate control plane revision before rolling back or completing the upgrade operation.
 
     > [!NOTE]
     > If you're performing a [minor revision upgrade][istio-upgrade] and have two Istio service mesh add-on revisions installed on your cluster simultaneously, the control plane for the higher minor revision takes ownership of the `Gateways` by default. You can add the `istio.io/rev` label to the `Gateway` to control which control plane revision owns it. If you add the revision label, make sure that you update it accordingly to the appropriate control plane revision before rolling back or completing the upgrade operation.
@@ -146,7 +146,7 @@ The example manifest creates an external ingress load balancer service that's ac
 
 ## Secure Istio ingress traffic with the Kubernetes Gateway API
 
-The Istio service mesh add-on supports syncing secrets from Azure Key Vault for securing Gateway API-based ingress traffic with [Transport Layer Security (TLS) termination][istio-tls-termination] or [Server Name Indication (SNI) passthrough][istio-sni-passthrough]. In the following sections, you sync secrets from Azure Key Vault onto your AKS cluster using the [Azure Key Vault provider for Secrets Store Container Storage Interface (CSI) Driver add-on][aks-csi-driver] and terminate TLS at the ingress gateway.
+The Istio service mesh add-on supports syncing secrets from Azure Key Vault for securing Gateway API-based ingress traffic with [Transport Layer Security (TLS) termination][istio-tls-termination]. In the following sections, you sync secrets from Azure Key Vault onto your AKS cluster using the [Azure Key Vault provider for Secrets Store Container Storage Interface (CSI) Driver add-on][aks-csi-driver] and terminate TLS at the ingress gateway.
 
 ## Create client/server certificates and keys
 

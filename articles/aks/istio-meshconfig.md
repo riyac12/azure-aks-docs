@@ -58,9 +58,6 @@ This guide assumes you followed the [documentation][istio-deploy-add-on] to enab
 
 2. Create a ConfigMap with the name `istio-shared-configmap-<asm-revision>` in the `aks-istio-system` namespace. For example, if your cluster is running asm-1-24 revision of mesh, then the ConfigMap needs to be named as `istio-shared-configmap-asm-1-24`. Mesh configuration has to be provided within the data section under mesh.
 
-    > [!NOTE]
-    > If you are customizing the MeshConfig for the [application routing Gateway API implementation][app-routing-istio-meshconfig], which does not use a revision for the Istio control plane, then you should not append the revision to the ConfigMap name, which is just `istio-shared-configmap`.
-
     Example:
 
     ```bash
