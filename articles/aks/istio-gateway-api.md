@@ -52,6 +52,8 @@ Set the following environment variables to use throughout this article:
 
 The example manifest creates an external ingress load balancer service that's accessible from outside the cluster. You can add [annotations][annotation-customizations] to create an internal load balancer and customize other load balancer settings.
 
+- Deploy a Gateway API configuration in the `default` namespace with the `gatewayClassName` set to `istio` and an `HTTPRoute` that routes traffic to the `httpbin` service using the following manifest:
+
     ```bash
     kubectl apply -f - <<EOF
     apiVersion: gateway.networking.k8s.io/v1
