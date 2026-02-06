@@ -393,24 +393,24 @@ For more information on node auto-provisioning in AKS, see the following article
 <!-- LINKS - internal -->
 [aks-view-master-logs]: ./monitor-aks.md#aks-control-planeresource-logs
 [azure-cli-extensions]: /cli/azure/azure-cli-extensions-overview.md
-[azure cli]: ./cli/azure/get-started-with-azure-cli.md
+[azure cli]: /cli/azure/get-started-with-azure-cli
 [az-extension-add]: /cli/azure/extension#az-extension-add
 [az-extension-update]: /cli/azure/extension#az-extension-update
-[planned-maintenance#schedule-configuration-types-for-planned-maintenance]: ./azure/aks/planned-maintenance.md#schedule-configuration-types-for-planned-maintenance
+[planned-maintenance#schedule-configuration-types-for-planned-maintenance]: /azure/aks/planned-maintenance#schedule-configuration-types-for-planned-maintenance
 [az-aks-create]: /cli/azure/aks#az-aks-create
 [az-aks-get-credentials]: /cli/azure/aks#az-aks-get-credentials
 [az-aks-install-cli]: /cli/azure/aks#az-aks-install-cli
 [auto-upgrade]: /azure/aks/auto-upgrade-cluster.md#cluster-auto-upgrade-channels
-[node-os-upgrade-channel]: /azure/aks/auto-upgrade-node-os-image.md#available-node-os-upgrade-channels
-[azure-support]: /azure/azure-portal/supportability/how-to-create-azure-support-request.md
-[vm-overview]: /azure/virtual-machines/sizes/overview.md
-[nap-main-doc]: /azure/aks/node-autoprovision.md
-[nap-disruption-doc]: /azure/aks/node-autoprovision-disruption.md
-[nap-nodepool-doc]: /azure/aks/node-autoprovision-node-pools.md
-[nap-networking-doc]: /azure/aks/node-autoprovision-networking.md
-[nap-observability]: /azure/aks/node-autoprovision.md#node-auto-provisioning-metrics
-[cluster-autoscaler]: /azure/aks/cluster-autoscaler.md
-[use-nap-doc]: /azure/aks/use-node-auto-provisioning.md
+[node-os-upgrade-channel]: /azure/aks/auto-upgrade-node-os-image#available-node-os-upgrade-channels
+[azure-support]: /azure/azure-portal/supportability/how-to-create-azure-support-request
+[vm-overview]: /azure/virtual-machines/sizes/overview
+[nap-main-doc]: /azure/aks/node-autoprovision
+[nap-disruption-doc]: /azure/aks/node-autoprovision-disruption
+[nap-nodepool-doc]: /azure/aks/node-autoprovision-node-pools
+[nap-networking-doc]: /azure/aks/node-autoprovision-networking
+[nap-observability]: /azure/aks/node-autoprovision#node-auto-provisioning-metrics
+[cluster-autoscaler]: /azure/aks/cluster-autoscaler
+[use-nap-doc]: /azure/aks/use-node-auto-provisioning
 
 <!-- LINKS - external -->
 [aks-karpenter-provider]: https://github.com/Azure/karpenter-provider-azure
