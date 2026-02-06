@@ -73,7 +73,7 @@ Visit our [NAP Documentation](./node-auto-provisioning.md#limitations-and-unsupp
 
 ### Pre-migration checklist
 
-- Confirm cluster eligibility for node auto provisioning. For more on NAP requirements, visit our [Overview of NAP documentation](./node-auto-provisioning#prerequisites).
+- Confirm cluster eligibility for node auto provisioning. For more on NAP requirements, visit our [Overview of NAP documentation](./node-auto-provisioning.md).
 - Right-size workloads for consolidation.
   - Set proper [resource requests/limits](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container), replicas, and [pod disruption budgets (PDBs)](https://kubernetes.io/docs/tasks/run-application/configure-pdb/#specifying-a-poddisruptionbudget) to allow for a gradual migration. This migration method requires properly set PDBs to ensure well-managed disruption of your workloads. 
 - Verify your system node pool is active.
