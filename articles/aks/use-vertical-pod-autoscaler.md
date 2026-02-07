@@ -3,7 +3,7 @@ title: Use the Vertical Pod Autoscaler in Azure Kubernetes Service (AKS)
 description: Learn how to deploy, upgrade, or disable the Vertical Pod Autoscaler on your Azure Kubernetes Service (AKS) cluster.
 ms.topic: how-to
 ms.custom: devx-track-azurecli
-ms.date: 02/22/2024
+ms.date: 02/06/2026
 author: schaffererin
 ms.author: schaffererin
 ms.service: azure-kubernetes-service
@@ -198,7 +198,7 @@ In the following example, we create a deployment with two pods, each running a s
 
     In the previous output, you can see that the CPU reservation increased to 587 millicpu, which is over five times the original value. The Memory increased to 262,144 Kilobytes, which is around 250 Mibibytes, or five times the original value. This pod was under-resourced, and the Vertical Pod Autoscaler corrected the estimate with a much more appropriate value.
 
-7. View updated recommendations from VPA using the [`kubectl describe`][kubectl-describe] command to describe the hamster-vpa resource information.
+7. View updated recommendations from VPA using the [`kubectl describe`][kubectl-describe] command to describe the hamster-vpa resource information. Note that the deployment pods are recreated after the new VPA recommendations are applied. 
 
     ```bash
     kubectl describe vpa/hamster-vpa
@@ -207,16 +207,116 @@ In the following example, we create a deployment with two pods, each running a s
     Your output should look similar to the following example output:
 
     ```output
-     State:          Running
-      Started:      Wed, 28 Sep 2022 15:09:51 -0400
-    Ready:          True
-    Restart Count:  0
-    Requests:
-      cpu:        587m
-      memory:     262144k
-    Environment:  <none>
+          Type:                  RecommendationProvided
+      Recommendation:
+        Container Recommendations:
+          Container Name:  hamster
+          Lower Bound:
+            Cpu:     514m
+            Memory:  50Mi
+          Target:
+            Cpu:     587m
+            Memory:  50Mi
+          Uncapped Target:
+            Cpu:     587m
+            Memory:  11500000
+          Upper Bound:
+            Cpu:     1
+            Memory:  500Mi
+    Events:
+      Type    Reason      Age   From         Message
+      ----    ------      ----  ----         -------
+      Normal  EvictedPod  20m   vpa-updater  VPA Updater evicted Pod hamster-78f9dcdd4c-hf7gk to apply resource recommendation. 
+      Normal  EvictedPod  19m   vpa-updater  VPA Updater evicted Pod hamster-78f9dcdd4c-j9mc7 to apply resource recommendation.
+    ```
+8. Clean up the resources.
+  ```bash
+    kubectl delete -f hamster.yaml
+  ```
+
+  Your output should look similar to the following example output:
+
+  ```output
+    verticalpodautoscaler.autoscaling.k8s.io "hamster-vpa" deleted from default namespace
+    deployment.apps "hamster" deleted from default namespace
+  ```
+### Using Vertical Autoscaler InPlaceOrRecreate mode
+1. To limit your pod restarts when using VPA, you can use the `updateMode` of `InPlaceOrRecreate`. Create a new file called `inplacevpa.yaml` and copy in the following manifest:
+    ```yml
+        apiVersion: "autoscaling.k8s.io/v1"
+        kind: VerticalPodAutoscaler
+        metadata:
+          name: hamster-vpa
+        spec:
+          targetRef:
+            apiVersion: "apps/v1"
+            kind: Deployment
+            name: hamster
+          updatePolicy: # specify the updatePolicy
+            updateMode: InPlaceOrRecreate # set updateMode to InPlaceOrRecreate
+          resourcePolicy:
+            containerPolicies:
+              - containerName: '*'
+                minAllowed:
+                  cpu: 100m
+                  memory: 50Mi
+                maxAllowed:
+                  cpu: 1
+                  memory: 500Mi
+                controlledResources: ["cpu", "memory"]
+        ---
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: hamster
+        spec:
+          selector:
+            matchLabels:
+              app: hamster
+          replicas: 2
+          template:
+            metadata:
+              labels:
+                app: hamster
+            spec:
+              securityContext:
+                runAsNonRoot: true
+                runAsUser: 65534
+              containers:
+                - name: hamster
+                  image: registry.k8s.io/ubuntu-slim:0.1
+                  resources:
+                    requests:
+                      cpu: 100m
+                      memory: 50Mi
+                  command: ["/bin/sh"]
+                  args:
+                    - "-c"
+                    - "while true; do timeout 0.5s yes >/dev/null; sleep 0.5s; done"
+    ```
+2. Deploy the `inplacevpa.yaml` Vertical Pod Autoscaler example using the [`kubectl apply`][kubectl-apply] command.
+
+    ```bash
+    kubectl apply -f inplacevpa.yaml
     ```
 
+    After a few minutes, the command completes and returns JSON-formatted information about the cluster.
+3. Follow steps 3-5 in [the previous section](#test-vertical-pod-autoscaler-installation). Notice that the pods requests were increased without pod restarts. Note that in some cases, if in-place updates cannot be performed for a particular resource change, VPA falls back to evicting the Pod (similar to Recreate mode) and allowing the workload controller to create a replacement Pod with updated resources.
+  ```bash
+    kubectl describe vpa/hamster-vpa
+  ```
+
+  Your output should look similar to the following example output:
+  ```output
+    Events:
+      Type    Reason           Age    From               Message
+      ----    ------           ----   ----               -------
+      Normal  Scheduled        7m3s   default-scheduler  Successfully assigned default/hamster-74988b68d4-b9hkh to aks-userpool-88273559-vmss000000
+      Normal  Pulled           7m3s   kubelet            Container image "registry.k8s.io/ubuntu-slim:0.1" already present on machine
+      Normal  Created          7m3s   kubelet            Created container: hamster
+      Normal  Started          7m3s   kubelet            Started container hamster
+      Normal  ResizeCompleted  5m40s  kubelet            Pod resize completed: {"containers":[{"name":"hamster","resources":{"requests":{"cpu":"587m","memory":"50Mi"}}}]}
+  ```
 ## Set Vertical Pod Autoscaler requests
 
 The `VerticalPodAutoscaler` object automatically sets resource requests on pods with an `updateMode` of `Auto`. You can set a different value depending on your requirements and testing. In this example, we create and test a deployment manifest with two pods, each running a container that requests 100 milliCPU and 50 MiB of Memory, and sets the `updateMode` to `Recreate`.

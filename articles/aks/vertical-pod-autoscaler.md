@@ -3,7 +3,7 @@ title: Vertical pod autoscaling in Azure Kubernetes Service (AKS)
 description: Learn about vertical pod autoscaling in Azure Kubernetes Service (AKS) using the Vertical Pod Autoscaler (VPA).
 ms.topic: overview
 ms.custom: devx-track-azurecli
-ms.date: 09/28/2023
+ms.date: 02/06/2026
 author: davidsmatlak
 ms.author: davidsmatlak
 
@@ -57,11 +57,14 @@ A standalone job, `overlay-vpa-cert-webhook-check`, runs outside of the VPA Admi
 
 A Vertical Pod Autoscaler resource, most commonly a *deployment*, is inserted for each controller that you want to have automatically computed resource requirements.
 
-There are four modes in which the VPA operates:
+There are five modes in which the VPA operates:
 
+* `Recreate`: VPA assigns resource requests during pod creation and updates existing pods by evicting them when the requested resources differ significantly from the new recommendations (respecting the PodDisruptionBudget, if defined). You should only use this mode if you need to ensure that the pods are restarted whenever the resource request changes. Otherwise, we recommend using  `InPlaceOrRecreate` mode, which takes advantage of restart-free updates when possible.
 * `Auto`: VPA assigns resource requests during pod creation and updates existing pods using the preferred update mechanism. `Auto`, which is equivalent to `Recreate`, is the default mode. Once restart-free, or *in-place*, updates of pod requests are available, it can be used as the preferred update mechanism by the `Auto` mode. With the `Auto` mode, VPA evicts a pod if it needs to change its resource requests. It might cause the pods to be restarted all at once, which can cause application inconsistencies. You can limit restarts and maintain consistency in this situation using a [PodDisruptionBudget][pod-disruption-budget].
-* `Recreate`: VPA assigns resource requests during pod creation and updates existing pods by evicting them when the requested resources differ significantly from the new recommendations (respecting the PodDisruptionBudget, if defined). You should only use this mode if you need to ensure that the pods are restarted whenever the resource request changes. Otherwise, we recommend using  `Auto` mode, which takes advantage of restart-free updates once available.
-* `InPlaceOrRecreate`: This is an alpha feature, available on AKS Kubernetes version 1.34. VPA assigns resource requests on pod creation as well as updates them on existing pods by leveraging [Kubernetes in-place update capability](https://kubernetes.io/blog/2025/05/16/kubernetes-v1-33-in-place-pod-resize-beta/). If in-place update fails, it falls back to evicting the pods, performing a recreation. For more details, see the [In-Place Updates documentation](https://github.com/kubernetes/autoscaler/blob/master/vertical-pod-autoscaler/docs/features.md#in-place-updates-inplaceorrecreate).
+* `InPlaceOrRecreate`: In InPlaceOrRecreate mode, VPA attempts to update Pod resource requests and limits without restarting the Pod when possible. However, if in-place updates cannot be performed for a particular resource change, VPA falls back to evicting the Pod (similar to Recreate mode) and allowing the workload controller to create a replacement Pod with updated resources.
+    * Follow [the step-by-step instructions][inplace-vpa-example] to try `InPlaceOrRecreate` mode. 
+    * In this mode, the updater applies recommendations in-place using the [Resize Container Resources In-Place feature][resize-container].
+    * For more details, refer to the [In-Place Updates upstream documentation][vpa-upstream-doc]
 * `Initial`: VPA only assigns resource requests during pod creation. It doesn't update existing pods. This mode is useful for testing and understanding the VPA behavior without affecting the running pods.
 * `Off`: VPA doesn't automatically change the resource requirements of the pods. The recommendations are calculated and can be inspected in the VPA object.
 
@@ -80,7 +83,9 @@ To learn how to set up the Vertical Pod Autoscaler on your AKS cluster, see [Use
 
 <!-- EXTERNAL LINKS -->
 [pod-disruption-budget]: https://kubernetes.io/docs/concepts/workloads/pods/disruptions/
-
+[vpa-upstream-doc]: https://github.com/kubernetes/autoscaler/blob/master/vertical-pod-autoscaler/docs/features.md#in-place-updates-inplaceorrecreate
+[resize-container]:https://kubernetes.io/docs/tasks/configure-pod-container/resize-container-resources/
 <!-- INTERNAL LINKS -->
 [horizontal-pod-autoscaling]: concepts-scale.md#horizontal-pod-autoscaler
 [horizontal-pod-autoscaler-overview]: concepts-scale.md#horizontal-pod-autoscaler
+[inplace-vpa-example]: use-vertical-pod-autoscaler.md#using-vertical-autoscaler-inplaceorecreate-mode
