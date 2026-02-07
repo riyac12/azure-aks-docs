@@ -88,4 +88,4 @@ To learn how to set up the Vertical Pod Autoscaler on your AKS cluster, see [Use
 <!-- INTERNAL LINKS -->
 [horizontal-pod-autoscaling]: concepts-scale.md#horizontal-pod-autoscaler
 [horizontal-pod-autoscaler-overview]: concepts-scale.md#horizontal-pod-autoscaler
-[inplace-vpa-example]: use-vertical-pod-autoscaler.md#using-vertical-autoscaler-inplaceorecreate-mode
+[inplace-vpa-example]: use-vertical-pod-autoscaler.md#using-vertical-autoscaler-inplaceorrecreate-mode
