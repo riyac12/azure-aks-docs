@@ -3,7 +3,7 @@ title: Migrate from Cluster Autoscaler to Node auto provisioning
 description: Learn about how to migrate your Azure Kubernetes Service (AKS) cluster from cluster autoscaler to node auto provisioning.
 ms.topic: how-to
 ms.custom: devx-track-azurecli
-ms.date: 1/30/2026
+ms.date: 2/12/2026
 ms.author: wilsondarko
 author: wdarko1
 ai-usage: ai-assisted
@@ -306,7 +306,7 @@ kubectl apply -f nodepool-default.yaml
 ## Migrate workloads from fixed pools to node auto provisioning managed nodes
 
 >[!NOTE]
-> Consider setting node affinity to ensure that your workloads can tolerate NAP and are scheduled to the NAP-managed nodes when desired. Visit the [AKS node selector and affinity documentaiton](./operator-best-practices-advanced-scheduler#control-pod-scheduling-using-node-selectors-and-affinity) on best practices. 
+> Consider setting node affinity to ensure that your workloads can tolerate NAP and are scheduled to the NAP-managed nodes when desired. Visit the [AKS node selector and affinity documentaiton](./operator-best-practices-advanced-scheduler.md#control-pod-scheduling-using-node-selectors-and-affinity) on best practices. 
 
 Now scale down user pools gradually (keep the system pool):
 
