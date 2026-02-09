@@ -1,10 +1,10 @@
 ---
 ms.service: azure-kubernetes-service
 ms.topic: include
-ms.date: 01/14/2026
-author: schaffererin
-ms.author: schaffererin
+ms.date: 02/09/2026
+author: allyford
+ms.author: allyford
 ---
 
 > [!IMPORTANT]
-> Starting on **March 17, 2027**, Azure Kubernetes Service (AKS) no longer supports or provides security updates for Ubuntu 20.04. Any existing node images will be deleted, and you'll be unable to scale any node pools running Ubuntu 20.04. Migrate to a supported Ubuntu version by [upgrading your node pools](../upgrade-aks-cluster.md) to Kubernetes version 1.35+. For more information on this retirement, see the [Retirement GitHub issue](https://github.com/Azure/AKS/issues/4874) and the [Azure Updates retirement announcement](https://azure.microsoft.com/updates?id=485795). To stay informed on announcements and updates, follow the [AKS release notes](https://github.com/Azure/AKS/releases).
+>Starting on June 30, 2027, [AKS no longer supports Ubuntu 22.04](https://aka.ms/aks/upgrade-os-version). Existing node pools will no longer receive security patches and scaling operations may fail after April 30, 2028. Ubuntu 22.04 is not supported in kubernetes version 1.37+. If you'd like to use LTS with kubernetes version 1.33+, you'll need to update your node pools to Ubuntu 24.04 before enabling LTS. To avoid disruption, we recommend migrating to Ubuntu 24.04. For more information on this retirement, see [AKS GitHub issue](https://aka.ms/aks/ubuntu2204-retirement-github) and [Azure Updates post](ADD LINK). To stay informed on announcements and updates, follow the [AKS release notes](https://github.com/Azure/AKS/releases).
