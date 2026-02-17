@@ -27,6 +27,9 @@ The following image visualizes an upgrade run containing two update stages, each
 * **Update stage**: Update runs are divided into stages, which are applied sequentially. For example, a first update stage might update test environment member clusters, and a second update stage would then later update production environment member clusters. A wait time can be specified to delay between the application of subsequent update stages.
 * **Update group**: Each update stage contains one or more update groups, which are used to select the member clusters to be updated. Update groups are also used to order the application of updates to member clusters. Within an update stage, updates are applied to all the different update groups in parallel; within an update group, member clusters update sequentially. Each member cluster of the fleet can only be a part of one update group.
 * **Approval gates (preview)**: Can be configured before or after each stage or group. Approvals pause the update run, allowing either you or automations that you've set up to check that it's OK to proceed. After you or your automation grants approval, the update run will continue.
+* **Max Concurrency (preview)**: 
+You can optionally configure **MaxConcurrency** at the stage level and/or the group level which controls how many clusters can upgrade concurrently. For more information, see [MaxConcurrency](#maxconcurrency-preview).
+
 * **Update strategy**: An update strategy describes the update sequence with stages and groups and allows you to reuse an update run configuration instead of defining the sequence repeatedly in each run. An update strategy doesn't include desired Kubernetes or node image versions.
 
 > [!NOTE]
@@ -154,6 +157,63 @@ The TargetKubernetesVersion channel allows you to control when to move your flee
 Examples:
 * You create an auto upgrade profile with TargetKubernetesVersion channel and specify a target Kubernetes version of "1.30". A new patch version 1.30.5 is published. Update run is automatically created with the target of 1.30.5.
 * You create an auto-upgrade profile with TargetKubernetesVersion channel, specify a target Kubernetes version of "1.29" and enable LongTermSupport (LTS) in the auto-upgrade profile. The latest community supported minor version is "1.33". A new patch version 1.29.5 is published. Update run is automatically created with the target of 1.29.5. **Note**: if the generated update run includes clusters without LTS enabled, it will fail.
+
+[!INCLUDE [preview features note](./includes/preview/preview-callout.md)]
+
+## MaxConcurrency (preview)
+
+`MaxConcurrency` is an optional setting on your update strategy that controls how many member clusters can upgrade concurrently. You can set `MaxConcurrency` at two levels:
+
+- **Stage level**: Defines the maximum number of clusters that can upgrade at the same time across all groups in a stage. Acts as a global ceiling for the stage.
+- **Group level**: Defines the maximum number of clusters that can upgrade concurrently within a specific group.
+
+> [!NOTE]
+> When no `MaxConcurrency` value is specified, the system will default MaxConcurrency values to stage.maxConcurrency = 10, group.maxConcurrency = 1.
+
+`MaxConcurrency` accepts two value forms:
+
+- **Fixed integer**: For example, `"3"` limits concurrency to exactly three clusters.
+- **Percentage**: For example, `"25%"` limits concurrency to a percentage of clusters. For stage-level settings, the percentage is calculated from all clusters in the stage. For group-level settings, the percentage is calculated from the clusters in that group. Percentages are calculated at runtime, rounded down, and enforced with a minimum resolved value of 1.
+
+### Concurrency Control suggestions:
+If you want to Upgrade with safety (less speed, but less likely to end with multiple broken clusters): set MaxConcurrency to a lower value.
+If you want to Upgrade with speed (more speed, but more likely end with multiple broken clusters): set MaxConcurrency to a higher value.
+
+### How stage and group limits interact
+
+The stage-level `MaxConcurrency` always acts as the overall ceiling. Even if individual groups allow higher concurrency, the stage limit takes precedence. Group-level concurrency might be lower than configured due to the stage-level limit, group size, or member-specific conditions.
+
+#### Example 1: Fixed limits
+
+| Setting | Value |
+|---|---|
+| `stage.maxConcurrency` | `"4"` |
+| `groupA.maxConcurrency` | `"2"` |
+| `groupB.maxConcurrency` | `"2"` |
+
+Result: Up to four clusters total, with a maximum of two per group.
+
+#### Example 2: Stage limit throttles groups
+
+| Setting | Value |
+|---|---|
+| `stage.maxConcurrency` | `"2"` |
+| `groupA.maxConcurrency` | `"5"` |
+| `groupB.maxConcurrency` | `"5"` |
+
+Result: Only two clusters total upgrade at the same time because the stage limit takes precedence.
+
+#### Example 3: Percentage-based rollout
+
+A stage has 20 clusters across two groups: Group A (8 clusters) and Group B (12 clusters).
+
+| Setting | Value | Resolves to |
+|---|---|---|
+| `stage.maxConcurrency` | `"25%"` | 5 |
+| `groupA.maxConcurrency` | `"50%"` | 4 |
+| `groupB.maxConcurrency` | `"25%"` | 3 |
+
+Result: Up to five concurrent upgrades total, distributed across groups according to their individual limits.
 
 [!INCLUDE [preview features note](./includes/preview/preview-callout.md)]
 
