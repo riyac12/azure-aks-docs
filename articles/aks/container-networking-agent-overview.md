@@ -291,9 +291,23 @@ Container Networking Agent itself has no separate licensing fee.
 
 Container Networking Agent is a browser-based chatbot that runs inside your AKS cluster. After deployment, you open the application URL in any modern browser to start a conversation. There's no CLI tool to install on your workstation and no portal blade to navigate — it's a standalone chat interface purpose-built for network diagnostics.
 
-<!-- TODO: Replace the placeholder below with a screenshot of the Container Networking Agent chat interface -->
+### Sign up
 
-:::image type="content" source="./images/container-networking-agent-chat.png" alt-text="Screenshot of the Container Networking Agent chat interface showing a user prompt and a structured diagnostic response." lightbox="./images/container-networking-agent-chat.png":::
+When you first open the Container Networking Agent URL, you're prompted to sign in. Depending on how your administrator configured the deployment, you sign in with either a simple username (development environments) or your Microsoft Entra ID credentials (production environments).
+
+:::image type="content" source="./media/advanced-container-networking-services/container-networking-signup-page.png" alt-text="Screenshot of the Container Networking Agent sign-up page where users enter credentials to access the diagnostic assistant." lightbox="./media/advanced-container-networking-services/container-networking-signup-page.png":::
+
+### Grant permissions
+
+After signing in, you may be prompted to grant permissions for the application to access your account. Review the requested permissions and select **Accept** to continue.
+
+:::image type="content" source="./media/advanced-container-networking-services/container-networking-agent-permission-auth-page.png" alt-text="Screenshot of the Container Networking Agent permission authorization page requesting user consent." lightbox="./media/advanced-container-networking-services/container-networking-agent-permission-auth-page.png":::
+
+### Chat interface
+
+Once authenticated, you land on the chat interface. Your session is maintained server-side — you can close and reopen the browser tab within the session timeout window without losing your conversation.
+
+:::image type="content" source="./media/advanced-container-networking-services/container-networking-agent-homepage.png" alt-text="Screenshot of the Container Networking Agent chat interface showing a user prompt and a structured diagnostic response." lightbox="./media/advanced-container-networking-services/container-networking-agent-homepage.png":::
 
 The chat interface is where you:
 
@@ -301,10 +315,6 @@ The chat interface is where you:
 - **Receive structured diagnostic reports** — Responses include evidence tables, root cause analysis, and copy-pasteable remediation commands.
 - **Start new conversations** — Each conversation maintains its own context. Switch topics by starting a new conversation.
 - **Submit feedback** — After each diagnostic response, use the built-in feedback controls (thumbs up / thumbs down) to rate the quality of the diagnosis. Your feedback helps improve future diagnostic accuracy.
-
-### Authentication
-
-Depending on how your administrator configured the deployment, you sign in with either a simple username (development environments) or your Microsoft Entra ID credentials (production environments). After sign-in, your session is maintained server-side — you can close and reopen the browser tab within the session timeout window without losing your conversation.
 
 ### Reporting issues
 
