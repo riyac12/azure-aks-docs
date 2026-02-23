@@ -2,6 +2,8 @@
   href: ./index.yml
 - name: What is AKS?
   href: what-is-aks.md
+- name: Compare AKS with other Azure container options
+  href: compare-container-options-with-aks.md
 - name: Get started with AKS
   items:
     - name: Kubernetes basics
@@ -356,7 +358,7 @@
       href: stateful-workload-upgrades.md
     - name: Upgrade scenarios hub
       href: upgrade-scenarios-hub.md
-  - name: Perform upgrades
+  - name: Perform upgrades and rollbacks
     items:
     - name: Upgrade cluster control plane
       href: upgrade-aks-control-plane.md
@@ -370,6 +372,10 @@
         href: upgrade-aks-node-pools-rolling.md#customize-node-surge
       - name: Process node OS updates with kured
         href: upgrade-node-image-kured.md
+      - name: Configure blue-green node pool upgrades
+        href: blue-green-node-pool-upgrade.md
+      - name: Roll back node pool versions
+        href: roll-back-node-pool-version.md
   - name: Automate upgrades
     items:
     - name: Automatically upgrade an AKS cluster
@@ -1258,7 +1264,7 @@
       items:
         - name: Overview
           href: stateful-workloads-overview.md
-        - name: Deploy a MongoDB cluster
+        - name: Deploy MongoDB using Percona
           items:
             - name: Overview
               href: mongodb-overview.md
@@ -1274,7 +1280,7 @@
               href: upgrade-mongodb-cluster.md
             - name: Monitor with Percona Monitoring and Management
               href: monitor-aks-mongodb.md
-        - name: Deploy a highly available PostgreSQL database
+        - name: Deploy PostgreSQL using CloudNativePG
           items:
             - name: Overview
               href: postgresql-ha-overview.md
@@ -1284,7 +1290,7 @@
               href: deploy-postgresql-ha.md
             - name: Test PostgreSQL
               href: validate-postgresql-ha.md
-        - name: Deploy a Valkey cluster
+        - name: Deploy Valkey
           items:
             - name: Overview
               href: valkey-overview.md
@@ -1314,7 +1320,7 @@
               href: kafka-deploy.md
             - name: Configure monitoring and networking for the Kafka cluster
               href: kafka-configure.md
-        - name: Deploy GitHub Actions using Azure Files
+        - name: Deploy GitHub Actions
           items:
             - name: Overview
               href: github-actions-azure-files-overview.md
