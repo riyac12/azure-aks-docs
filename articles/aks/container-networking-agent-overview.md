@@ -135,7 +135,7 @@ Before deploying Container Networking Agent, ensure you have:
 For Cilium and Hubble diagnostics, your cluster should use [Azure CNI powered by Cilium](/azure/aks/azure-cni-powered-by-cilium). Without Cilium, Container Networking Agent still provides DNS, packet drop, and standard Kubernetes networking diagnostics.
 
 > [!div class="nextstepaction"]
-> [Get started with Container Networking Agent](./quickstart.md)
+> [Get started with Container Networking Agent](./how-to-configure-container-networking-agent.md)
 
 ## Example scenarios and sample prompts
 
@@ -327,8 +327,7 @@ If you encounter a problem with Container Networking Agent:
 
 ## Next steps
 
-- **Get started** — [Quickstart: Deploy Container Networking Agent](./quickstart.md)
-- **Understand the architecture** — [Agent architecture design](./AGENT_ARCHITECTURE_DESIGN.md)
+- **Get started** — [Quickstart: Deploy Container Networking Agent](./how-to-configure-container-networking-agent.md)
 - **Learn about permissions** — [RBAC configuration](../helm/container-networking-agent/README-RBAC.md)
 - **Deploy as AKS extension** — [Extension deployment guide](../deployment/EXTENSIONS.md)
 - **Review conversation limits** — [Chat history and conversation limits](./CONVERSATION_LIMITS.md)
