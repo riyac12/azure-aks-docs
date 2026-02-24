@@ -12,7 +12,7 @@ ms.service: azure-kubernetes-service
 
 Container Networking Agent is an AI-powered diagnostic assistant that helps you identify and resolve networking issues in your Azure Kubernetes Service (AKS) clusters. Once deployed, it runs as an in-cluster web application that you access through your browser. You type questions or describe networking problems in natural language — just as you would in any chat conversation — and the agent runs real diagnostic commands against your cluster and returns a structured, evidence-backed report with root cause analysis and remediation guidance.
 
-No CLI expertise is required to get started. Open the chatbot URL in your browser, describe what's going wrong, and Container Networking Agent handles the rest.
+After you deploy it, the agent runs as an in-cluster web application. Open it in your browser, describe a networking problem in plain language, and the agent runs diagnostic commands against your cluster. It then returns a structured report with root cause analysis and steps to fix the issue.
 
 Container Networking Agent doesn't modify your cluster. It operates with read-only access, so you can safely run diagnostics without risk to running workloads.
 
