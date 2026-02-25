@@ -158,7 +158,7 @@ For this scenario, we create stages and groups to match the details used for the
         "stages": [
             {
                 "name": "stage-1",
-                "maxConcurrency": "100%",
+                "maxConcurrency": "7",
                 "groups": [
                     {
                         "name": "group-1",
@@ -173,7 +173,7 @@ For this scenario, we create stages and groups to match the details used for the
             },
             {
                 "name": "stage-2",
-                "maxConcurrency": "5",
+                "maxConcurrency": "100%",
                 "groups": [
                     {
                         "name": "group-3",
@@ -186,7 +186,11 @@ For this scenario, we create stages and groups to match the details used for the
     ```
 
     > [!NOTE]
-    > The `maxConcurrency` field is optional and controls how many clusters can upgrade concurrently at the stage or group level. Use a larger value to upgrade clusters faster across your fleet, or a smaller value for a more controlled rollout that limits the blast radius if issues arise. Values can be a fixed integer (for example, `"3"`) or a percentage (for example, `"100%"`). If omitted, the system applies default values. For details on how these values are resolved and their upper limits, see [MaxConcurrency (preview)](./concepts-update-orchestration.md#maxconcurrency-preview).
+    > The `maxConcurrency` field is optional and controls how many clusters can upgrade concurrently at the stage or group level. Use a larger value to upgrade clusters faster across your fleet, or a smaller value for a more controlled rollout that limits the blast radius if issues arise.
+    >
+    > In this example, `stage-1` sets `maxConcurrency` to `"7"`, which allows up to `"7"` clusters in this stage to upgrade concurrently. Within `stage-1`, `group-1` limits concurrency to `"3"` clusters, which means up to `"3"` in this group can upgrade concurrently. `group-2` allows up to `"50%"` of its clusters to upgrade concurrently (for example, if the group contains 4 clusters, up to 2 can upgrade at the same time).
+    >
+    > Values can be a fixed integer (for example, `"3"`) or a percentage (for example, `"100%"`). If omitted, the system applies default values. For details on how these values are resolved and their upper limits, see [MaxConcurrency (preview)](./concepts-update-orchestration.md#maxconcurrency-preview).
 
 1. Create a new update strategy using the [`az fleet updatestrategy create`][az-fleet-updatestrategy-create] command with the `--stages` flag set to the name of your JSON file.
 
