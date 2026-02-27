@@ -18,7 +18,7 @@ This article shows you how to deploy Cluster Health Monitor in Azure Kubernetes 
 Cluster Health Monitor helps you detect AKS managed component issues earlier and improve resiliency by enabling automatic remediation for unhealthy CoreDNS pods in specific scenarios. It runs periodic checks for components such as CoreDNS, metrics server, and API server, and exposes results as Prometheus metrics for alerting.
 
 > [!IMPORTANT]
-> Cluster Health Monitor is a built-in checker for managed components. It doesn't replace Azure Monitor, Managed Prometheus, or your existing monitoring stack.
+> Cluster Health Monitor is an AKS-managed checker for system components. It doesn't replace Azure Monitor, Managed Prometheus, or your existing monitoring stack.
 
 [!INCLUDE [preview features callout](~/reusable-content/ce-skilling/azure/includes/aks/includes/preview/preview-callout.md)]
 
@@ -116,18 +116,19 @@ Each check returns one of the following statuses:
 | `Unhealthy` | The check failed. The error code in the metric indicates the failure reason. |
 | `Unknown` | The result is inconclusive, for example during pod startup or when a dependency is unavailable. |
 
-### Checks
+### Error code reference
 
-| Check | What it monitors |
-|---|---|
-| APIServer | API server reachability by creating, reading, and deleting a test resource. |
-| InternalCoreDNS | In-cluster DNS resolution through the CoreDNS service. |
-| ExternalCoreDNS | Public DNS resolution through the CoreDNS service. |
-| InternalCoreDNSPerPod | In-cluster DNS resolution through each CoreDNS pod. Includes pod name and namespace labels. |
-| ExternalCoreDNSPerPod | Public DNS resolution through each CoreDNS pod. Includes pod name and namespace labels. |
-| InternalLocalDNS | In-cluster DNS resolution through [LocalDNS](./localdns-custom.md). |
-| ExternalLocalDNS | Public DNS resolution through [LocalDNS](./localdns-custom.md). |
-| MetricsServer | Metrics server availability. |
+When a check reports `Unhealthy`, Cluster Health Monitor includes an error code in the metric labels.
+
+| Checker | Error code | What it indicates |
+|---|---|---|
+| APIServer | `APIServerCreateError`, `APIServerGetError`, `APIServerDeleteError` | The API server check failed during create, get, or delete operations for the synthetic test resource. |
+| APIServer | `APIServerCreateTimeout`, `APIServerGetTimeout`, `APIServerDeleteTimeout` | The API server check exceeded timeout thresholds during create, get, or delete operations. |
+| CoreDNS / LocalDNS | `ServiceNotReady`, `PodsNotReady` | DNS infrastructure wasn't ready when the check ran. |
+| CoreDNS / LocalDNS | `ServiceError`, `PodError`, `LocalDNSError` | DNS queries failed with non-timeout errors. |
+| CoreDNS / LocalDNS | `ServiceTimeout`, `PodTimeout`, `LocalDNSTimeout` | DNS queries timed out. |
+| MetricsServer | `MetricsServerUnavailable` | The metrics-server API couldn't be reached or returned an error. |
+| MetricsServer | `MetricsServerTimeout` | The metrics-server API request timed out. |
 
 ## How CoreDNS remediation works
 
