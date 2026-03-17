@@ -234,7 +234,7 @@ The Istio service mesh add-on supports syncing secrets from Azure Key Vault for 
     ```
 
     > [!NOTE]
-    > Alternatively, to reference a certificate object type directly from Azure Key Vault, use the following manifest to deploy SecretProviderClass. In this example, `test-httpbin-cert-pxf` is the name of the certificate object in Azure Key Vault.
+    > Alternatively, to reference a certificate object type directly from Azure Key Vault, use the following manifest to deploy SecretProviderClass. In this example, `test-httpbin-cert-pfx` is the name of the certificate object in Azure Key Vault.
     >
     > ```bash
     > cat <<EOF | kubectl apply -f -

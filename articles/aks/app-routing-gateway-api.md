@@ -14,7 +14,9 @@ ms.author: nshankar
 
 [!INCLUDE [preview features callout](~/reusable-content/ce-skilling/azure/includes/aks/includes/preview/preview-callout.md)]
 
-The application routing add-on now supports the Kubernetes Gateway API for ingress traffic management. If you are using [managed NGINX][app-routing-nginx] with the legacy Ingress API, you must migrate to the application routing Gateway API implementation, or another supported implementation, by November 2026.
+[!INCLUDE [ingress-nginx-retirement](./includes/ingress-nginx-retirement.md)]
+
+The application routing add-on supports the Kubernetes Gateway API for ingress traffic management. The [Kubernetes Gateway API][k8s-gateway-api] is a set of resources that provide a standardized, role-oriented, and extensible framework for traffic management, designed to be a successor and evolution of the Ingress API. The application routing Gateway API implementation thus aims to serve as a successor to the [managed NGINX][app-routing-nginx] add-on, which is based on the legacy Ingress API and will stop receiving Azure support from Azure after November 2026. If you are using managed NGINX, you must migrate to the application routing Gateway API implementation, or another supported implementation, by November 2026.
 
 The application routing add-on Kubernetes Gateway API implementation deploys an Istio control plane to manage infrastructure for Kubernetes Gateway API resources. However, it differs from the [Istio service mesh add-on for AKS][istio-addon] in the following ways:
 | Feature | Application routing Gateway API | Istio service mesh add-on |
@@ -26,9 +28,9 @@ The application routing add-on Kubernetes Gateway API implementation deploys an 
 ## Limitations
 
 * The application routing Gateway API implementation and the [Istio service mesh add-on][istio-addon] cannot be enabled simultaneously. You must disable one first and enable the other in a separate operation.
-* The application routing Gateway API implementation uses the same [resource customization allowlist][istio-gateway-resource-customization] as the Istio add-on for validating ConfigMap customizations for `Gateway` resources. Customizations not on the allowlist are disallowed and blocked via add-on managed webhooks.
+* The application routing Gateway API implementation uses the same [resource customization allowlist][istio-gateway-resource-customization] as the Istio add-on for validating ConfigMap customizations for `Gateway` resources. Customizations not on the allowlist are blocked via add-on managed webhooks.
 * [Azure DNS and TLS certificate management][app-routing-dns-tls] via the application routing add-on is currently not supported for the Kubernetes Gateway API. You can follow the steps in the [Transport Layer Security (TLS) ingress gateway](#configure-a-tls-ingress-gateway) to configure a `Gateway` to perform TLS termination.
-* Configuring HTTPS ingress access to HTTPS services - i.e Server Name Indication (SNI) Passthrough - via the `TLSRoute` resource is currently unsupported.
+* Configuring HTTPS ingress access to HTTPS services – i.e Server Name Indication (SNI) Passthrough – via the `TLSRoute` resource is currently unsupported.
 * Egress traffic management via the application routing Gateway API implementation is unsupported.
 
 ## Prerequisites
@@ -42,6 +44,7 @@ The application routing add-on Kubernetes Gateway API implementation deploys an 
     # Update the aks-preview extension to the latest version
     az extension update --name aks-preview
     ```
+* Enable the [Managed Gateway API installation][managed-gateway-api]. Use of self-managed Gateway API CRDs with the application routing add-on is unsupported.
 
 ## Enable the application routing Gateway API implementation
 
@@ -80,7 +83,7 @@ istiod-54b4ff45cf-htph8   1/1     Running   0          3m15s
 istiod-54b4ff45cf-wlvgd   1/1     Running   0          3m
 ```
 
-You should also see the `validatingwebhookconfiguration` get deployed:
+You should also see the `ValidatingWebhookConfiguration` get deployed:
 
 ```bash
 kubectl get validatingwebhookconfiguration
@@ -92,11 +95,7 @@ aks-node-validating-webhook                 1          117m
 azure-service-mesh-ccp-validating-webhook   1          4m2s
 ```
 
-## Install Managed Gateway API CRDs
-
-Follow the instructions in the [Managed Gateway API document][managed-gateway-api] to install the Kubernetes Gateway API CRDs onto your cluster. Note that use of self-managed Gateway API CRDs with the application routing add-on is unsupported.
-
-After installing the CRDs, you should also see the Istio gateway customization ConfigMap get created:
+If you have the [Managed Gateway API installation][managed-gateway-api] enabled, you should also see the Istio gateway customization ConfigMap get created:
 
 ```bash
 kubectl get cm -n aks-istio-system
@@ -190,8 +189,8 @@ kubectl get hpa httpbin-gateway-approuting-istio
 ```
 
 ```output
-NAME                               REFERENCE                          TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
-httpbin-gateway-approuting-istio   Deployment/httpbin-gateway-istio   cpu: 3%/80%   2         5         2          8m13s
+NAME                               REFERENCE                                     TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+httpbin-gateway-approuting-istio   Deployment/httpbin-gateway-approuting-istio   cpu: 3%/80%   2         5         2          8m13s
 ```
 
 ```bash
@@ -227,9 +226,9 @@ You should see an `HTTP 200` response.
 
 The application routing Gateway API implementation deploys and upgrades the Istio control plane based on the AKS cluster Kubernetes version **for both minor version and patch version upgrades**.
 
-The Istio version is the maximum supported Istio minor version for the AKS Kubernetes version. For instance, if you are on AKS version `1.29`, the maximum supported Istio minor version that is installed is `1.27`. Keep in mind that the maximum supported Istio version for a given Kubernetes version could differ between [Long-Term Support (LTS) clusters][aks-lts] and non-LTS clusters.
+The Istio version is the maximum supported Istio minor version that is compatible with your cluster's AKS version. For instance, if you are on AKS version `1.34`, the maximum supported Istio minor version that is installed (as of March 2026) is `1.28`. Keep in mind that the maximum supported Istio version for a given Kubernetes version could differ between [Long-Term Support (LTS) clusters][aks-lts] and non-LTS clusters.
 
-To find the maximum supported Istio minor version for your AKS Kubernetes version, you can check the [service mesh add-on release calendar][istio-release-calendar]. While the application routing Gateway API implementation is not revisioned, the Istio control plane minor version corresponds to the given service mesh add-on revision (ex: for service mesh add-on `asm-1-27`, the application routing Istio control plane minor version would be `1.27`). You can also see the Istio minor version by checking the patch version in the `istiod` deployment image: `kubectl get deployment istiod -n aks-istio-system -o=jsonpath="{.spec.template.spec.containers[*].image}"`.
+To find the maximum supported Istio minor version for your AKS Kubernetes version, you can check the [service mesh add-on release calendar][istio-release-calendar]. While the application routing Gateway API implementation is not revisioned, the Istio control plane minor version corresponds to the given service mesh add-on revision (ex: for service mesh add-on `asm-1-28`, the application routing Istio control plane minor version would be `1.28`). You can also see the Istio minor version by checking the patch version in the `istiod` deployment image: `kubectl get deployment istiod -n aks-istio-system -o=jsonpath="{.spec.template.spec.containers[*].image}"`.
 
 ### Upgrades
 
@@ -249,7 +248,7 @@ The application routing Gateway API implementation supports customization of the
 - CPU Utilization: 80%
 
 > [!NOTE]
-> To prevent conflicts with the `PodDisruptionBudget`, the  does not allow setting the `minReplicas` below the initial default of `2`.
+> To prevent conflicts with the `PodDisruptionBudget`, the application routing Gateway API implementation does not allow setting the `minReplicas` below the initial default of `2`.
 
 The HPA configuration can be modified through patches and direct edits. Example:
 
@@ -300,7 +299,7 @@ kubectl delete secretproviderclass httpbin-credential-spc
 [Secure ingress traffic with the application routing Gateway API implementation][app-routing-gateway-api-tls]
 
 <!-- LINKS - internal -->
-[annotation-customization]: istio-gateway-api.md#annotation-customizations
+[annotation-customizations]: istio-gateway-api.md#annotation-customizations
 [app-routing-nginx]: app-routing.md
 [app-routing-dns-tls]: app-routing-dns-ssl.md
 [aks-lts]: long-term-support.md
@@ -320,3 +319,4 @@ kubectl delete secretproviderclass httpbin-credential-spc
 <!-- LINKS - external -->
 [aks-release-notes]: https://github.com/azure/aks/releases
 [istio-revisions]: https://istio.io/latest/blog/2021/revision-tags/
+[k8s-gateway-api]: https://gateway-api.sigs.k8s.io/

@@ -182,7 +182,6 @@ Fields present in [open source MeshConfig reference documentation](https://istio
 - [Pod and sidecar race conditions][istio-sidecar-race-condition] in which the application starts before Envoy can be mitigated using the `holdApplicationUntilProxyStarts` field in the MeshConfig.
 
 [istio-meshconfig]: https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/
-[app-routing-istio-meshconfig]: app-routing-gateway-api.md#meshconfig-customizations
 [istio-sidecar-race-condition]: https://istio.io/latest/docs/ops/common-problems/injection/#pod-or-containers-start-with-network-issues-if-istio-proxy-is-not-ready
 [istio-deploy-add-on]: istio-deploy-addon.md
 [container-insights-docs]: /azure/azure-monitor/containers/container-insights-overview

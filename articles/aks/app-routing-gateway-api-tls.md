@@ -10,7 +10,7 @@ ms.author: nshankar
 # Customer intent: As a cloud engineer, I want to secure ingress traffic for the application routing Gateway API implementation using TLS termination.
 ---
 
-# Securing ingress traffic with the application routing Gateway API implementation
+# Secure ingress traffic with the application routing Gateway API implementation
 
 The application routing add-on supports syncing secrets from Azure Key Vault (AKV) for securing Gateway API ingress traffic with TLS termination. Follow the steps below to create certificates and keys to terminate TLS traffic at the Gateway.
 
@@ -114,7 +114,7 @@ openssl x509 -req -sha256 -days 365 -CA httpbin_certs/example.com.crt -CAkey htt
     EOF
     ```
 
-    Alternatively, to reference a certificate object type directly from Azure Key Vault, use the following manifest to deploy SecretProviderClass. In this example, `test-httpbin-cert-pxf` is the name of the certificate object in Azure Key Vault. Refer to [obtain certificates and keys][akv-csi-driver-obtain-cert-and-keys] section for more information. 
+    Alternatively, to reference a certificate object type directly from Azure Key Vault, use the following manifest to deploy SecretProviderClass. In this example, `test-httpbin-cert-pfx` is the name of the certificate object in Azure Key Vault. Refer to [obtain certificates and keys][akv-csi-driver-obtain-cert-and-keys] section for more information. 
     
     ```bash
     cat <<EOF | kubectl apply -f -
@@ -277,7 +277,7 @@ openssl x509 -req -sha256 -days 365 -CA httpbin_certs/example.com.crt -CAkey htt
 
 [akv-addon]: ./csi-secrets-store-driver.md
 [akv-quickstart]: /azure/key-vault/general/quick-create-cli
-[akv-csi-driver-obtain-cert-and-keys]: ./csi-secrets-store-identity-access.md?
+[akv-csi-driver-obtain-cert-and-keys]: ./csi-secrets-store-identity-access.md
 [akv-rbac-guide]: /azure/key-vault/general/rbac-guide#using-azure-rbac-secret-key-and-certificate-permissions-with-key-vault
 [app-routing-gateway-api]: ./app-routing-gateway-api.md
 [managed-gateway-installation]: ./managed-gateway-api.md

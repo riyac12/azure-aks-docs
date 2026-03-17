@@ -15,6 +15,6 @@ ms.author: schaffererin
 > - **Application routing add-on users**: Production workloads remain fully supported through November 2026. Migrate to the [application routing Gateway API implementation](/articles/aks/app-routing-gateway-api.md) for a Gateway API-based ingress traffic management experience.
 > - **OSS NGINX users** have several options:
 >   - Migrate to the [application routing add-on with NGINX](/azure/aks/app-routing) to benefit from official support through November 2026 while planning your long-term Gateway API migration.
->   - Migrate to the [application routing Gateway API implementation] for a Gateway API-based ingress traffic management experience.
+>   - Migrate to the [application routing Gateway API implementation](/articles/aks/app-routing-gateway-api.md) for a Gateway API-based ingress traffic management experience.
 >   - Migrate to [Application Gateway for Containers](/azure/application-gateway/for-containers/overview), which supports both Ingress API and Gateway API.
 > - **Service mesh users**: If you plan to adopt a service mesh, consider the [Istio-based service mesh add-on](/azure/aks/istio-about). Use Istio Ingress today, and plan to migrate to Istio Gateway API support when it becomes GA.
