@@ -675,6 +675,12 @@
                     href: container-network-security-wireguard-encryption-concepts.md
                   - name: Set up WireGuard encryption
                     href: how-to-apply-wireguard.md
+              - name: Cilium mTLS encryption
+                items:
+                  - name: Overview
+                    href: container-network-security-cilium-mutual-tls-concepts.md
+                  - name: Set up Cilium mTLS encryption
+                    href: container-network-security-cilium-mutual-tls-how-to.md              
               - name: FQDN-based filtering
                 items:
                   - name: Overview
