@@ -190,7 +190,7 @@ For this scenario, we create stages and groups to match the details used for the
     >
     > In this example, `stage-1` sets `maxConcurrency` to `"7"`, which allows up to `"7"` clusters in this stage to upgrade concurrently. Within `stage-1`, `group-1` limits concurrency to `"3"` clusters, which means up to `"3"` in this group can upgrade concurrently. `group-2` allows up to `"50%"` of its clusters to upgrade concurrently (for example, if the group contains 4 clusters, up to 2 can upgrade at the same time).
     >
-    > Values can be a fixed integer (for example, `"3"`) or a percentage (for example, `"100%"`). If omitted, the system applies default values. For details on how these values are resolved and their upper limits, see [MaxConcurrency (preview)](./concepts-update-orchestration.md#maxconcurrency-preview).
+    > Values can be a fixed integer (for example, `"3"`) or a percentage (for example, `"100%"`). If omitted, the system applies default values. For details on how these values are resolved and their upper limits, see [Maximum concurrency (preview)](./concepts-update-orchestration.md#maximum-concurrency-preview).
 
 1. Create a new update strategy using the [`az fleet updatestrategy create`][az-fleet-updatestrategy-create] command with the `--stages` flag set to the name of your JSON file.
 
