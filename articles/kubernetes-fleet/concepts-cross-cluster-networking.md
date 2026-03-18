@@ -30,7 +30,7 @@ In this article, we introduce key concepts for cross-cluster networking for Azur
 
 Cross-cluster networking for Azure Kubernetes Fleet Manager provides a Fleet-managed [Cilium multi-cluster][cilium-intro] deployment that removes the overhead of configuring and managing Cilium multi-cluster's data plane components on each member cluster.
 
-When a cluster joins a cross-cluster network, the Cilium agent (cilium-agent) and clustermesh-apiserver is deployed on the cluster's control plane by Fleet Manager. Existing clusters on the same cross-cluster network are updated with the newly added cluster's details and the Cilium agent configures eBPF-based networking to allow pods on each cluster to communicate directly without proxies or gateways.
+When a cluster joins a cross-cluster network, the Cilium agent (cilium-agent) and clustermesh-apiserver are deployed on the cluster's control plane by Fleet Manager. Existing clusters on the same cross-cluster network are updated with the newly added cluster's details and the Cilium agent configures eBPF-based networking to allow pods on each cluster to communicate directly without proxies or gateways.
 
 Each cluster retains its local CIDR IP addressing configuration for pods and service. Local Cilium components are responsible for routing allowing pods in one cluster to reach services in remote clusters as if they were local. 
 
