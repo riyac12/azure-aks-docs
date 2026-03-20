@@ -654,11 +654,10 @@ If you want to reduce the replica count to one, you can scale the deployments in
 kubectl scale deployment vpa-recommender -n kube-system --replicas=1
 kubectl scale deployment vpa-updater -n kube-system --replicas=1
 kubectl scale deployment vpa-admission-controller -n kube-system --replicas=1
-
 ```
 
 > [!NOTE]
-> Reducing the replica count removes the high availability guarantee for the VPA components. 
+> Reducing the replica count removes the high availability for the VPA components. 
 
 ## Troubleshoot the Vertical Pod Autoscaler
 
