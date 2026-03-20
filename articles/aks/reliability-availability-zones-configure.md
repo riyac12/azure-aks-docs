@@ -209,11 +209,10 @@ kubectl describe pod | grep -e "^Name:" -e "^Node:"
 
 To learn ore about reliability in AKS, see the following articles:
 
-- [Reliability in AKS](/azure/reliability/reliability-aks).
-- [System node pools](/azure/aks/use-system-pools).
-- [User node pools](/azure/aks/create-node-pools).
-- [Load balancers](/azure/aks/load-balancer-standard).
-- [Best practices for business continuity and disaster recovery][best-practices-multi-region]
+- [Reliability in AKS](/azure/reliability/reliability-aks)
+- [Manage system node pools in AKS](/azure/aks/use-system-pools)
+- [Use public standard load balancers in AKS](/azure/aks/load-balancer-standard)
+- [Best practices for business continuity and disaster recovery in AKS][best-practices-multi-region]
 
 <!-- LINKS - external -->
 [kubernetes-well-known-labels]: https://kubernetes.io/docs/reference/labels-annotations-taints/
