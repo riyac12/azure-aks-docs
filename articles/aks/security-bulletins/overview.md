@@ -25,6 +25,37 @@ These updates cover security information related to the following AKS components
 
 ---
 
+## AKS-2026-0002 gRPC-Go Authorization Bypass via Missing Leading Slash in :path - CVE-2026-33186
+
+**Published Date**: March 20, 2026
+
+### Description
+
+This bulletin provides an update regarding a recently disclosed vulnerability ([CVE-2026-33186](https://nvd.nist.gov/vuln/detail/CVE-2026-33186)) in gRPC-Go (`google.golang.org/grpc`). The gRPC-Go server accepted HTTP/2 requests where the `:path` pseudo-header omitted the mandatory leading slash (for example, `Service/Method` instead of `/Service/Method`). While the server routed these requests to the correct handler, authorization interceptors — including the official `grpc/authz` package - evaluated the raw, non-canonical path string. Consequently, deny rules defined using canonical paths (starting with `/`) failed to match, allowing requests to bypass the policy if a fallback allow rule was present.
+
+AKS is aware of the vulnerability. However, the specific exploit conditions - path-based RBAC interceptors with deny rules and an allow-by-default fallback — are **not present** in AKS managed components. AKS does not use the `grpc/authz` package, and custom interceptors in AKS services use JWT-based authentication that does not rely on path-matching deny rules. Additionally, AKS control plane gRPC services are not directly exposed to untrusted clients. As a defense-in-depth measure, AKS is upgrading all internal gRPC-Go dependencies to v1.79.3 or later.
+
+### References
+
+- [CVE-2026-33186](https://nvd.nist.gov/vuln/detail/CVE-2026-33186)
+- [GHSA-p77j-4mvh-x3m3](https://github.com/advisories/GHSA-p77j-4mvh-x3m3)
+
+### Affected Components
+
+#### [**AKS Cluster**](#tab/aks-cluster)
+
+**Affected Versions**
+
+- None
+
+**Resolutions**
+
+- AKS does not use path-based gRPC authorization interceptors susceptible to this bypass. AKS clusters are not vulnerable to this issue.
+- Although AKS is not affected, gRPC-Go dependencies across all AKS services will be upgraded to v1.79.3 or later as a preventive measure.
+- **No customer action is required.** Customers running their own gRPC-Go services on AKS should review whether they use path-based authorization interceptors (for example, `grpc/authz`) and upgrade to gRPC-Go v1.79.3 or later if affected.
+
+---
+
 ## AKS-2026-0001 TLS 1.2 Handshake Enforcement with Extended Master Secret (EMS) in AKS v1.34
 
 **Published Date**: March 5, 2026
