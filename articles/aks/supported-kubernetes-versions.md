@@ -266,7 +266,7 @@ For new **minor** versions of Kubernetes:
 
 - AKS announces new version release dates and old version deprecation in the [AKS Release notes](https://aka.ms/aks/releasenotes) at least 30 days before removal.
 - AKS uses [Azure Advisor](/azure/advisor/advisor-overview) to alert you if a new version could cause issues in your cluster because of deprecated APIs. Azure Advisor also alerts you if you're out of support.
-- AKS publishes a [service health notification](/azure/service-health/service-health-overview) available to all users with AKS and portal access and sends an email to the subscription administrators with the planned version removal dates.
+- AKS publishes a [service health notification](/azure/service-health/overview) available to all users with AKS and portal access and sends an email to the subscription administrators with the planned version removal dates.
 
   > [!NOTE]
   > To view or change your subscription administrators, see [manage Azure subscriptions](/azure/cost-management-billing/manage/add-change-subscription-administrator#assign-a-subscription-administrator).
