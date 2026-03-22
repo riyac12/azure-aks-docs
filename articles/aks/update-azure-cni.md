@@ -102,16 +102,16 @@ When you update Azure CNI Node Subnet, update either the IPAM networking mode or
 
 ## Update the data plane to Azure CNI Powered by Cilium
 
-Azure CNI Powered by Cilium is the recommended and supported long‑term networking configuration for AKS. It combines the Azure CNI control plane with the Cilium data plane to deliver scalable networking and advanced security capabilities.
+Azure CNI Powered by Cilium is the recommended and supported long‑term networking configuration for AKS. It combines Azure CNI control plane with Cilium data plane to deliver scalable networking and advanced security capabilities.
 
 # Update considerations
-- IPAM mode and data plane can’t be updated in a single operation.
+- The IPAM mode and the data plane can’t be updated in a single operation.
 If you plan to migrate to Azure CNI Overlay and Azure CNI Powered by Cilium, you must:
 1. Update the IPAM mode to Azure CNI Overlay first.
 2. Update the data plane to Azure CNI Powered by Cilium as a separate operation.
 - When enabling Cilium on a cluster that uses another network policy engine (Azure Network Policy Manager or Calico), the existing engine is uninstalled and replaced by Cilium. This may impact network policy behavior.For more information, see [Migrate from Network Policy Manager (NPM) to Cilium Network Policy] (https://learn.microsoft.com/en-us/azure/aks/migrate-from-npm-to-cilium-network-policy)
 - Updating the data plane to Azure CNI Powered by Cilium isn’t supported on clusters with Windows node pools.
-- Clusters with NAP enabled can’t be updated to Azure CNI Powered by Cilium.As a workaround, disable NAP before the update, then re‑enable it after the update completes.
+- Clusters with node auto-provisioning (NAP) enabled can’t be updated to Azure CNI Powered by Cilium.As a workaround, disable NAP before the update, then re‑enable it after the update completes.
 
 > [!WARNING]
 > The update process triggers node pools to be reimaged simultaneously. Updating each node pool separately isn't supported. Any disruptions to cluster networking are similar to a node image update or [Kubernetes version upgrade](./upgrade-cluster.md) where each node in a node pool is reimaged. Cilium begins enforcing network policies only after all nodes are reimaged.
