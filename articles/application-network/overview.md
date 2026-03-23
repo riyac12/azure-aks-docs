@@ -50,7 +50,7 @@ Application Network supports single-cluster AKS deployments running **Linux-base
 
 Application Network currently has the following limitations:
 
-- AKS [private clusters](../aks/private-clusters.md) are not currently supported.
+- AKS [private clusters](../aks/private-clusters.md) aren't currently supported.
 - Linux only. Windows node pools aren't supported.
 - Switching between upgrade modes `SelfManaged` and `FullyManaged` isn't supported.
 - Currently supported only in the following regions:
