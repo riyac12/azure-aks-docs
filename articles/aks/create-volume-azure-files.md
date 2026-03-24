@@ -762,7 +762,7 @@ For a list of supported `mountOptions`, see [NFS mount options][nfs-file-share-m
 > [!NOTE]
 > The EiT feature is now available in preview starting with AKS version 1.33. Ubuntu 20.04, Azure Linux, arm64 and Windows nodes aren't currently supported.
 >
-> The feature is supported for the following [Linux distributions](/azure/storage/files/encryption-in-transit-for-nfs-shares#overview) in all regions that [support SSD Azure file shares](/azure/storage/files/redundancy-premium-file-shares).
+> The feature is supported in all Azure regions that [support SSD Azure file shares](/azure/storage/files/redundancy-premium-file-shares).
 
 [Encryption in Transit (EiT)](/azure/storage/files/encryption-in-transit-for-nfs-shares) ensures that all read and writes to the NFS file shares within the virtual network are encrypted, providing an extra layer of security.
 
