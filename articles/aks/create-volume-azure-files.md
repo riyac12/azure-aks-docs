@@ -768,7 +768,7 @@ Azure Files now supports managed identity based authentication for SMB access. T
 - Ensure the [user-assigned Kubelet identity](use-managed-identity.md#create-a-kubelet-managed-identity) has the `Storage File Data SMB MI Admin` role on the storage account.
   - If you use your own storage account, you need to assign `Storage File Data SMB MI Admin` role to the user-assigned Kubelet identity on that storage account.
   - If the storage account is created by the CSI driver, grant `Storage File Data SMB MI Admin` role to the resource group where the storage account resides.
-  - If you just leverage the default built-in user-assigned Kubelet identity, it already has the required `Storage File Data SMB MI Admin` role on the managed node resource group.
+
 
 ### Enable managed identity for dynamic PVs with Azure Files
 
@@ -842,6 +842,161 @@ spec:
         mountWithManagedIdentity: "true"
         # optional, clientID of the managed identity, kubelet identity would be used by default if it's empty
         clientID: "xxxxx-xxxx-xxx-xxx-xxxxxxx"
+```
+
+## Use workload identity to access Azure Files storage (preview)
+
+Azure Files now supports workload identity-based authentication for SMB access. Workload identity enables pod-level, least-privilege access to Azure Files without tying application identity to the node lifecycle.
+
+> [!NOTE]
+> Workload identity support for Azure Files in AKS is available in preview starting with AKS version 1.35.0 on Linux nodes.
+
+### Prerequisites for using workload identity to access Azure Files storage
+Before using workload identity to access Azure Files from AKS, complete the following prerequisites.
+
+#### 1. Create a cluster with oidc-issuer enabled and get the AKS cluster credential
+Create a new AKS cluster with the OIDC issuer enabled, or verify that it’s already enabled. Follow the official [documentation](use-oidc-issuer.md#create-an-aks-cluster-with-the-oidc-issuer) for creating a new AKS cluster with the `--enable-oidc-issuer` parameter and retrieve the cluster credentials. And set the following environment variables:
+```bash
+export RESOURCE_GROUP=<your resource group name>
+export CLUSTER_NAME=<your cluster name>
+export REGION=<your region>
+```
+
+#### 2. Prepare the storage account
+Create a new storage account and file share, or use an existing one. Refer to the Azure Files [documentation](/azure/storage/files/storage-how-to-use-files-portal) for detailed instructions. Set the following environment variables:
+```bash
+export STORAGE_RESOURCE_GROUP=<your storage account resource group>
+export ACCOUNT=<your storage account name>
+export SHARE=<your fileshare name> # optional
+```
+
+#### 3. Create or reuse a managed identity and grant required permissions
+
+Create a user‑assigned managed identity, or reuse an existing one (for example, a [managed identity](managed-identity-overview.md) associated with the AKS node resource group). And retrieve the required identity and resource details:
+```bash
+export UAMI=<your managed identity name>
+az identity create --name $UAMI --resource-group $RESOURCE_GROUP
+
+export USER_ASSIGNED_CLIENT_ID="$(az identity show -g $RESOURCE_GROUP --name $UAMI --query 'clientId' -o tsv)"
+export IDENTITY_TENANT=$(az aks show --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --query identity.tenantId -o tsv)
+export ACCOUNT_SCOPE=$(az storage account show --name $ACCOUNT --query id -o tsv)
+```
+
+Grant the `Storage File Data SMB MI Admin` role to the managed identity. This role enables Azure Files mounting using workload identity tokens only, without relying on storage account keys.
+```bash
+az role assignment create --role "Storage File Data SMB MI Admin" --assignee $USER_ASSIGNED_CLIENT_ID --scope $ACCOUNT_SCOPE
+```
+
+#### 4. Create a Kubernetes ServiceAccount
+Create a Kubernetes ServiceAccount that your workload will use.
+```bash
+export SERVICE_ACCOUNT_NAME=<your sa name>
+export SERVICE_ACCOUNT_NAMESPACE=<your sa namespace>
+
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ${SERVICE_ACCOUNT_NAME}
+  namespace: ${SERVICE_ACCOUNT_NAMESPACE}
+EOF
+```
+
+#### 5. Create the federated identity credential
+Create the federated identity credential between the managed identity, service account issuer, and subject using the `az identity federated-credential create` command.
+```bash
+export FEDERATED_IDENTITY_NAME=<your federated identity name>
+export AKS_OIDC_ISSUER="$(az aks show --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --query "oidcIssuerProfile.issuerUrl" -o tsv)"
+
+az identity federated-credential create --name $FEDERATED_IDENTITY_NAME \
+--identity-name $UAMI \
+--resource-group $RESOURCE_GROUP \
+--issuer $AKS_OIDC_ISSUER \
+--subject system:serviceaccount:${SERVICE_ACCOUNT_NAMESPACE}:${SERVICE_ACCOUNT_NAME}
+```
+
+After completing these steps, workloads running with the specified ServiceAccount can authenticate to Azure Files using Microsoft Entra workload identity, without using storage account keys or node‑level managed identities.
+
+### Enable workload identity for dynamic PVs with Azure Files
+To use workload identity with dynamically provisioned Azure Files persistent volumes, ensure the following configuration:
+1. Grant permissions to the CSI driver control plane identity
+   - Assign the `Storage Account Contributor` role to the identity used by the CSI driver control plane for the target storage account.
+   - If the storage account is created dynamically by the CSI driver, grant `Storage Account Contributor` role to the node resource group.
+   - By default, AKS cluster control plane identity is already assigned the `Storage Account Contributor` role on the node resource group for the storage account creation.
+
+1. Create a new storage class with `mountWithWorkloadIdentityToken`: `"true"` and deploy your stateful set using this storage class.
+
+The following example manifest configures a storage class to use workload identity to access Azure Files:
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: azurefile-csi-wi
+provisioner: file.csi.azure.com
+parameters:
+  resourceGroup: EXISTING_RESOURCE_GROUP_NAME   # optional, node resource group by default if it's not provided
+  storageAccount: EXISTING_STORAGE_ACCOUNT_NAME # optional, a new account will be created if it's not provided
+  mountWithWorkloadIdentityToken: "true"
+    # optional, clientID of the managed identity, kubelet identity would be used by default if it's not provided
+  clientID: "xxxxx-xxxx-xxx-xxx-xxxxxxx"
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+allowVolumeExpansion: true
+mountOptions:
+  - dir_mode=0777  # modify this permission if you want to enhance the security
+  - file_mode=0777
+  - mfsymlinks
+  - cache=strict  # https://linux.die.net/man/8/mount.cifs
+  - nosharesock  # reduce probability of reconnect race
+  - actimeo=30  # reduce latency for metadata-heavy workload
+  - nobrl  # disable sending byte range lock requests to the server
+```
+
+### Enable workload identity for static PVs with Azure Files
+To use workload identity with statically provisioned Azure Files persistent volumes, ensure the following configuration:
+
+1. Enable the SMBOauth on the storage account by running:
+   ```bash
+   az storage account update --name <account-name> --resource-group <resource-group-name> --enable-smb-oauth true
+   ```
+1. Create a PV with `mountWithWorkloadIdentityToken`: `"true"` specified and mount the PV to your application pod.
+
+The following example manifest configures a PV to use workload identity to access Azure Files:
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-azurefile
+spec:
+  capacity:
+  storage: 100Gi
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: azurefile-csi
+  mountOptions:
+  - dir_mode=0777  # modify this permission if you want to enhance the security
+  - file_mode=0777
+  - uid=0
+  - gid=0
+  - mfsymlinks
+  - cache=strict  # https://linux.die.net/man/8/mount.cifs
+  - nosharesock  # reduce probability of reconnect race
+  - actimeo=30  # reduce latency for metadata-heavy workload
+  - nobrl  # disable sending byte range lock requests to the server
+  csi:
+  driver: file.csi.azure.com
+  # make sure volumeHandle is unique for every identical share in the cluster
+  volumeHandle: "{resource-group-name}#{account-name}#{file-share-name}"
+  volumeAttributes:
+    resourceGroup: EXISTING_RESOURCE_GROUP_NAME   # optional, node resource group by default if it's not provided
+    storageAccount: EXISTING_STORAGE_ACCOUNT_NAME # optional, a new account will be created if it's not provided
+    shareName: EXISTING_FILE_SHARE_NAME
+    mountWithWorkloadIdentityToken: "true"
+    # optional, clientID of the managed identity, kubelet identity would be used by default if it's empty
+    clientID: "xxxxx-xxxx-xxx-xxx-xxxxxxx"
 ```
 
 ## Create a static PV with Azure Files
