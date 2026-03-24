@@ -55,23 +55,10 @@ For DNS-specific checks, Cluster Health Monitor can automatically remediate a Co
 
 ## Enable Cluster Health Monitor
 
-Cluster Health Monitor has two modes of operation:
-
-- `enableContinuousControlPlaneAndAddonMonitor`
-	- Enables continuous in-cluster monitoring of control plane and add-on components.
-	- For DNS issues, AKS remediates unhealthy CoreDNS pods if they remain unhealthy for five minutes. See [How CoreDNS remediation works](#how-coredns-remediation-works) for more details.
-- `enableOnDemandMonitor`
-	- Enables on-demand health monitoring for nodes and control plane.
-	- AKS might deploy temporary diagnostic pods on customer nodes to run one-time health checks before or after node operations.
-
-Based on your requirements, you can enable either mode or both modes on your AKS cluster:
+Cluster Health Monitor enables continuous in-cluster monitoring of control plane and add-on components. For DNS issues, AKS remediates unhealthy CoreDNS pods if they remain unhealthy for five minutes. See [How CoreDNS remediation works](#how-coredns-remediation-works) for more details.
 
 ```azurecli-interactive
-az aks create -g myResourceGroup -n myCluster --enable-continuous-control-plane-monitor
-```
-
-```azurecli-interactive
-az aks create -g myResourceGroup -n myCluster --enable-ondemand-control-plane-monitor
+az aks create -g myResourceGroup -n myCluster --enable-continuous-control-plane-and-addon-monitor
 ```
 
 ## Verify Cluster Health Monitor
@@ -95,18 +82,12 @@ After you enable the feature, you can verify the deployment status and metric en
 To disable Cluster Health Monitor, you can use the following command:
 
 ```azurecli-interactive
-az aks update -g myResourceGroup -n myCluster --disable-continuous-control-plane-monitor
-```
-
-```azurecli-interactive
-az aks update -g myResourceGroup -n myCluster --disable-ondemand-control-plane-monitor
+az aks update -g myResourceGroup -n myCluster --disable-continuous-control-plane-and-addon-monitor
 ```
 
 ## Understand metrics exposed by Cluster Health Monitor
 
 Cluster Health Monitor exposes metrics on port `9800`. You can scrape these metrics with Prometheus and use them to detect add-on health issues.
-
-### Metric statuses
 
 Each check returns one of the following statuses:
 
@@ -116,6 +97,7 @@ Each check returns one of the following statuses:
 | `Unhealthy` | The check failed. The error code in the metric indicates the failure reason. |
 | `Unknown` | The result is inconclusive, for example during pod startup or when a dependency is unavailable. |
 
+Option 1:
 ### Error code reference
 
 When a check reports `Unhealthy`, Cluster Health Monitor includes an error code in the metric labels.
@@ -132,30 +114,15 @@ When a check reports `Unhealthy`, Cluster Health Monitor includes an error code 
 
 ## How CoreDNS remediation works
 
-Cluster Health Monitor includes a CoreDNS remediation capability designed to restore DNS health while minimizing risk to DNS availability. It evaluates multiple CoreDNS health signals and remediates only when the cluster can safely absorb a pod restart.
+Cluster Health Monitor includes a CoreDNS remediation capability designed to restore DNS health while minimizing risk to DNS availability. Before taking action, it evaluates per-pod DNS health check results, how long each pod has been unhealthy, the health state of other CoreDNS pods, and recent remediation history.
 
-### Signals used for remediation
+Cluster Health Monitor deletes an unhealthy CoreDNS pod only when all of the following conditions are true:
 
-- Per-pod CoreDNS DNS health check results from internal and external DNS checker runs.
-- Duration of unhealthy state for each CoreDNS pod.
-- Current health state of other CoreDNS pods in the cluster.
-- Recent remediation history to enforce a cool-down period.
+- Exactly one CoreDNS pod is continuously unhealthy for at least five minutes.
+- At least one other CoreDNS pod is healthy.
+- No Cluster Health Monitor CoreDNS remediation event fired in the last one hour.
 
-### The remediation process
-
-Cluster Health Monitor remediates a CoreDNS pod only when all of the following conditions are true:
-
-- Cluster Health Monitor detects exactly one CoreDNS pod as continuously unhealthy for at least five minutes.
-- Cluster Health Monitor detects at least one other CoreDNS pod as healthy.
-- No prior Cluster Health Monitor CoreDNS remediation event fired in the last one hour.
-
-When all conditions are met, Cluster Health Monitor deletes one unhealthy CoreDNS pod. Kubernetes then recreates the pod.
-
-This approach helps:
-
-- Restore DNS capacity by replacing only the affected pod.
-- Keep at least one healthy CoreDNS replica serving traffic during recovery.
-- Avoid repeated remediation cycles during ongoing incidents.
+When all conditions are met, Cluster Health Monitor deletes the unhealthy pod. Kubernetes then recreates it. This approach restores DNS capacity while keeping at least one healthy replica serving traffic and avoiding repeated remediation cycles during ongoing incidents.
 
 ## Next steps
 
