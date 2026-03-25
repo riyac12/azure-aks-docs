@@ -34,7 +34,7 @@ The checker evaluates the following signals:
 
 Cluster Health Monitor exposes check results as Prometheus metrics on port `9800`, so you can scrape and alert on these signals in your existing monitoring pipeline.
 
-For DNS-specific checks, Cluster Health Monitor can automatically remediate a CoreDNS pod that it detects as stuck or unhealthy by deleting that pod. Kubernetes then recreates the pod. Cluster Health Monitor applies this remediation only under specific safeguard conditions to reduce disruption. For details, see [How CoreDNS remediation works](#how-coredns-remediation-works).
+For DNS-specific checks, Cluster Health Monitor can automatically remediate a CoreDNS pod that it detects as stuck or unhealthy by deleting that pod. Kubernetes then recreates the pod. Cluster Health Monitor applies this remediation only under specific safeguard conditions to reduce disruption. For more information, see [How CoreDNS remediation works](#how-coredns-remediation-works).
 
 ## Before you begin
 
@@ -114,7 +114,7 @@ When a check reports `Unhealthy`, Cluster Health Monitor includes an error code 
 
 ## How CoreDNS remediation works
 
-Cluster Health Monitor includes a CoreDNS remediation capability designed to restore DNS health while minimizing risk to DNS availability. Before taking action, it evaluates per-pod DNS health check results, how long each pod has been unhealthy, the health state of other CoreDNS pods, and recent remediation history.
+Cluster Health Monitor includes a CoreDNS remediation capability designed to restore DNS health while minimizing risk to DNS availability. Before taking action, Cluster Health Monitor evaluates per-pod DNS health check results, how long each pod has been unhealthy, the health state of other CoreDNS pods, and recent remediation history.
 
 Cluster Health Monitor deletes an unhealthy CoreDNS pod only when all of the following conditions are true:
 
