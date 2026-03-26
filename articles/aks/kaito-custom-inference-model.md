@@ -147,7 +147,7 @@ In this example, we use the [HuggingFaceTB SmolLM2-1.7B-Instruct](https://huggin
 2. Once the workspace is ready, port forward the inference service to your local machine in a separate terminal.
 
     ```bash
-    kubectl port-forward svc/workspace-custom-llm 5000:5000
+    kubectl port-forward svc/workspace-custom-llm 5000:80
     ```
 
 3. Install the OpenAI Python client.
