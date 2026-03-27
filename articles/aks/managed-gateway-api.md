@@ -14,7 +14,7 @@ ms.date: 03/27/2026
 
 The [Kubernetes Gateway API][kubernetes-gateway-api] is a specification for traffic management on Kubernetes clusters. The specification enhances [Ingress API][kubernetes-ingress-api], which lacks a unified and provider-agnostic approach for advanced traffic routing.
 
-The Managed Gateway API Installation for Azure Kubernetes Service (AKS) installs the Custom Resource Definitions (CRDs) for the Kubernetes Gateway API. You can install these CRDs independently of any specific Gateway API implementation. With the Managed Gateway API installation, you can use Gateway API functionality in a fully supported mode on AKS.
+The Managed Gateway API Installation for Azure Kubernetes Service (AKS) installs the Custom Resource Definitions (CRDs) for the Kubernetes Gateway API. You can install these CRDs independently of any specific Gateway API implementation.
 
 ## Prerequisites
 
