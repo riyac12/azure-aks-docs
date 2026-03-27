@@ -26,7 +26,7 @@ In this article, you learn how to onboard a sample HuggingFace model for inferen
 
 ## Choose an open-source language model from HuggingFace
 
-In this example, we use the [BigScience Bloom-1B7](https://huggingface.co/bigscience/bloom-1b7) small language model. Alternatively, you can choose from thousands of text-generation models supported on [HuggingFace](https://huggingface.co/models?pipeline_tag=text-generation).
+In this example, we use the [HuggingFaceTB SmolLM2-1.7B-Instruct](https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct) small language model. Alternatively, you can choose from thousands of text-generation models supported on [HuggingFace](https://huggingface.co/models?pipeline_tag=text-generation).
 
 1. Connect to your AKS cluster using the [`az aks get-credentials`](/cli/azure/aks#az-aks-get-credentials) command.
 
@@ -42,12 +42,12 @@ In this example, we use the [BigScience Bloom-1B7](https://huggingface.co/bigsci
 
 ## Deploy your model inferencing workload using the KAITO workspace template
 
-1. Navigate to the `kaito` directory and copy the [sample deployment YAML](https://github.com/kaito-project/kaito/tree/main/examples/custom-model-integration/custom-model-deployment.yaml) manifest. Replace the default values in the following fields with your model's requirements. For this example, we specify the **bloom-1b7** HuggingFace model ID for [BigScience Bloom-1B7](https://huggingface.co/bigscience/bloom-1b7) model:
+1. Navigate to the `kaito` directory and copy the [sample deployment YAML](https://github.com/kaito-project/kaito/tree/main/examples/custom-model-integration/custom-model-deployment.yaml) manifest. Replace the default values in the following fields with your model's requirements:
 
-   - `instanceType`: The minimum VM size for this inference service deployment is `Standard_NC24ads_A100_v4`. For larger model sizes you can choose a VM in the [`Standard_NCads_A100_v4`](/azure/virtual-machines/sizes/gpu-accelerated/nca100v4-series) family with higher memory capacity.
-   - `MODEL_ID`: Replace with your model's specific HuggingFace identifier, which can be found after `https://huggingface.co/` in the model card URL.
+   - `instanceType`: The VM size for your inference service deployment. For larger model sizes you can choose a VM in the [`Standard_NCads_A100_v4`](/azure/virtual-machines/sizes/gpu-accelerated/nca100v4-series) family with higher memory capacity.
+   - `MODEL_ID`: Your model's specific HuggingFace identifier, which can be found after `https://huggingface.co/` in the model card URL.
    - `"--torch_dtype"`: Set to `"float16"` for compatibility with V100 GPUs. For A100, H100 or newer GPUs, use `"bfloat16"`.
-   - (Optional) `HF_TOKEN`: Specify the values in this section only if you are deploying a private or gated Hugging Face model for inference.
+   - For this example, we use `Standard_NC24ads_A100_v4` as the instance type and the [HuggingFaceTB SmolLM2-1.7B-Instruct](https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct) model.
 
     ```yml
     apiVersion: kaito.sh/v1beta1
@@ -55,7 +55,7 @@ In this example, we use the [BigScience Bloom-1B7](https://huggingface.co/bigsci
     metadata:
       name: workspace-custom-llm
     resource:
-      instanceType: "Standard_NC24ads_A100_v4" # Replace with the required VM SKU based on model requirements
+      instanceType: "Standard_NC24ads_A100_v4" # Required VM SKU based on model requirements
       labelSelector:
         matchLabels:
           apps: custom-llm
@@ -64,7 +64,7 @@ In this example, we use the [BigScience Bloom-1B7](https://huggingface.co/bigsci
         spec:
           containers:
             - name: custom-llm-container
-              image: mcr.microsoft.com/aks/kaito/kaito-base:0.0.8 # KAITO base image which includes hf runtime
+              image: mcr.microsoft.com/aks/kaito/kaito-base:0.2.0 # KAITO base image which includes hf runtime
               livenessProbe:
                 failureThreshold: 3
                 httpGet:
@@ -106,17 +106,9 @@ In this example, we use the [BigScience Bloom-1B7](https://huggingface.co/bigsci
                 - "--trust_remote_code"
                 - "--allow_remote_files"
                 - "--pretrained_model_name_or_path"
-                - "bloom-1b7"
+                - "HuggingFaceTB/SmolLM2-1.7B-Instruct" # The model's HuggingFace identifier
                 - "--torch_dtype"
                 - "bfloat16"
-              # env:
-              #   HF_TOKEN is required only for private or gated Hugging Face models
-              #   Uncomment and configure this block if needed
-              #   - name: HF_TOKEN
-              #     valueFrom:
-              #       secretKeyRef:
-              #         name: hf-token-secret     # Replace with your Kubernetes Secret name
-              #         key: HF_TOKEN             # Replace with the specific key holding the token
               volumeMounts:
                 - name: dshm
                   mountPath: /dev/shm
@@ -141,25 +133,39 @@ In this example, we use the [BigScience Bloom-1B7](https://huggingface.co/bigsci
     kubectl get workspace workspace-custom-llm -w
     ```
 
-    > [!NOTE]  
-    > Note that machine readiness can take *up to 10 minutes*, and workspace readiness *up to 20 minutes*.
+    > [!NOTE]
+    > Note that machine readiness can take *up to 10 minutes*, and workspace readiness *up to 20 minutes*. Proceed to the next step only once the workspace status shows `Ready`.
 
-2. Check your language model inference service and get the service IP address using the `kubectl get svc` command.
+2. Once the workspace is ready, port forward the inference service to your local machine in a separate terminal.
 
     ```bash
-    export SERVICE_IP=$(kubectl get svc workspace-custom-llm -o jsonpath='{.spec.clusterIP}')
+    kubectl port-forward svc/workspace-custom-llm 5000:80
     ```
 
-3. Test your custom model inference service with a sample input of your choice using the [OpenAI API format](https://platform.openai.com/docs/api-reference/chat):
+3. Install the OpenAI Python client.
 
     ```bash
-       kubectl run -it --rm --restart=Never curl --image=curlimages/curl -- curl -X POST http://$SERVICE_IP/v1/completions \
-      -H "Content-Type: application/json" \
-      -d '{
-        "model": "bloom-1b7",
-        "prompt": "What sport should I play in rainy weather?",
-        "max_tokens": 20
-      }'
+    pip install openai
+    ```
+
+4. Save the following script as `test_inference.py` and run it using `python test_inference.py`:
+
+    ```python
+    from openai import OpenAI
+
+    client = OpenAI(
+        base_url="http://127.0.0.1:5000/v1",
+        api_key="unused",
+    )
+
+    response = client.chat.completions.create(
+        model="workspace-custom-llm",
+        messages=[{"role": "user", "content": "What sport should I play in rainy weather?"}],
+        max_tokens=400,
+        stream=True,
+    )
+
+    print("".join(chunk.choices[0].delta.content or "" for chunk in response))
     ```
 
 ## Clean up resources
