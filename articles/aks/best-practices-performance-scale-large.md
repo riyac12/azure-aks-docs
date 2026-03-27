@@ -146,9 +146,9 @@ If kubectl is being utilized, --chunk-size arguement can be directly applied to 
 kubectl get pods -n default --chunk-size=100
 ```
 
-- **Add appropriate [exponential backoff](https://pkg.go.dev/k8s.io/apimachinery/pkg/util/wait) and [retry policies**](https://pkg.go.dev/k8s.io/client-go/util/retry) for failures or 429 responses from the API server to prevent clients from overwhelming it. Without backoff, multiple clients can repeatedly retry large LIST requests after failures, creating a cascading surge of requests.
+- **Add appropriate [exponential backoff](https://pkg.go.dev/k8s.io/apimachinery/pkg/util/wait) and [retry policies](https://pkg.go.dev/k8s.io/client-go/util/retry)** for failures or 429 responses from the API server to prevent clients from overwhelming it. Without backoff, multiple clients can repeatedly retry large LIST requests after failures, creating a cascading surge of requests.
 - If your controllers or operators use lease updates for leader election, make sure they are resilient to transient connectivity issues by tuning leaseDuration, renewDeadline, and retryPeriod that is optimal for your workloads. For Kubernetes controllers that use client-go leader election, use the following formula:
-  ```git 
+  ``` 
   lease_duration > renew_deadline > retry_period
   ```
 - **Consider the number of running instances of your client application**. There is a significant difference between a single controller listing objects and a DaemonSet with one pod on every node doing the same thing. If multiple instances of your client application periodically list large numbers of objects, the solution won't scale efficiently in large clusters.
@@ -173,7 +173,7 @@ kubectl get pods -n default --chunk-size=100
   - Delete stale Jobs and completed Pods. Use ttlSecondsAfterFinished on Jobs so finished objects are removed automatically.
   - Make sure controllers set ownerReferences.This enables Kubernetes garbage collection remove dependent objects automatically when the parent resource is deleted.
   - Limit CronJob history by setting successfulJobsHistoryLimit and failedJobsHistoryLimit to keep only a small number of completed Job records.
-  - Reduce Deployment rollout history. Old ReplicaSets are stored as API objects too. The default value is 10
+  - Reduce Deployment rollout history. Old ReplicaSets are stored as API objects too. The default value is 10.
 - Reduce helm revision history
 
 You can analyze API server traffic and client behavior through Kube Audit logs. For more information, see [Troubleshoot the Kubernetes control plane](/troubleshoot/azure/azure-kubernetes/troubleshoot-apiserver-etcd).
@@ -259,3 +259,4 @@ As you scale your AKS clusters to larger scale points, keep the following node p
 
 <!-- LINKS - External -->
 [throttling-policies]: https://azure.microsoft.com/blog/api-management-advanced-caching-and-throttling-policies/
+- For more cluster upgrade information, see [Upgrade an AKS cluster](upgrade-cluster.md).
