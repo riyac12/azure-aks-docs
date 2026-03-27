@@ -6,7 +6,7 @@ ms.service: azure-kubernetes-service
 author: nshankar
 ms.author: nshankar
 ms.reviewer: schaffererin
-ms.date: 01/26/2026
+ms.date: 03/27/2026
 # Customer intent: "As a Kubernetes administrator, I want to install the Kubernetes Gateway API Custom Resource Definitions (CRDs) to create Kubernetes Gateway API resources on my cluster."
 ---
 
@@ -14,16 +14,16 @@ ms.date: 01/26/2026
 
 The [Kubernetes Gateway API][kubernetes-gateway-api] is a specification for traffic management on Kubernetes clusters. The specification enhances [Ingress API][kubernetes-ingress-api], which lacks a unified and provider-agnostic approach for advanced traffic routing.
 
-The Managed Gateway API Installation for Azure Kubernetes Service (AKS) installs the Custom Resource Definitions (CRDs) for the Kubernetes Gateway API. With the Managed Gateway API installation, you can use Gateway API functionality in a fully supported mode on AKS.
+The Managed Gateway API Installation for Azure Kubernetes Service (AKS) installs the Custom Resource Definitions (CRDs) for the Kubernetes Gateway API. You can install these CRDs independently of any specific Gateway API implementation. With the Managed Gateway API installation, you can use Gateway API functionality in a fully supported mode on AKS.
 
 ## Prerequisites
 
-- You must use an AKS add-on or extension that implements the Gateway API, such as the [Istio add-on][istio-gateway-api]. If using the Istio add-on, you must be on minor revision `asm-1-26` or later to ensure compatibility with the Managed Gateway API installation. To deploy this add-on, see [Deploy Istio-based service mesh add-on for Azure Kubernetes Service (AKS)][istio-deploy].
+- If you already have an existing installation of the Gateway API CRDs on your cluster, you must meet the following requirements:
 
-  - If you already have an existing installation of the Gateway API CRDs on your cluster, you must meet the following requirements:
+  - Only `standard` channel CRDs can be installed on your cluster. `Experimental` channel CRDs are disallowed, and you must uninstall them before enabling the Managed Gateway API.
+  - The Gateway API bundle version must be compatible with your cluster's Kubernetes version. For more information, see the [Supported Kubernetes versions for Gateway API bundle versions](#supported-kubernetes-versions-for-gateway-api-bundle-versions) section.
 
-    - Only `standard` channel CRDs can be installed on your cluster. `Experimental` channel CRDs are disallowed, and you must uninstall them before enabling the Managed Gateway API.
-    - The Gateway API bundle version must be compatible with your cluster's Kubernetes version. For more information, see the [Supported Kubernetes versions for Gateway API bundle versions](#supported-kubernetes-versions-for-gateway-api-bundle-versions) section.
+- Optionally, you could deploy an AKS add-on or extension that implements the Gateway API, such as the [Istio add-on][istio-gateway-api]. If you use the Istio add-on, you must be on minor revision `asm-1-26` or later to ensure compatibility with the Managed Gateway API installation. To deploy the Istio add-on, see [Deploy Istio-based service mesh add-on for Azure Kubernetes Service (AKS)][istio-deploy].
 
 - The [`aks-preview` extension installed and updated to version `19.0.0b4` or later](#install-or-update-the-aks-preview-extension).
 - The [`ManagedGatewayAPIPreview` feature flag registered to your subscription](#register-the-managed-gateway-api-preview-feature-flag).
@@ -65,15 +65,15 @@ The following table outlines the supported Kubernetes versions for your AKS clus
 
 ## Create a new AKS cluster with Managed Gateway API CRDs installed
 
-- Create a new AKS cluster with Managed Gateway API CRDs installed using the [`az aks create`][az-aks-create] command with the `--enable-gateway-api` flag. You can also enable a supported add-on, such as the Istio service mesh add-on, in the same command. The following example command creates a new AKS cluster with the Managed Gateway API installation and the Istio service mesh add-on enabled:
+- Create a new AKS cluster with Managed Gateway API CRDs installed using the [`az aks create`][az-aks-create] command with the `--enable-gateway-api` flag:
 
     ```azurecli-interactive
-    az aks create --resource-group myResourceGroup --name myAKSCluster --enable-gateway-api --enable-azure-service-mesh
+    az aks create --resource-group myResourceGroup --name myAKSCluster --enable-gateway-api
     ```
 
 ## Install Managed Gateway API CRDs on an existing AKS cluster
 
-- Install Managed Gateway API CRDs on an existing cluster with a supported implementation enabled using the [`az aks update`][az-aks-update] command with the `--enable-gateway-api` flag.
+- Install Managed Gateway API CRDs on an existing cluster using the [`az aks update`][az-aks-update] command with the `--enable-gateway-api` flag.
 
     ```azurecli-interactive
     az aks update --resource-group myResourceGroup --name myAKSCluster --enable-gateway-api
