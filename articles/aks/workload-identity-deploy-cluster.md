@@ -370,3 +370,11 @@ The [Service Connector](/azure/service-connector/overview) integration helps sim
 [az-identity-federated-credential-create]: /cli/azure/identity/federated-credential#az-identity-federated-credential-create
 [workload-identity-migration]: workload-identity-migrate-from-pod-identity.md
 [azure-identity-libraries]: /azure/active-directory/develop/reference-v2-libraries
+[az-aks-show]: /cli/azure/aks#az-aks-show
+[az-account-show]: /cli/azure/account#az-account-show
+[az-identity-show]: /cli/azure/identity#az-identity-show
+[az-keyvault-create]: /cli/azure/keyvault#az-keyvault-create
+[az-keyvault-show]: /cli/azure/keyvault#az-keyvault-show
+[az-ad-signed-in-user-show]: /cli/azure/ad/signed-in-user#az-ad-signed-in-user-show
+[az-role-assignment-create]: /cli/azure/role/assignment#az-role-assignment-create
+[az-keyvault-secret-set]: /cli/azure/keyvault/secret#az-keyvault-secret-set
