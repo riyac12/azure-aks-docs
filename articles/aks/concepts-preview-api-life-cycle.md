@@ -3,7 +3,7 @@ title: AKS Preview API life cycle
 description: Learn about the AKS preview API life cycle.
 ms.custom: azure-kubernetes-service,innovation-engine
 ms.topic: concept-article
-ms.date: 06/06/2024
+ms.date: 03/31/2026
 author: matthchr
 ms.author: matthchr
 
