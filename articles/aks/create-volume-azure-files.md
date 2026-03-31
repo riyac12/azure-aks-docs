@@ -836,7 +836,13 @@ mountOptions:
 
 ### Enable managed identity for static PVs with Azure Files
 
-To enable managed identity for static volumes, you need to create a PV with `mountWithManagedIdentity`: `"true"` and mount the PV to your application pod.
+To use managed identity with statically provisioned Azure Files persistent volumes, ensure the following configuration:
+
+1. Enable the SMBOauth on the storage account by running:
+   ```bash
+   az storage account update --name <account-name> --resource-group <resource-group-name> --enable-smb-oauth true
+   ```
+1. Create a PV with `mountWithManagedIdentity`: `"true"` and mount the PV to your application pod.
 
 The following example manifest configures a PV to use managed identity to access Azure Files:
 
