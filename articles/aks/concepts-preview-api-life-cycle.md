@@ -57,7 +57,7 @@ az monitor activity-log list --offset 30d --max-events 10000 --namespace microso
 |--------------------|-------------------|-------------------|
 | 2023-10-02-preview | March 24, 2026    | July 1, 2026      |
 | 2023-11-02-preview | March 24, 2026    | July 1, 2026      |
-| 2024-01-02-preview | March 24, 2026    | July 1, 2026      | 
+| 2024-01-02-preview | March 24, 2026    | July 1, 2026      |
 | 2024-02-02-preview | March 24, 2026    | July 1, 2026      |
 | 2024-03-02-preview | March 24, 2026    | July 1, 2026      |
 | 2024-04-02-preview | March 24, 2026    | July 1, 2026      |
