@@ -1,6 +1,6 @@
 ---
-title: Migrate from Cluster Autoscaler to Node auto provisioning
-description: Learn about how to migrate your Azure Kubernetes Service (AKS) cluster from cluster autoscaler to node auto provisioning.
+title: Migrate from cluster autoscaler to node auto-provisioning
+description: Learn how to migrate your Azure Kubernetes Service (AKS) cluster from cluster autoscaler to node auto-provisioning.
 ms.topic: how-to
 ms.custom: devx-track-azurecli
 ms.date: 2/12/2026
@@ -11,19 +11,19 @@ ai-usage: ai-assisted
 # Customer intent: As a cluster operator or developer, I want to be able to migrate from Cluster Autoscaler to Node Auto Provisioning safely. I want to automatically provision and manage the optimal VM configuration for my AKS workloads, so that I can efficiently scale my cluster while minimizing resource costs and complexities.
 ---
 
-# Migrate from Cluster Autoscaler to Node auto provisioning
+# Migrate from cluster autoscaler to node auto-provisioning
 
-This document provides instructions to migrate your existing Azure Kubernetes Service (AKS) cluster from using [cluster autoscaler][cluster-autoscaler] to [node auto provisioning][nap-main-doc].
+Migrate your existing Azure Kubernetes Service (AKS) cluster from [cluster autoscaler][cluster-autoscaler] to [node auto-provisioning][nap-main-doc] using the steps in this guide.
 
-Node auto provisioning (NAP) uses pending pod resource requirements to decide the optimal virtual machine (VM) configuration to run those workloads in the most efficient and cost-effective manner.
+Node auto-provisioning (NAP) uses pending pod resource requirements to decide the optimal virtual machine (VM) configuration to run those workloads in the most efficient and cost-effective manner.
 
-Node auto provisioning is based on the open source [Karpenter](https://karpenter.sh) project, and the [AKS Karpenter provider][aks-karpenter-provider], which is also open source. Node auto provisioning automatically deploys, configures, and manages Karpenter on your AKS clusters.
+Node auto-provisioning is based on the open-source [Karpenter](https://karpenter.sh) project and the [AKS Karpenter provider][aks-karpenter-provider]. Node auto-provisioning automatically deploys, configures, and manages Karpenter on your AKS clusters.
 
-## Cluster autoscaler vs. Node auto provisioning
+## Cluster autoscaler vs. node auto-provisioning
 
-### Why migrate from cluster autoscaler to Node auto provisioning
+### Why migrate from cluster autoscaler to node auto-provisioning
 
-Node auto provisioning offers a large range of improved experiences compared to Cluster autoscaler (CAS). NAP offers more intelligent bin-packing of compute, node life cycle management, and minimizes operation overhead. 
+Node auto-provisioning improves bin-packing, automates node lifecycle management, and reduces operational overhead compared to cluster autoscaler.
 
 | **Reason to Migrate**           | **Cluster Autoscaler (CAS)**                             | **Node Auto Provisioning (NAP)**                                   |
 |---------------------------------|----------------------------------------------------------|--------------------------------------------------------------------|
@@ -34,15 +34,15 @@ Node auto provisioning offers a large range of improved experiences compared to 
 | **Future Feature Development**  | Cluster autoscaler is maintained, with minimal feature enhancements | Continuous active development and new feature enhancements|
 
 
-### Cluster Autoscaler profile settings vs. Node Auto Provisioning configuration settings
+### Cluster autoscaler profile settings vs. node auto-provisioning configuration settings
 
-The following table maps Cluster Autoscaler profile settings to Node Auto Provisioning configuration settings for the NodePool CRD. This table also shows the cluster autoscaler Azure CLI command and its NAP CRD equivalent.
+The following table maps cluster autoscaler profile settings to node auto-provisioning configuration settings for the NodePool CRD. This table also shows the cluster autoscaler Azure CLI command and its NAP CRD equivalent.
 
 | **Cluster Autoscaler Profile Setting** | **Description** | **CAS CLI Example** |**NAP Disruption Setting** | **Description** | **NAP YAML Example** |
 |----------------------------------------|-----------------|---------------------|---------------------------|------------------|-------------------------|
 | `balance-similar-node-groups` | Balances node pools across zones | **CLI:** <br> `az aks update --resource-group <rg> --name <cluster> --cluster-autoscaler-profile balance-similar-node-groups=true` <br>  | N/A | NAP uses Karpenter’s provisioning logic; no direct equivalent | **YAML:** <br> `# Not applicable in NAP` |
 | `expander` | Strategy for selecting node pool for scale-up |  **CLI:** <br>`az aks update --resource-group <rg> --name <cluster> --cluster-autoscaler-profile expander=least-waste`<br>  | N/A | NAP dynamically provisions optimal VM sizes; no expander concept | **YAML:** <br> `# Not applicable in NAP` |
-| `scale-down-unneeded-time` | Time a node must be unneeded before eligible for scale down (default: 10m) | `consolidateAfter` | **CLI:** <br>`az aks update --resource-group <rg> --name <cluster> --cluster-autoscaler-profile scale-down-unneeded-time=10m`<br> |Time NAP waits after discovering consolidation opportunity before disrupting node | YAML:** <br> `disruption:`<br> `  consolidateAfter: 10m` |
+| `scale-down-unneeded-time` | Time a node must be unneeded before eligible for scale down (default: 10m) | **CLI:** <br>`az aks update --resource-group <rg> --name <cluster> --cluster-autoscaler-profile scale-down-unneeded-time=10m`<br> | `consolidateAfter` | Time NAP waits after discovering consolidation opportunity before disrupting node | **YAML:** <br> `disruption:`<br> `  consolidateAfter: 10m` |
 | `scale-down-unready-time` | Time an unready node must be unneeded before eligible for scale down (default: 20m) |**CLI:** <br> `az aks update --resource-group <rg> --name <cluster> --cluster-autoscaler-profile scale-down-unready-time=20m` <br> | `terminationGracePeriod` | Grace period for pod termination before node removal | **YAML:** <br> `disruption:`<br> `terminationGracePeriod: 20m` |
 | `scale-down-utilization-threshold` | Node utilization threshold for scale down (default: 0.5) | **CLI:** <br> `az aks update --resource-group <rg> --name <cluster> --cluster-autoscaler-profile scale-down-utilization-threshold=0.5 `<br> |`consolidationPolicy` | Policy for consolidation: `WhenEmpty` or `WhenEmptyOrUnderUtilized` |  **YAML:** <br> `disruption:`<br> `consolidationPolicy: WhenEmptyOrUnderUtilized` |
 | `scan-interval` | How often autoscaler reevaluates cluster (default: 10s) | **CLI:** <br>`az aks update --resource-group <rg> --name <cluster> --cluster-autoscaler-profile scan-interval=10s `<br> | N/A | NAP doesn't use periodic scans; decisions are event-driven |  **YAML:** <br> `# Not applicable in NAP` |
@@ -73,7 +73,7 @@ See [NAP limitations and unsupported features](./node-auto-provisioning.md#limit
 
 ### Pre-migration checklist
 
-- Confirm cluster eligibility for node auto provisioning. For more on NAP requirements, visit our [Overview of NAP documentation](./node-auto-provisioning.md).
+- Confirm cluster eligibility for node auto-provisioning. For more on NAP requirements, see [Overview of NAP documentation](./node-auto-provisioning.md).
 - Right-size workloads for consolidation.
   - Set proper [resource requests/limits](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container), replicas, and [pod disruption budgets (PDBs)](https://kubernetes.io/docs/tasks/run-application/configure-pdb/#specifying-a-poddisruptionbudget) to allow for a gradual migration. This migration method requires properly set PDBs to ensure well-managed disruption of your workloads. 
 - Verify your system node pool is active.
@@ -101,7 +101,7 @@ az aks nodepool update \
   --disable-cluster-autoscaler
 ```
 
-You can also set the node count of your node pool to a pinned count, as you begin the migration to node auto provisioning. The following az aks nodepool scale command pins the node count of node pool `mypool1` in cluster `myAKSCluster` to five (5). 
+You can also set the node count of your node pool to a pinned count as you begin the migration to node auto-provisioning. The following `az aks nodepool scale` command pins the node count of node pool `mypool1` in cluster `myAKSCluster` to five (5).
 
 ```azurecli-interactive
 # (Optional) Pin to a safe desired count before the switch
@@ -112,11 +112,11 @@ az aks nodepool scale \
   --node-count 5
 ```
 
-## Enable node autoprovisioning
+## Enable node auto-provisioning
 
-### Enable node autoprovisioning on an existing cluster
+### Enable node auto-provisioning on an existing cluster
 
-Enable node autoprovisioning on an existing cluster using the `az aks update` command and set `--node-provisioning-mode` to `Auto`.
+Enable node auto-provisioning on an existing cluster using the `az aks update` command and set `--node-provisioning-mode` to `Auto`.
 
 ```azurecli-interactive
 az aks update --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP_NAME --node-provisioning-mode Auto
@@ -126,7 +126,7 @@ az aks update --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP_NAME --node-
 
 #### [Basic](#tab/basic)
 
-After enabling node autoprovisioning on your cluster, you can create a basic NodePool and AKSNodeClass to start provisioning nodes. These custom resource definition (CRD) files are used by NAP to define the types of nodes provisioned for your workloads. Here's a simple example:
+After enabling node auto-provisioning on your cluster, create a basic NodePool and AKSNodeClass to start provisioning nodes. These custom resource definition (CRD) files are used by NAP to define the types of nodes provisioned for your workloads.
 
 This example creates a basic NodePool that:
 - Supports on-demand instances
@@ -185,7 +185,7 @@ kubectl apply -f nodepool-default.yaml
 
 #### [Advanced](#tab/advanced)
 
-After enabling node autoprovisioning on your cluster, you can create a NodePool and AKSNodeClass to start provisioning nodes. These custom resource definition (CRD) files are used by NAP to define the types of nodes provisioned for your workloads. Here's a simple example:
+After enabling node auto-provisioning on your cluster, create a NodePool and AKSNodeClass to start provisioning nodes. These custom resource definition (CRD) files are used by NAP to define the types of nodes provisioned for your workloads.
 
 This example creates an advanced NodePool that:
 - Supports both spot and on-demand instances
@@ -206,6 +206,10 @@ spec:
       labels:
         intent: apps
     spec:
+      nodeClassRef:
+        apiVersion: karpenter.azure.com/v1beta1
+        kind: AKSNodeClass
+        name: comprehensive-example
       requirements:
         - key: karpenter.sh/capacity-type
           operator: In
@@ -219,11 +223,6 @@ spec:
   disruption:
     consolidationPolicy: WhenEmptyOrUnderutilized
     consolidateAfter: 0s
- spec:
-      nodeClassRef:
-        apiVersion: karpenter.azure.com/v1beta1
-        kind: AKSNodeClass
-        name: comprehensive-example
 ---
 apiVersion: karpenter.azure.com/v1beta1
 kind: AKSNodeClass
@@ -311,10 +310,10 @@ kubectl apply -f nodepool-default.yaml
 
 ---
 
-## Migrate workloads from fixed pools to node auto provisioning managed nodes
+## Migrate workloads from fixed pools to node auto-provisioning managed nodes
 
 > [!NOTE]
-> Consider setting node affinity that match your specifications in NAP's NodePool and AKSNodeClass CRDs to ensure that your workloads can tolerate the types of nodes you defined NAP to provision and that they are scheduled to the NAP-managed nodes when desired. Visit the [AKS node selector and affinity documentaiton](./operator-best-practices-advanced-scheduler.md#control-pod-scheduling-using-node-selectors-and-affinity) on best practices. 
+> Consider setting node affinity that matches your specifications in NAP's NodePool and AKSNodeClass CRDs to ensure that your workloads can tolerate the types of nodes you defined NAP to provision and that they're scheduled to the NAP-managed nodes when desired. See the [AKS node selector and affinity documentation](./operator-best-practices-advanced-scheduler.md#control-pod-scheduling-using-node-selectors-and-affinity) for best practices.
 
 Now scale down user pools gradually (keep the system pool):
 
@@ -327,7 +326,7 @@ az aks nodepool scale \
   --node-count 0
 ```
 
-As pods evict, node auto provisioning provisions replacement nodes per your NodePool and AKSNodeClass rules. If a user pool must go to zero, remember you can only do that on user pools (not system pool), and with cluster autoscaler disabled - which is already disabled in an earlier step.
+As pods evict, node auto-provisioning provisions replacement nodes per your NodePool and AKSNodeClass rules. If a user pool must go to zero, remember you can only do that on user pools (not system pool), and with cluster autoscaler disabled, which is already disabled in an earlier step.
 
 > [!NOTE]
 > We recommend a gradual scale down in waves, and watch replicas/PDBs to avoid dips in availability.
@@ -338,9 +337,9 @@ To confirm that the scale down is working and workloads are being scheduled to N
 - Karpenter events detailing NAP decisions
 - Nodeclaims are created in response to pending pod pressure 
 
-## Verify node auto provisioning 
+## Verify node auto-provisioning
 
-### Check CRDs and understanding NAP fields
+### Check CRDs and understand NAP fields
 Check CRDs to confirm they are in use:
 
 ```bash
@@ -357,7 +356,7 @@ kubectl explain nodepool.spec
 
 ### Confirm new NAP-managed nodes are being created
 
-To ensure that NAP is properly provisioning new nodes in response to pending pod pressure, verify that the new nodes are being created. Node auto provisioning produces cluster events that can be used to monitor deployment and scheduling decisions being made. You can view events through the Kubernetes events stream.
+To ensure that NAP is properly provisioning new nodes in response to pending pod pressure, verify that the new nodes are being created. Node auto-provisioning produces cluster events that you can use to monitor deployment and scheduling decisions. View events through the Kubernetes events stream.
 
 ```bash
 kubectl get events -A --field-selector source=karpenter -w
@@ -383,9 +382,9 @@ kubectl -n kube-system scale deploy/cluster-autoscaler --replicas=0
 kubectl -n kube-system delete deploy/cluster-autoscaler
 ```
 
-## Fine tune node auto provisioning post-migration
+## Fine-tune node auto-provisioning post-migration
 
-After you have completed your migration, there are more capabilities to fine tune your cluster.
+After you complete your migration, you can fine-tune your cluster with these capabilities.
 
 - **Manage disruption behavior** - Tune disruption `consolidationPolicy` and `consolidateAfter` windows to balance cost vs. virtual machine churn. See the [NAP Disruption documentation][nap-disruption-doc].
 - **Multiple NodePools** - Split by workload class (for example, Spot vs On-Demand, GPU vs CPU) and use requirements, weights, and taints to control placement. See the [NAP NodePool documentation][nap-nodepool-doc].
@@ -418,11 +417,11 @@ For more information on node auto-provisioning in AKS, see the following article
 [node-os-upgrade-channel]: /azure/aks/auto-upgrade-node-os-image#available-node-os-upgrade-channels
 [azure-support]: /azure/azure-portal/supportability/how-to-create-azure-support-request
 [vm-overview]: /azure/virtual-machines/sizes/overview
-[nap-main-doc]: /azure/aks/node-autoprovision
-[nap-disruption-doc]: /azure/aks/node-autoprovision-disruption
-[nap-nodepool-doc]: /azure/aks/node-autoprovision-node-pools
-[nap-networking-doc]: /azure/aks/node-autoprovision-networking
-[nap-observability]: /azure/aks/node-autoprovision#node-auto-provisioning-metrics
+[nap-main-doc]: /azure/aks/node-auto-provisioning
+[nap-disruption-doc]: /azure/aks/node-auto-provisioning-disruption
+[nap-nodepool-doc]: /azure/aks/node-auto-provisioning-node-pools
+[nap-networking-doc]: /azure/aks/node-auto-provisioning-networking
+[nap-observability]: /azure/aks/node-auto-provisioning#node-auto-provisioning-metrics
 [cluster-autoscaler]: /azure/aks/cluster-autoscaler
 [use-nap-doc]: /azure/aks/use-node-auto-provisioning
 
