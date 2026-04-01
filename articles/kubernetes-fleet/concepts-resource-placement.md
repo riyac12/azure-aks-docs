@@ -33,15 +33,19 @@ In this article we explore how you can use Fleet Manager's intelligent resource 
 
 Fleet Manager's resource placement capability is based on the [KubeFleet CNCF project](https://kubefleet.dev/).
 
-## High-level resource placement flow
+## High-level resource placement process
 
-Follow this process to use Fleet Manager's intelligent resource placement:
+Use this process to use Fleet Manager's intelligent resource placement:
 
-1. **Stage resources on hub cluster**: use CI/CD or GitOps tools to place your resource manifests onto the Fleet Manager hub cluster.
-1. **Create a resource placement**: author a placement that selects the resource and defines a policy that is used to select which member clusters will receive the resource.
+1. **Stage resources on hub cluster**: use CI/CD, GitOps or similar tools to place the manifests for resource for distributions onto the Fleet Manager hub cluster.
+1. **Create a resource placement**: create a placement manifest that selects the resource and defines a policy that is used to select which member clusters will receive the resource.
+1. **Apply resource placement on hub cluster**: take the placement manifest and apply to the hub cluster to initiate distribution of the resource.
 1. **Fleet Manager schedules resources**: Fleet Manager observes the resource placement and the selected scope and performs the distribution of the resources.
+1. **Observe distribution via resource placement**: query the resource placement on the hub cluster to observe the status of the resource as it rolls out.
 
 To update resources, you can either update the resource (i.e. a namespace) directly on the hub cluster, or modify the resource placement so it picks different member clusters.
+
+Fleet Manager has an Azure portal experience for resource placement that provides a more visual representation of the rollout.
 
 :::zone target="docs" pivot="cluster-scope"
 
@@ -215,7 +219,7 @@ Use `PickFixed` to select the clusters by name, supplying names in the `clusterN
 
 :::zone target="docs" pivot="cluster-scope"
 
-This example shows how to deploy the `test-deployment` namespace onto member clusters `cluster1` and `cluster2`.
+This example shows how to distribute the `test-deployment` namespace onto member clusters `cluster1` and `cluster2`.
 
 ```yaml
 apiVersion: placement.kubernetes-fleet.io/v1
@@ -239,7 +243,7 @@ spec:
 
 :::zone target="docs" pivot="namespace-scope"
 
-This sample ResourcePlacement (RP) places the ConfigMap labeled `app=my-application` in the namespace `my-app` into the matching namespace on the two named clusters.
+This sample ResourcePlacement (RP) places the ConfigMap labeled `app: my-application` in the namespace `my-app` into the matching namespace on the two named clusters.
 
 ```yaml
 apiVersion: placement.kubernetes-fleet.io/v1
@@ -266,7 +270,7 @@ spec:
 
 #### PickAll placement type
 
-Use a `PickAll` placement type to deploy resources across all member clusters, or to a all clusters matching a criteria you specify.
+Use `PickAll` to distribute resources across all member clusters, or all clusters matching a criteria you specify.
 
 When creating this type of placement the following cluster affinity types can be specified:
 
@@ -274,7 +278,7 @@ When creating this type of placement the following cluster affinity types can be
 
 :::zone target="docs" pivot="cluster-scope"
 
-The following example shows how to deploy a `prod-deployment` namespace and all of its objects across all clusters labeled with `environment: production`:
+This example shows how to distribute the `prod-deployment` namespace and all its child resources  across all member clusters labeled with `environment: production`.
 
 ```yaml
 apiVersion: placement.kubernetes-fleet.io/v1
@@ -300,16 +304,48 @@ spec:
 
 :::zone-end
 
+:::zone target="docs" pivot="namespace-scope"
+
+This sample ResourcePlacement (RP) places the ConfigMap labeled `app: my-application` in the namespace `my-app` into the matching namespace on all clusters labeled with `environment: production`:
+
+```yaml
+apiVersion: placement.kubernetes-fleet.io/v1
+kind: ResourcePlacement
+metadata:
+  name: app-configs-rp-pickall
+  namespace: my-app
+spec:
+  resourceSelectors:
+    - group: ""
+      kind: ConfigMap
+      version: v1
+      labelSelector:
+        matchLabels:
+          app: my-application
+  policy:
+    placementType: PickAll
+    affinity:
+        clusterAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+                clusterSelectorTerms:
+                - labelSelector:
+                    matchLabels:
+                        environment: production
+```
+
+:::zone-end
+
+
 #### PickN placement type
 
-The `PickN` placement type is the most flexible option and allows for placement of resources into a configurable number of clusters based on both affinities and topology spread constraints.
+Use `PickN` to distribute resources onto a configurable number of clusters based on both affinities and topology spread constraints.
 
 When creating this type of placement the following cluster affinity types can be specified:
 
 * **requiredDuringSchedulingIgnoredDuringExecution**: as this policy is required during scheduling, it **filters** the clusters based on the specified criteria.
 * **preferredDuringSchedulingIgnoredDuringExecution**: as this policy is preferred, but not required during scheduling, it **ranks** clusters based on specified criteria.
 
-You can set both required and preferred affinities. Required affinities prevent placement to clusters that don't match, and preferred affinities provide ordering of valid clusters.
+You can set both required and preferred affinities. Required affinities prevent placement to clusters that don't match. Preferred affinities provide ordering of matched clusters.
 
 ##### `PickN` with affinities
 
