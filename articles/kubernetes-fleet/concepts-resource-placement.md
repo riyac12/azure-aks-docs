@@ -266,11 +266,13 @@ spec:
 
 #### PickAll placement type
 
-You can use a `PickAll` placement type to deploy a workload across all member clusters in the fleet or to a subset of clusters that match criteria you set.
+Use a `PickAll` placement type to deploy resources across all member clusters, or to a all clusters matching a criteria you specify.
 
 When creating this type of placement the following cluster affinity types can be specified:
 
 - **requiredDuringSchedulingIgnoredDuringExecution**: as this policy is required during scheduling, it **filters** the clusters based on the specified criteria.
+
+:::zone target="docs" pivot="cluster-scope"
 
 The following example shows how to deploy a `prod-deployment` namespace and all of its objects across all clusters labeled with `environment: production`:
 
@@ -280,6 +282,11 @@ kind: ClusterResourcePlacement
 metadata:
   name: crp-pickall
 spec:
+  resourceSelectors:
+    - group: ""
+      kind: Namespace
+      name: prod-deployment
+      version: v1
   policy:
     placementType: PickAll
     affinity:
@@ -289,12 +296,9 @@ spec:
                 - labelSelector:
                     matchLabels:
                         environment: production
-  resourceSelectors:
-    - group: ""
-      kind: Namespace
-      name: prod-deployment
-      version: v1
 ```
+
+:::zone-end
 
 #### PickN placement type
 
