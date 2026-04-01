@@ -54,8 +54,8 @@
           href: concepts-placement-drift.md 
         - name: Controlling eviction and disruption
           href: concepts-eviction-disruption.md
-      - name: Automated deployments overview
-        href: concepts-automated-deployments.md 
+        - name: Automated deployments overview
+          href: concepts-automated-deployments.md 
     - name: Multi-cluster networking 
       items:
         - name: Multi-cluster networking overview
