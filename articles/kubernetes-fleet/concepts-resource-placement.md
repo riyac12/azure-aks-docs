@@ -235,6 +235,8 @@ spec:
     - cluster2
 ```
 
+:::zone-end
+
 :::zone target="docs" pivot="namespace-scope"
 
 This sample ResourcePlacement (RP) places the ConfigMap labeled `app=my-application` in the namespace `my-app` into the matching namespace on the two named clusters.
@@ -261,7 +263,6 @@ spec:
 ```
 
 :::zone-end
-
 
 #### PickAll placement type
 
