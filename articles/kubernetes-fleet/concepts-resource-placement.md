@@ -48,46 +48,6 @@ With CRP, you can:
 
 For scenarios requiring fine-grained control over individual namespace-scoped resources within a namespace, see [namespace-scoped resource placement](./concepts-namespace-scoped-resource-propagation.md?pivots=namespace-scope#overview-of-namespace-scoped-resource-placement), which enables distribution of specific resources rather than entire namespaces.
 
-## Resource selection
-
-Select cluster-scoped resources and namespaces using one or more `resourceSelectors` in a CRP. Each resource selector can specify:
-
-* **Group, Version, Kind (GVK)**: The type of Kubernetes resource to select.
-* **Name**: The name of a specific resource.
-* **Label selectors**: Labels to match multiple resources.
-
-### Namespace selection scope (preview)
-
-When using CRP to select an entire namespace, you can use the `selectionScope` field to control whether to include all the child resources in the namespace.
-
-* **Default behavior** (when `selectionScope` is not specified): Propagates the namespace and all resources within it.
-* **`NamespaceOnly`**: Propagates only the namespace object itself, without any resources within the namespace. This is useful when you want to establish namespaces across clusters while managing individual resources separately using [`ResourcePlacement`](./concepts-namespace-scoped-resource-propagation.md).
-
-> [!IMPORTANT]
-> The `selectionScope` field is available in the `placement.kubernetes-fleet.io/v1beta1` API version as a preview feature. It is not available in the `placement.kubernetes-fleet.io/v1` API.
-
-The following example shows how to propagate only the namespace without its contents using the v1beta1 API:
-
-```yaml
-apiVersion: placement.kubernetes-fleet.io/v1beta1
-kind: ClusterResourcePlacement
-metadata:
-  name: namespace-only-crp
-spec:
-  resourceSelectors:
-    - group: ""
-      kind: Namespace
-      name: my-app
-      version: v1
-      selectionScope: NamespaceOnly
-  policy:
-    placementType: PickAll
-```
-
-This approach enables a workflow where platform administrators use `ClusterResourcePlacement` to establish namespaces, while application teams use [`ResourcePlacement`](./concepts-namespace-scoped-resource-propagation.md) for fine-grained control over specific resources within those namespaces.
-
-:::zone-end
-
 :::zone target="docs" pivot="namespace-scope"
 
 ## Overview of namespace-scoped resource placement
@@ -134,18 +94,45 @@ In multi-cluster environments, workloads often consist of both cluster-scoped an
 
 ## Resource selection
 
-Select cluster-scoped resources and namespaces using one or more `resourceSelectors` in a CRP. Each resource selector can specify:
+Select resources using one or more `resourceSelectors` in a placement. Each resource selector can specify:
 
 * **Group, Version, Kind (GVK)**: The type of Kubernetes resource to select.
 * **Name**: The name of a specific resource.
 * **Label selectors**: Labels to match multiple resources.
 
+:::zone target="docs" pivot="cluster-scope"
 
+### Namespace selection scope (preview)
 
+When using CRP to select an entire namespace, you can use the `selectionScope` field to control whether to include all the child resources in the namespace.
 
+* **Default behavior** (when `selectionScope` is not specified): Propagates the namespace and all resources within it.
+* **`NamespaceOnly`**: Propagates only the namespace object itself, without any resources within the namespace. This is useful when you want to establish namespaces across clusters while managing individual resources separately using [`ResourcePlacement`](./concepts-namespace-scoped-resource-propagation.md).
 
+> [!IMPORTANT]
+> The `selectionScope` field is available in the `placement.kubernetes-fleet.io/v1beta1` API version as a preview feature. It is not available in the `placement.kubernetes-fleet.io/v1` API.
 
+The following example shows how to propagate only the namespace without its contents using the v1beta1 API:
 
+```yaml
+apiVersion: placement.kubernetes-fleet.io/v1beta1
+kind: ClusterResourcePlacement
+metadata:
+  name: namespace-only-crp
+spec:
+  resourceSelectors:
+    - group: ""
+      kind: Namespace
+      name: my-app
+      version: v1
+      selectionScope: NamespaceOnly
+  policy:
+    placementType: PickAll
+```
+
+This approach enables a workflow where platform administrators use `ClusterResourcePlacement` to establish namespaces, while application teams use [`ResourcePlacement`](./concepts-namespace-scoped-resource-propagation.md) for fine-grained control over specific resources within those namespaces.
+
+:::zone-end
 
 ## Placement policy types
 
