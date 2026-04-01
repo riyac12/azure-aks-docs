@@ -335,7 +335,6 @@ spec:
 
 :::zone-end
 
-
 #### PickN placement type
 
 Use `PickN` to distribute resources onto a configurable number of clusters based on both affinities and topology spread constraints.
@@ -351,7 +350,9 @@ You can set both required and preferred affinities. Required affinities prevent 
 
 Using affinities with a `PickN` placement policy functions similarly to using affinities with pod scheduling. 
 
-The following example shows how to deploy a workload onto three clusters. Only clusters with the `critical-allowed: "true"` label are valid placement targets, and preference is given to clusters with the label `critical-level: 1`:
+:::zone target="docs" pivot="cluster-scope"
+
+The following example shows how to deploy a resource onto three clusters. Only clusters with the `critical-allowed: "true"` label are valid placement targets, and preference is given to clusters with the label `critical-level: 1`:
 
 ```yaml
 apiVersion: placement.kubernetes-fleet.io/v1
@@ -360,7 +361,10 @@ metadata:
   name: crp-pickn-01
 spec:
   resourceSelectors:
-    - ...
+    - group: ""
+      kind: Namespace
+      name: prod-deployment
+      version: v1
   policy:
     placementType: PickN
     numberOfClusters: 3
@@ -379,11 +383,15 @@ spec:
                       critical-allowed: "true"
 ```
 
+:::zone-end
+
 ##### `PickN` with topology spread constraints
 
 You can use topology spread constraints to force the division of the cluster placements across topology boundaries to satisfy availability requirements. For example, use these constraints to split placements across regions or update rings. You can also configure topology spread constraints to prevent scheduling if the constraint can't be met (`whenUnsatisfiable: DoNotSchedule`) or schedule as best possible (`whenUnsatisfiable: ScheduleAnyway`).
 
-The following example shows how to spread a given set of resources out across multiple regions and attempts to schedule across member clusters with different update days.
+:::zone target="docs" pivot="cluster-scope"
+
+The following example shows how to spread resources out across multiple Azure regions and attempts to schedule across member clusters with different update days using a custom label `updateDay`.
 
 ```yaml
 apiVersion: placement.kubernetes-fleet.io/v1
@@ -392,17 +400,22 @@ metadata:
   name: crp-pickn-02
 spec:
   resourceSelectors:
-    - ...
+    - group: ""
+      kind: Namespace
+      name: prod-deployment
+      version: v1
   policy:
     placementType: PickN
     topologySpreadConstraints:
     - maxSkew: 2
-      topologyKey: region
+      topologyKey: fleet.azure.com/location
       whenUnsatisfiable: DoNotSchedule
     - maxSkew: 2
       topologyKey: updateDay
       whenUnsatisfiable: ScheduleAnyway
 ```
+
+:::zone-end
 
 For more information, see the [KubeFleet documentation on topology spread constraints][crp-topo].
 
@@ -412,56 +425,51 @@ The table summarizes the available scheduling policy fields for each placement t
 
 |       Policy Field          | PickFixed | PickAll | PickN |
 |-----------------------------|-----------|---------|-------|
-| `placementType`             | ✅ | ✅ | ✅ |
-| `affinity`                  | ❌ | ✅ | ✅ |
-| `clusterNames`              | ✅ | ❌ | ❌ |
-| `numberOfClusters`          | ❌ | ❌ | ✅ |
-| `topologySpreadConstraints` | ❌ | ❌ | ✅ | 
+| `placementType`             |    ✅     |   ✅    |  ✅   |
+| `affinity`                  |    ❌     |   ✅    |  ✅   |
+| `clusterNames`              |    ✅     |   ❌    |  ❌   |
+| `numberOfClusters`          |    ❌     |   ❌    |  ✅   |
+| `topologySpreadConstraints` |    ❌     |   ❌    |  ✅   | 
 
-## How to select clusters in policies
+## How to select clusters using labels and properties
 
-Fleet Manager intelligent resource placement provides a set of powerful criteria you can use when determining how clusters are selection. In this section we'll take a look at how you can use these options to build policies to suit your needs.    
+Fleet Manager intelligent resource placement provides a set of powerful criteria you can use when determining how clusters are selected when using the `PickN` and `PickAll` placement types. In this section we'll take a look at how you can use these options to build policies to suit your needs.    
 
-#### Available labels and properties to select clusters  
+### Member cluster labels
 
-When using the `PickN` and `PickAll` placement types, you can use the following labels and properties as part of your policies.
+The `MemberCluster` resource on the hub cluster and be labeled like any Kubernetes resource. Additionally, Fleet Manager automatically adds the following read only labels to all member clusters. 
 
-##### Labels
+| Label                           | Description                                                                    |
+|---------------------------------|--------------------------------------------------------------------------------|
+| fleet.azure.com/location        | Azure Region of the cluster (`westus`)                                         |
+| fleet.azure.com/resource-group  | Azure Resource Group of the cluster (`rg_prodapps_01`)                         |
+| fleet.azure.com/subscription-id | Azure Subscription Identifier the cluster resides in. Formatted as UUID/GUID.  |
+| fleet.azure.com/cluster-name    | The name of the cluster associated with the Fleet member cluster resource.     |
+| fleet.azure.com/member-name     | The name of the Fleet Manager member cluster name corresponding to the cluster |
 
-In addition to any custom labels you apply to `MemberCluster` resource on the hub cluster, you can use the any of the following labels which are automatically added to all member clusters. 
-
-| Label | Description |
-|----------|-------------|
-| fleet.azure.com/location | Azure Region of the cluster (westus) |
-| fleet.azure.com/resource-group | Azure Resource Group of the cluster (rg_prodapps_01) |
-| fleet.azure.com/subscription-id | Azure Subscription Identifier the cluster resides in. Formatted as UUID/GUID. |
-| fleet.azure.com/cluster-name | The name of the cluster |
-| fleet.azure.com/member-name | The name of the Fleet Manager member cluster name corresponding to the cluster |
-
-You can also use any custom labels you apply to your clusters.
-
-##### Properties
+### Cluster properties
 
 The following properties are available for use as part of placement policies. 
 
-CPU and memory properties are represented as [Kubernetes resource units](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes).
+| Property Name                                        | Description                                   |
+|------------------------------------------------------|-----------------------------------------------|
+| kubernetes-fleet.io/node-count                       | Available nodes on the member cluster.        |
+| resources.kubernetes-fleet.io/total-cpu              | Total CPU resource units of cluster.          | 
+| resources.kubernetes-fleet.io/allocatable-cpu        | Allocatable CPU resource units of cluster.    |
+| resources.kubernetes-fleet.io/available-cpu          | Available CPU resource units of cluster.      |
+| resources.kubernetes-fleet.io/total-memory           | Total memory resource unit of cluster.        |
+| resources.kubernetes-fleet.io/allocatable-memory     | Allocatable memory resource units of cluster. |
+| resources.kubernetes-fleet.io/available-memory       | Available memory resource units of cluster.   |
+| kubernetes.azure.com/per-cpu-core-cost               | The per-CPU core cost of the cluster.         |
+| kubernetes.azure.com/per-gb-memory-cost              | The per-GiB memory cost of the cluster.       | 
+| kubernetes.azure.com/vm-sizes/{vm-sku-name}/capacity | The available number of nodes of type [vm-sku-name][vm-sku-name] in the cluster*.<br/>Example VM SKU name: NV16as_v4.<br/>* In preview via v1beta1 API.                        |
 
-Cost properties are decimals, which represent a per-hour cost in US Dollars for the Azure compute utilized for nodes within the cluster. Cost is based on Azure public pricing.
 
-| Property Name | Description |
-|----------|-------------|
-| kubernetes-fleet.io/node-count | Available nodes on the member cluster. |
-| resources.kubernetes-fleet.io/total-cpu | Total CPU resource units of cluster. | 
-| resources.kubernetes-fleet.io/allocatable-cpu | Allocatable CPU resource units of cluster. |
-| resources.kubernetes-fleet.io/available-cpu | Available CPU resource units of cluster. |
-| resources.kubernetes-fleet.io/total-memory | Total memory resource unit of cluster. |
-| resources.kubernetes-fleet.io/allocatable-memory | Allocatable memory resource units of cluster. |
-| resources.kubernetes-fleet.io/available-memory | Available memory resource units of cluster. |
-| kubernetes.azure.com/per-cpu-core-cost | The per-CPU core cost of the cluster.  |
-| kubernetes.azure.com/per-gb-memory-cost | The per-GiB memory cost of the cluster. | 
-| kubernetes.azure.com/vm-sizes/{vm-sku-name}/capacity | The available number of nodes of type [vm-sku-name][vm-sku-name] in the cluster*.<br/>Example VM SKU name: NV16as_v4.<br/>* In preview via v1beta1 API. |
+* CPU and memory properties are represented as [Kubernetes resource units](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-units-in-kubernetes).
 
-#### Specifying selection matching criteria
+* Cost properties are decimals, which represent a per-hour cost in US Dollars for the Azure compute utilized for nodes within the cluster. Cost is based on Azure public pricing.
+
+### Selection matching criteria
 
 When using cluster properties in a policy criteria, you specify:
 
@@ -480,10 +488,12 @@ When using cluster properties in a policy criteria, you specify:
 
 * **Values:** A list of values, which are possible values of the property.
 
-Fleet evaluates each cluster based on the properties specified in the condition. Failure to satisfy conditions listed under `requiredDuringSchedulingIgnoredDuringExecution` excludes this member cluster from resource placement.
+Fleet evaluates each cluster based on the properties specified in the condition. Failure to satisfy conditions listed under `requiredDuringSchedulingIgnoredDuringExecution` excludes a member cluster from resource placement.
 
 > [!NOTE]
 > If a member cluster doesn't possess the property expressed in the condition, it will automatically fail the condition.
+
+:::zone target="docs" pivot="cluster-scope"
 
 Here's an example placement policy to select only clusters with five or more nodes.
 
@@ -508,6 +518,8 @@ spec:
                       values:
                       - "5"
 ```
+
+:::zone-end
 
 #### How property ranking works
 
