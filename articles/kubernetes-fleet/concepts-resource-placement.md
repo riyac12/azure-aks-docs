@@ -205,7 +205,7 @@ This approach enables a workflow where platform administrators use ClusterResour
 
 ### Placement policy
 
-The following placement policy types are available for controlling the how clusters are selected by Fleet Manager resource placement:
+The following placement policy types are available for controlling how the clusters are selected by Fleet Manager resource placement:
 
 * **[PickFixed](#pickfixed-placement-type)** places resources onto member clusters using their cluster name.
 * **[PickAll](#pickall-placement-type)** places resources onto all member clusters, or all member clusters that meet a criteria. This policy is useful for placing infrastructure workloads, like cluster monitoring or reporting applications.
