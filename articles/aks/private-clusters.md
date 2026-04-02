@@ -203,6 +203,8 @@ az aks create \
     }
     ```
 
+1. Follow the steps to [initialize Terraform](#initialize-terraform), [format and validate the Terraform configuration](#format-and-validate-the-terraform-configuration), [create a Terraform execution plan](#create-a-terraform-execution-plan), [apply the Terraform configuration](#apply-the-terraform-configuration), and [connect to the AKS cluster](#configure-kubectl-to-connect-to-a-private-aks-cluster).
+
 :::zone-end
 
 ## Create a private AKS cluster with advanced networking
@@ -233,6 +235,8 @@ az aks create \
 ```
 
 :::zone-end
+
+:::zone pivot="terraform"
 
 1. Create a file named `main.tf` and add the following code to define the Terraform version and specify the Azure provider:
 
@@ -346,6 +350,8 @@ az aks create \
     }
     ```
 
+1. Follow the steps to [initialize Terraform](#initialize-terraform), [format and validate the Terraform configuration](#format-and-validate-the-terraform-configuration), [create a Terraform execution plan](#create-a-terraform-execution-plan), [apply the Terraform configuration](#apply-the-terraform-configuration), and [connect to the AKS cluster](#configure-kubectl-to-connect-to-a-private-aks-cluster).
+
 :::zone-end
 
 ## Use custom domains with private AKS clusters
@@ -419,6 +425,8 @@ az aks create \
       }
     }
     ```
+
+1. Follow the steps to [initialize Terraform](#initialize-terraform), [format and validate the Terraform configuration](#format-and-validate-the-terraform-configuration), [create a Terraform execution plan](#create-a-terraform-execution-plan), [apply the Terraform configuration](#apply-the-terraform-configuration), and [connect to the AKS cluster](#configure-kubectl-to-connect-to-a-private-aks-cluster).
 
 :::zone-end
 
@@ -563,6 +571,8 @@ az aks create \
     }
     ```
 
+1. Follow the steps to [initialize Terraform](#initialize-terraform), [format and validate the Terraform configuration](#format-and-validate-the-terraform-configuration), [create a Terraform execution plan](#create-a-terraform-execution-plan), [apply the Terraform configuration](#apply-the-terraform-configuration), and [connect to the AKS cluster](#configure-kubectl-to-connect-to-a-private-aks-cluster).
+
 ## Create a private AKS cluster without a private DNS zone
 
 1. Follow steps 1-3 in [Create a private AKS cluster with advanced networking using Terraform](#create-a-private-aks-cluster-with-advanced-networking) to set up the Terraform configuration and create the necessary resources.
@@ -593,6 +603,8 @@ az aks create \
      }
     }
     ```
+
+1. Follow the steps to [initialize Terraform](#initialize-terraform), [format and validate the Terraform configuration](#format-and-validate-the-terraform-configuration), [create a Terraform execution plan](#create-a-terraform-execution-plan), [apply the Terraform configuration](#apply-the-terraform-configuration), and [connect to the AKS cluster](#configure-kubectl-to-connect-to-a-private-aks-cluster).
 
 :::zone-end
 
@@ -686,6 +698,8 @@ For custom DNS configurations, you must use a user-assigned managed identity wit
     }
     ```
 
+1. Follow the steps to [initialize Terraform](#initialize-terraform), [format and validate the Terraform configuration](#format-and-validate-the-terraform-configuration), [create a Terraform execution plan](#create-a-terraform-execution-plan), [apply the Terraform configuration](#apply-the-terraform-configuration), and [connect to the AKS cluster](#configure-kubectl-to-connect-to-a-private-aks-cluster).
+
 :::zone-end
 
 ## Create a private AKS cluster with a custom private DNS zone and custom subdomain
@@ -747,6 +761,8 @@ az aks create \
      }
     }
     ```
+
+1. Follow the steps to [initialize Terraform](#initialize-terraform), [format and validate the Terraform configuration](#format-and-validate-the-terraform-configuration), [create a Terraform execution plan](#create-a-terraform-execution-plan), [apply the Terraform configuration](#apply-the-terraform-configuration), and [connect to the AKS cluster](#configure-kubectl-to-connect-to-a-private-aks-cluster).
 
 :::zone-end
 
@@ -810,7 +826,7 @@ az aks update \
 
 ## Initialize Terraform
 
-Initialize Terraform in the directory containing your main.tf file using the `terraform init` command. This command downloads the Azure provider required to manage Azure resources with Terraform.
+Initialize Terraform in the directory containing your `main.tf` file using the `terraform init` command. This command downloads the Azure provider required to manage Azure resources with Terraform.
 
 ```console
 terraform init
