@@ -47,7 +47,7 @@ Fleet Manager has an Azure portal experience for resource placement that provide
 
 :::zone target="docs" pivot="cluster-scope"
 
-## Overview of cluster-scoped resource placement
+## Introducing cluster-scoped resource placement
 
 Use a ClusterResourcePlacement (CRP) to distribute a given set of cluster-scoped resource or entire namespaces from the Fleet Manager hub cluster onto one or more member cluster.
 
@@ -69,7 +69,7 @@ For scenarios requiring fine-grained control over individual namespace-scoped re
 
 :::zone target="docs" pivot="namespace-scope"
 
-## Overview of namespace-scoped resource placement
+## Introducing namespace-scoped resource placement
 
 Use a ResourcePlacement (RP) to distribute a given set of resources within a specific namespace from the Fleet Manager hub cluster onto one or more member cluster. ResourcePlacement provides fine-grained control over how specific resources within a namespace are distributed across member clusters.
 
