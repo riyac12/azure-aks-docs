@@ -388,7 +388,7 @@ az aks create \
 
 :::zone pivot="terraform"
 
-1. Follow steps 1-3 in [Create a private AKS cluster with advanced networking using Terraform](#create-a-private-aks-cluster-with-advanced-networking) to set up the Terraform configuration and create the necessary resources.
+1. Follow steps 1-3 in [Create a private AKS cluster with advanced networking](#create-a-private-aks-cluster-with-advanced-networking) to set up the Terraform configuration and create the necessary resources.
 1. Add the following code to `main.tf` to create a private AKS cluster with a user-assigned identity and the public FQDN disabled:
 
     ```Terraform
