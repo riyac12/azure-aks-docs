@@ -122,7 +122,7 @@ az fleet autoupgradeprofile create \
 
 #### Update member clusters using an existing update strategy with latest node image
 
-Update member clusters using an existing update strategy, ensuring the the latest available node image version is used for each Azure region using the [`az fleet autoupgradeprofile create`][az-fleet-autoupgradeprofile-create] command with the `--node-image-selection` parameter set to `Latest`. Member clusters can run multiple node image versions.
+Update member clusters using an existing update strategy, ensuring the latest available node image version is used for each Azure region using the [`az fleet autoupgradeprofile create`][az-fleet-autoupgradeprofile-create] command with the `--node-image-selection` parameter set to `Latest`. Member clusters can run multiple node image versions.
 
 ```azurecli-interactive
 az fleet autoupgradeprofile create \
