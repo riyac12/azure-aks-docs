@@ -54,6 +54,8 @@ This article covers how to use auto-upgrade profiles to automatically create and
   az extension update --name fleet
   ```
 
+:::zone-end
+
 > [!NOTE]
 > Clusters with agent pools created from [node pool snapshots](/azure/aks/node-pool-snapshot) are affected as follows based on the selected auto-upgrade channel and node image option:
 >
