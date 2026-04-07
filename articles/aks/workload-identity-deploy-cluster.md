@@ -337,6 +337,8 @@ resource "azurerm_user_assigned_identity" "this" {
 
 :::zone-end
 
+:::zone pivot="terraform"
+
 1. Add the following code to `main.tf` to configure Kubernetes access to allow creation of Kubernetes resources:
 
     ```Terraform
