@@ -25,7 +25,7 @@ These roles grant access to Azure Resource Manager (ARM) Fleet resources and sub
 | [Azure Kubernetes Fleet Manager Contributor][azure-rbac-fleet-manager-contributor-role] | Grants read and write access to Azure resources provided by Azure Kubernetes Fleet Manager, including fleets, fleet members, fleet update strategies, fleet update runs, and more. | Use this role to grant Contributor permissions that apply solely to Fleet Manager ARM resources and subresources. For example, this role can be given to an Azure administrator tasked with defining and maintaining Fleet Manager resources. |
 | [Azure Kubernetes Fleet Manager Hub Cluster User Role][azure-rbac-fleet-manager-hub-cluster-user-role] | Grants read-only access to the Fleet Manager hub cluster and the `kubeconfig` file to connect to the Fleet Manager hub cluster. | Use to view Fleet Manager resources and download a Fleet Manager hub cluster’s `kubeconfig` to inspect configurations and workloads without making any changes. |
 
-## Kubernetes Data plane
+## Kubernetes data plane
 
 You can assign Fleet Manager data plane roles at the Fleet scope or at an individual Managed Fleet Namespace scope.
 
