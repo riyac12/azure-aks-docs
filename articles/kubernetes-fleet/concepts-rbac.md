@@ -23,7 +23,7 @@ These roles grant access to Azure Resource Manager (ARM) Fleet resources and sub
 |Role name|Description|Usage|
 |---------|-----------|-----|
 | [Azure Kubernetes Fleet Manager Contributor][azure-rbac-fleet-manager-contributor-role] | Grants read and write access to Azure resources provided by Azure Kubernetes Fleet Manager, including fleets, fleet members, fleet update strategies, fleet update runs, and more. | Use this role to grant Contributor permissions that apply solely to Fleet Manager ARM resources and subresources. For example, this role can be given to an Azure administrator tasked with defining and maintaining Fleet Manager resources. |
-| [Azure Kubernetes Fleet Manager Hub Cluster User Role][azure-rbac-fleet-manager-hub-cluster-user-role] | Grants read-only access to the Fleet Manager hub cluster as well as the Kubernetes config file to connect to the fleet managed hub cluster. | Use to view Fleet Manager resources and download a Fleet Manager hub cluster’s `kubeconfig` to inspect configurations and workloads without making any changes. |
+| [Azure Kubernetes Fleet Manager Hub Cluster User Role][azure-rbac-fleet-manager-hub-cluster-user-role] | Grants read-only access to the Fleet Manager hub cluster and the `kubeconfig` file to connect to the Fleet Manager hub cluster. | Use to view Fleet Manager resources and download a Fleet Manager hub cluster’s `kubeconfig` to inspect configurations and workloads without making any changes. |
 
 ## Kubernetes Data plane
 
@@ -36,7 +36,7 @@ When a cluster joins a fleet as a member cluster, users gain any permissions on 
 If a role is applied at a managed namespace scope and that managed namespace is deleted, the role assignment is also deleted. If the managed namespace is recreated, the role assignment isn't automatically recreated and must be manually recreated.
 
 > [!NOTE]
-> These RBAC roles are not currently supported for Arc-enabled member clusters in a Fleet. Additionally, access control for specific Kubernetes Custom Resources (CRs) isn't supported for these Azure RBAC roles.
+> These RBAC roles aren't currently supported for Arc-enabled member clusters in a Fleet. Additionally, access control for specific Kubernetes Custom Resources (CRs) isn't supported for these Azure RBAC roles.
 
 ### Fleet Manager hub cluster
 
@@ -51,21 +51,21 @@ The following roles are used to interact with Kubernetes resources on a Fleet Ma
 
 ### Fleet Manager member clusters
 
-The following roles are used to interact with Kubernetes resources on a Fleet Manager member clusters when using [Managed Fleet Namespaces](./concepts-fleet-managed-namespace.md).
+The following roles are used to interact with Kubernetes resources on Fleet Manager member clusters when using [Managed Fleet Namespaces](./concepts-fleet-managed-namespace.md).
 
 |Role name|Description|Usage|
 |---------|-----------|-----|
 | [Azure Kubernetes Fleet Manager RBAC Cluster Admin for Member Clusters][azure-rbac-fleet-manager-rbac-cluster-admin-member-cluster] | Full read/write access to all Kubernetes resources on the member clusters in a fleet.| Use this role to grant full access to all resources on member clusters. For example, a platform administrator who needs to access multiple namespaces on member clusters. |
 | [Azure Kubernetes Fleet Manager RBAC Admin for Member Clusters][azure-rbac-fleet-manager-rbac-admin-member-cluster] | Read and write access to Kubernetes resources in the namespace on the member cluster. | Use this role to grant the capability to administer selected Kubernetes objects (including roles and role bindings) at namespace scope on fleet members. For example, for use by a project team responsible for objects in a given namespace. |
-| [Azure Kubernetes Fleet Manager RBAC Writer for Member Clusters][azure-rbac-fleet-manager-rbac-writer-member-cluster] | Read and write access to most Kubernetes resources in the namespace. Cannot view or modify roles or role bindings. Can read Secrets (therefore can assume any `ServiceAccount` in the namespace). | Use this role to grant the capability to write selected Kubernetes objects in a namespace on a fleet member. For example, for use by a project team responsible for objects in a given namespace. |
-| [Azure Kubernetes Fleet Manager RBAC Reader for Member Cluster][azure-rbac-fleet-manager-rbac-reader-member-cluster] | Read-only access to most objects in the namespace on the member cluster. Cannot view roles or role bindings. Cannot view Secrets (prevents privilege escalation via `ServiceAccount` credentials). | Use this role to grant the capability to read selected nonsensitive Kubernetes objects at the namespace scope on fleet members. |
+| [Azure Kubernetes Fleet Manager RBAC Writer for Member Clusters][azure-rbac-fleet-manager-rbac-writer-member-cluster] | Read and write access to most Kubernetes resources in the namespace. Can't view or modify roles or role bindings. Can read Secrets (therefore can assume any `ServiceAccount` in the namespace). | Use this role to grant the capability to write selected Kubernetes objects in a namespace on a fleet member. For example, for use by a project team responsible for objects in a given namespace. |
+| [Azure Kubernetes Fleet Manager RBAC Reader for Member Cluster][azure-rbac-fleet-manager-rbac-reader-member-cluster] | Read-only access to most objects in the namespace on the member cluster. Can't view roles or role bindings. Can't view Secrets (prevents privilege escalation via `ServiceAccount` credentials). | Use this role to grant the capability to read selected nonsensitive Kubernetes objects at the namespace scope on fleet members. |
 
 ## Private hub cluster
 
 When using Fleet Manager with a private hub cluster you must add the following Azure RBAC configuration so that Fleet Manager can control the configuration of, and apply updates to the managed hub cluster.
 
 > [!NOTE]
-> This role assignment is not needed when creating a Fleet Manager with a private hub cluster using the `az fleet create` Azure CLI command because the Azure CLI automatically creates the role assignment.
+> This role assignment isn't needed when creating a Fleet Manager with a private hub cluster using the `az fleet create` Azure CLI command because the Azure CLI automatically creates the role assignment.
 
 Private hub clusters require a [Network Contributor][azure-rbac-network-contributor] role assignment on the virtual network subnet that is configured as the agent (node) subnet. The role assignment uses Fleet Manager's Azure service principal whose object ID varies across different Entra tenants.
 
