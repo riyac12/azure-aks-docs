@@ -64,34 +64,34 @@ The following roles are used to interact with Kubernetes resources on Fleet Mana
 
 When using Fleet Manager with a private hub cluster you must add the following Azure RBAC configuration so that Fleet Manager can control the configuration of, and apply updates to the managed hub cluster.
 
+Private hub clusters require a [Network Contributor][azure-rbac-network-contributor] role assignment on the virtual network subnet that is configured as the agent (node) subnet. The role assignment uses Fleet Manager's Azure service principal whose object ID varies across different Entra tenants.
+
 > [!NOTE]
 > This role assignment isn't needed when creating a Fleet Manager with a private hub cluster using the `az fleet create` Azure CLI command because the Azure CLI automatically creates the role assignment.
 
-Private hub clusters require a [Network Contributor][azure-rbac-network-contributor] role assignment on the virtual network subnet that is configured as the agent (node) subnet. The role assignment uses Fleet Manager's Azure service principal whose object ID varies across different Entra tenants.
-
 1. Obtain the Azure resource identifier of the Azure Virtual Network subnet that your Fleet Manager hub cluster is attached to. Use appropriate values for the placeholders.
 
-```azurecli-interactive
-SUBNET_ID=$(az network vnet subnet show --subscription <subscription-id> --resource-group <virtual-network-rg> --vnet-name <virtual-network> -n <subnet-name> -o tsv --query id)
-```
+    ```azurecli-interactive
+    SUBNET_ID=$(az network vnet subnet show --subscription <subscription-id> --resource-group <virtual-network-rg> --vnet-name <virtual-network> -n <subnet-name> -o tsv --query id)
+    ```
 
 2. Retrieve Fleet Manager's Azure service principal object ID for your environment.
 
-```azurecli-interactive
-FLEET_RP_ID=$(az ad sp list --display-name "Azure Kubernetes Service - Fleet RP" --query "[].{id:id}" --output tsv)
-```
+    ```azurecli-interactive
+    FLEET_RP_ID=$(az ad sp list --display-name "Azure Kubernetes Service - Fleet RP" --query "[].{id:id}" --output tsv)
+    ```
 
 3. Assign the Fleet resource provider the Network Contributor role, setting the scope to the resource identifier of the subnet.
 
-```azurecli-interactive
-az role assignment create --assignee "${FLEET_RP_ID}" --role "Network Contributor" --scope "${SUBNET_ID}"
-```
+    ```azurecli-interactive
+    az role assignment create --assignee "${FLEET_RP_ID}" --role "Network Contributor" --scope "${SUBNET_ID}"
+    ```
 
-You can confirm the assignment using the following command.
+4. Confirm the assignment using the following command.
 
-```azurecli-interactive
-az role assignment list --assignee "${FLEET_RP_ID}" --scope "${SUBNET_ID}"
-```
+    ```azurecli-interactive
+    az role assignment list --assignee "${FLEET_RP_ID}" --scope "${SUBNET_ID}"
+    ```
 
 ## Example role assignments
 
