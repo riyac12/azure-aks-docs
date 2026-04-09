@@ -6,7 +6,7 @@ ms.subservice: aks-networking
 ms.custom:
 ms.author: davidsmatlak
 ms.topic: how-to
-ms.date: 04/15/2026
+ms.date: 04/09/2026
 
 # Customer intent: As a cluster operator, I want to configure custom egress paths for my AKS cluster using user-defined routing, so that I can ensure my egress traffic meets specific security and routing requirements without relying on default load balancer setups.
 ---
@@ -31,7 +31,7 @@ This article covers the various types of outbound connectivity that are availabl
 
 ## Outbound types in AKS
 
-You can configure an AKS cluster using the following outbound types: load balancer, NAT gateway, or user-defined routing. The outbound type impacts only the egress traffic of your cluster. For more information, see [setting up ingress controllers](ingress-basic.md).
+You can configure an AKS cluster using the following outbound types: load balancer, NAT gateway, or user-defined routes. The outbound type impacts only the egress traffic of your cluster. For more information, see [setting up ingress controllers](ingress-basic.md).
 
 ### <a id="outbound-type-of-loadbalancer"></a>Outbound type: Load Balancer
 
@@ -49,13 +49,13 @@ For more information, see [using a standard load balancer in AKS](load-balancer-
 
 ### <a id="outbound type-of-managedNatGateway-or-userAssignedNatGateway"></a>Outbound type: NAT Gateway
 
-If `managedNatGatewayV2`, `managedNatGateway` or `userAssignedNatGateway` are selected for `outboundType`, AKS relies on [Azure Networking NAT gateway](/azure/virtual-network/nat-gateway/manage-nat-gateway) for cluster egress.
+If `managedNATGatewayV2` (Preview), `managedNATGateway` or `userAssignedNATGateway` are selected for `outboundType`, AKS relies on [Azure Networking NAT gateway](/azure/virtual-network/nat-gateway/manage-nat-gateway) for cluster egress.
 
-- Select `managedNatGatewayV2` or `managedNatGateway` when using managed virtual networks. AKS provisions a StandardV2 NAT gateway with `managedNatGatewayV2` and a Standard NAT gateway with `managedNatGateway` and attaches it to the cluster subnet. StandardV2 NAT gateway is recommended because it's zone-redundant by default and offers higher bandwidth and throughput than Standard. For information see, [StandardV2 NAT Gateway](/azure/nat-gateway/nat-overview#standardv2-nat-gateway).
-- Select `userAssignedNatGateway` when using bring-your-own virtual networking. This option requires that you have a NAT gateway created before cluster creation. Both Standard and StandardV2 NAT Gateways are supported.
+- Select `managedNatGatewayV2` or `managedNatGateway` when using managed virtual networks. AKS provisions a StandardV2 NAT gateway with `managedNATGatewayV2` and a Standard NAT gateway with `managedNATGateway` and attaches it to the cluster subnet. StandardV2 NAT gateway is recommended because it's zone-redundant by default and offers higher bandwidth and throughput. For information see, [StandardV2 NAT Gateway](/azure/nat-gateway/nat-overview#standardv2-nat-gateway).
+- Select `userAssignedNATGateway` when using bring-your-own virtual networking. This option requires that you have a NAT gateway created before cluster creation. Both Standard and StandardV2 NAT Gateways are supported.
 
 > [!IMPORTANT]
-> The `managedNatGatewayV2` outbound type is currently in PREVIEW.
+> The `managedNATGatewayV2` outbound type is currently in PREVIEW.
 > See the [Supplemental Terms of Use for Microsoft Azure Previews](https://azure.microsoft.com/support/legal/preview-supplemental-terms/) for legal terms that apply to Azure features that are in beta, preview, or otherwise not yet released into general availability.
 > 
 For more information, see [using NAT gateway with AKS](nat-gateway.md).
@@ -71,7 +71,7 @@ You must deploy the AKS cluster into an existing virtual network with a subnet t
 
 For more information, see [configuring cluster egress via user-defined routing](egress-udr.md).
 
-### Outbound type of `none`
+### Outbound type: none
 
 > [!IMPORTANT]
 > The `none` outbound type is only available with [Network Isolated Cluster](concepts-network-isolated.md) and requires careful planning to ensure the cluster operates as expected without unintended dependencies on external services. For fully isolated clusters, see [isolated cluster considerations](concepts-network-isolated.md).
@@ -80,7 +80,7 @@ If `none` is set, AKS won't automatically configure egress paths. This option is
 
 The `none` outbound type is supported in both bring-your-own (BYO) virtual network scenarios and managed VNet scenarios. However, you must ensure that the AKS cluster is deployed into a network environment where explicit egress paths are defined if needed. For BYO VNet scenarios, the cluster must be deployed into an existing virtual network with a subnet that is already configured. Since AKS doesn't create a standard load balancer or any egress infrastructure, you must establish explicit egress paths if needed. Egress options can include routing traffic to a firewall, proxy, gateway, or other custom network configurations.
 
-### Outbound type of `block` (Preview)
+### Outbound type: block (Preview)
 
 > [!IMPORTANT]
 > The `block` outbound type is only available with [Network Isolated Cluster](concepts-network-isolated.md) and requires careful planning to ensure no unintended network dependencies exist. For fully isolated clusters, see [isolated cluster considerations](concepts-network-isolated.md).
@@ -102,13 +102,13 @@ The following tables show the supported migration paths between outbound types f
 
 ### Supported Migration Paths for Managed VNet
 
-Each row shows whether the outbound type can be migrated to the types listed across the top. "Supported" means migration is possible, while "Not Supported" or "N/A" means it isn't. If using a managed virtual network, migration is only supported between managed outbound types - `loadBalancer`, `managedNATGatewayV2`, and `managedNATGateway`. If using a custom/BYO virtual network, migration is only supported between user-defined outbound types - `loadBalancer`, `userAssignedNATGateway` and `userDefinedRouting`.
+Each row shows whether the outbound type can be migrated to the types listed across the top. "Supported" means migration is possible, while "Not Supported" or "N/A" means it isn't. When using a managed virtual network, migration is only supported between managed outbound types - `loadBalancer`, `managedNATGatewayV2`, and `managedNATGateway`. When using a custom/BYO virtual network, migration is only supported between user-defined outbound types - `loadBalancer`, `userAssignedNATGateway` and `userDefinedRouting`.
 
 
 | From\|To                 | `loadBalancer` | `managedNATGatewayV2` | `managedNATGateway` | `none`        | `block`       |
 |--------------------------|----------------|---------------------|-----------------------|---------------|---------------|
 | `loadBalancer`           | N/A            | Supported           | Supported             | Supported     | Supported     |
-| `managedNATGatewayV2`    | Supported      | N/A                 | Not Supported         | Not Supported | Not Supported |
+| `managedNATGatewayV2`    | Not Supported  | N/A                 | Not Supported         | Not Supported | Not Supported |
 | `managedNATGateway`      | Not Supported  | Supported           | N/A                   | Supported     | Supported     |
 | `none`                   | Supported      | Supported           | Supported             | N/A           | Supported     |
 | `block`                  | Supported      | Supported           | Supported             | Supported     | N/A           |
@@ -123,11 +123,11 @@ Each row shows whether the outbound type can be migrated to the types listed acr
 | `none`                   | Supported      | Supported                | Supported            | N/A           | Not Supported |
 
 > [!WARNING]
-> Migrating the outbound type to user managed types (`userAssignedNATGateway` or `userDefinedRouting`) will change the outbound public IP addresses of the cluster.
-> if [Authorized IP ranges](./api-server-authorized-ip-ranges.md) is enabled, ensure new outbound IP range is appended to authorized IP range.
+> Migrating the outbound type to `managedNATGatewayV2` `userAssignedNATGateway` or `userDefinedRouting` will change the outbound public IP addresses of the cluster.
+> If [Authorized IP ranges](./api-server-authorized-ip-ranges.md) is enabled, ensure new outbound IP range is appended to authorized IP range.
 
 > [!WARNING]
-> Changing the outbound type on a cluster is disruptive to network connectivity and results in a change of the cluster's egress IP address. If any firewall rules are configured to restrict traffic from the cluster, you need to update them to match the new egress IP address.
+> Changing the outbound type on a cluster is disruptive to network connectivity and results in a change of the cluster's egress IP address. It involves downtime and impact to existing connections. If any firewall rules are configured to restrict traffic from the cluster, you need to update them to match the new egress IP address.
 
 ### Update cluster to use a new outbound type
 
@@ -163,7 +163,7 @@ az aks update --resource-group <resourceGroup> --name <clusterName> --outbound-t
 
 ### Update cluster from loadbalancer to userAssignedNATGateway in BYO vnet scenario
 
-- Associate nat gateway with subnet where the workload is associated with. Refer to [Create a managed or user-assigned NAT gateway](nat-gateway.md)
+- Associate NAT gateway with subnet where the workload is associated with. Refer to [Create a managed or user-assigned NAT gateway](nat-gateway.md)
 
 ```azurecli-interactive
 az aks update --resource-group <resourceGroup> --name <clusterName> --outbound-type userAssignedNATGateway
