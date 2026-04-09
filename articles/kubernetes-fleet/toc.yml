@@ -28,7 +28,7 @@
           href: concepts-lifecycle.md
         - name: Member cluster types
           href: concepts-member-cluster-types.md
-        - name: Use Azure RBAC to control access
+        - name: Azure RBAC and Fleet Manager
           href: concepts-rbac.md
         - name: Preview API lifecycle
           href: concepts-preview-api-lifecycle.md
@@ -36,30 +36,24 @@
           href: concepts-fleet-kubernetes-version-support.md
         - name: Fleet and Arc integration
           href: concepts-fleet-arc-integration.md
-    - name: Multi-cluster Kubernetes and node images upgrades
+    - name: Safe multi-cluster upgrades
       href: concepts-update-orchestration.md
-    - name: Multi-cluster multi-tenancy with Managed Fleet Namespaces
+    - name: Multi-tenancy with Managed Fleet Namespaces
       href: concepts-fleet-managed-namespace.md    
-    - name: Multi-cluster workload management
+    - name: Multi-cluster resource management
       items:
-        - name: Multi-cluster workload management overview
-          href: concepts-multi-cluster-workload-management.md
-        - name: Managing workloads using cluster resource placement
-          items:
-          - name: Introduction to ClusterResourcePlacement
-            href: concepts-resource-propagation.md
-          - name: Introduction to ResourcePlacement
-            href: concepts-namespace-scoped-resource-propagation.md
-          - name: Defining a placement rollout strategy
-            href: concepts-rollout-strategy.md       
-          - name: Controlling eviction and disruption
-            href: concepts-eviction-disruption.md
-          - name: Placement strategy and resource snapshots
-            href: concepts-placement-snapshots.md
-          - name: Taking over existing workloads
-            href: concepts-placement-takeover.md
-          - name: Detecting and managing workload drift
-            href: concepts-placement-drift.md 
+        - name: Introduction to resource placement
+          href: concepts-resource-placement.md
+        - name: Controlling placement rollout order
+          href: concepts-rollout-strategy.md       
+        - name: Placement rollouts and resource snapshots
+          href: concepts-placement-snapshots.md
+        - name: Taking over existing resources
+          href: concepts-placement-takeover.md
+        - name: Detecting and managing resource drift
+          href: concepts-placement-drift.md 
+        - name: Controlling eviction and disruption
+          href: concepts-eviction-disruption.md
         - name: Automated deployments overview
           href: concepts-automated-deployments.md 
     - name: Multi-cluster networking 

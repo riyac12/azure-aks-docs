@@ -770,8 +770,12 @@
           items:
             - name: Overview
               href: managed-identity-overview.md
-            - name: Enable a managed identity on your cluster
-              href: use-managed-identity.md
+            - name: Use a system-assigned managed identity
+              href: system-assigned-managed-identity.md
+            - name: Use a user-assigned managed identity
+              href: user-assigned-managed-identity.md
+            - name: Use a pre-created kubelet managed identity
+              href: pre-created-kubelet-managed-identity.md
         - name: Create a service principal
           href: kubernetes-service-principal.md
         - name: Enable access to AKS clusters using Trusted Access
@@ -814,7 +818,7 @@
           href: secure-container-access.md
     - name: Node security
       items:
-        - name: BYOK for Azure Managed Disks
+        - name: BYOK for Azure managed disks
           href: azure-disk-customer-managed-keys.md
         - name: Enable host-based encryption
           href: enable-host-encryption.md
@@ -1226,6 +1230,8 @@
               href: node-auto-provisioning.md
             - name: Enable or disable NAP
               href: use-node-auto-provisioning.md
+            - name: Migrate from Cluster Autoscaler to NAP
+              href: migrate-from-autoscaler-to-node-auto-provisioning.md
             - name: Use NAP in a custom VNet
               href: node-auto-provisioning-custom-vnet.md
             - name: Update NAP node images

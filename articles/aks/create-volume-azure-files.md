@@ -4,7 +4,7 @@ description: Learn how to create and manage persistent volumes using Azure Files
 ms.topic: how-to
 ms.subservice: aks-storage
 ms.service: azure-kubernetes-service
-ms.date: 03/20/2026
+ms.date: 03/31/2026
 author: schaffererin
 ms.author: schaffererin
 # Customer intent: "As a Kubernetes administrator, I want to learn how to create and manage persistent volumes using Azure Files CSI drivers in Azure Kubernetes Service (AKS) so that I can provide scalable and reliable storage solutions for my containerized applications."
@@ -124,9 +124,9 @@ The following table includes parameters you can use to define a custom storage c
 | `skuName` | Azure Files storage account type (alias: `storageAccountType`) | `Standard_LRS`, `Standard_ZRS`, `Standard_GRS`, `Standard_RAGRS`, `Standard_RAGZRS`,`Premium_LRS`, `Premium_ZRS`, `StandardV2_LRS`, `StandardV2_ZRS`, `StandardV2_GRS`, `StandardV2_GZRS`, `PremiumV2_LRS`, `PremiumV2_ZRS` | No | `Standard_LRS` <br> Minimum file share size for Premium account type is 100 GB. <br> ZRS account type is supported in limited regions. <br> NFS file share only supports Premium account type. <br> Standard V2 SKU names are for [Azure Files provisioned v2 model](/azure/storage/files/understanding-billing#provisioned-v2-model). |
 | `storageAccount` | Specify an Azure storage account name. | storageAccountName | No | When a specific storage account name is not provided, the driver will look for a suitable storage account that matches the account settings within the same resource group. If it fails to find a matching storage account, it will create a new one. However, if a storage account name is specified, the storage account must already exist. |
 | `storageEndpointSuffix` | Specify Azure storage endpoint suffix. | `core.windows.net`, `core.chinacloudapi.cn`, etc. | No | If empty, driver uses default storage endpoint suffix according to cloud environment. For example, `core.windows.net`. |
+| `subscriptionID` | Specify Azure subscription ID where Azure file share is created. | Azure subscription ID | No | If not empty, `resourceGroup` must be provided. |
 | `tags` | [Tags][tag-resources] are created in new storage account. | Tag format: 'foo=aaa,bar=bbb' | No | "" |
 | --- | **The following parameters are only for SMB protocol** | --- | --- | --- |
-| `subscriptionID` | Specify Azure subscription ID where Azure file share is created. | Azure subscription ID | No | If not empty, `resourceGroup` must be provided. |
 | `storeAccountKey` | Specify whether to store account key to Kubernetes secret. | `true` or `false` <br> `false` means driver uses kubelet identity to get account key. | No | `true` |
 | `secretName` | Specify secret name to store account key. | | No | |
 | `secretNamespace` | Specify the namespace of secret to store account key. <br><br> **Note**: <br> If `secretNamespace` isn't specified, the secret is created in the same namespace as the pod. | `default`,`kube-system`, etc. | No | PVC namespace, for example `csi.storage.k8s.io/pvc/namespace` |
@@ -836,7 +836,13 @@ mountOptions:
 
 ### Enable managed identity for static PVs with Azure Files
 
-To enable managed identity for static volumes, you need to create a PV with `mountWithManagedIdentity`: `"true"` and mount the PV to your application pod.
+To use managed identity with statically provisioned Azure Files persistent volumes, ensure the following configuration:
+
+1. Enable the SMBOauth on the storage account by running:
+   ```bash
+   az storage account update --name <account-name> --resource-group <resource-group-name> --enable-smb-oauth true
+   ```
+1. Create a PV with `mountWithManagedIdentity`: `"true"` and mount the PV to your application pod.
 
 The following example manifest configures a PV to use managed identity to access Azure Files:
 
@@ -888,7 +894,7 @@ Azure Files now supports workload identity-based authentication for SMB access. 
 Before using workload identity to access Azure Files from AKS, complete the following prerequisites.
 
 #### 1. Create a cluster with oidc-issuer enabled and get the AKS cluster credential
-Create a new AKS cluster with the OIDC issuer enabled, or verify that it’s already enabled. Follow the official [documentation](use-oidc-issuer.md#create-an-aks-cluster-with-the-oidc-issuer) for creating a new AKS cluster with the `--enable-oidc-issuer` parameter and retrieve the cluster credentials. And set the following environment variables:
+Create a new AKS cluster with the OIDC issuer enabled, or verify that it's already enabled. Follow the official [documentation](use-oidc-issuer.md#create-an-aks-cluster-with-the-oidc-issuer) for creating a new AKS cluster with the `--enable-oidc-issuer` parameter and retrieve the cluster credentials. And set the following environment variables:
 ```bash
 export RESOURCE_GROUP=<your resource group name>
 export CLUSTER_NAME=<your cluster name>

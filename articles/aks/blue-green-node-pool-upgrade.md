@@ -217,12 +217,12 @@ The rollback is only available during the final soak period as described in the 
 
 The following example performs a rollback of the blue-green upgrade for the node pool named `myNodePool` in the AKS cluster `myAKSCluster` within the resource group `myResourceGroup`:
 
-    ```azurecli-interactive
-    az aks nodepool rollback \
-        --name myNodePool \
-        --cluster-name myAKSCluster \
-        --resource-group myResourceGroup
-    ```
+```azurecli-interactive
+az aks nodepool rollback \
+    --name myNodePool \
+    --cluster-name myAKSCluster \
+    --resource-group myResourceGroup
+ ```
 
 ## Frequently asked questions (FAQs)
 

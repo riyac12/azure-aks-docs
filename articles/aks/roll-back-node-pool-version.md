@@ -6,8 +6,8 @@ ms.subservice: aks-upgrade
 ms.custom: azure-kubernetes-service
 ms.date: 11/06/2024
 ai-usage: ai-assisted
-author: kaarthis
-ms.author: kaarthis
+author: swgriffith
+ms.author: swgriffith
 ms.reviewer: schaffererin
 # Customer intent: "As a Kubernetes administrator, I want to know how to roll back node pool versions in AKS so that I can recover from upgrade issues and maintain cluster stability."
 ---
@@ -54,7 +54,7 @@ Keep the following limitations in mind when using the node pool rollback feature
 
 - Limited to version changes only. Other node pool changes aren't reverted.
 - No concurrent operations allowed during rollback.
-- If configured, you must disable cluster autoupgrade before rollback. Otherwise, the autoupgrade process might automatically upgrade your node pool again after the rollback completes.
+- If configured, you must disable cluster autoupgrade before rollback. 
 - Available only for seven days after upgrade completion.
 - Can't perform consecutive rollbacks to go back multiple versions.
 - Rollback doesn't support reverting OS SKU changes. If you changed the OS SKU of your node pool (for example, from Ubuntu to Azure Linux), the rollback attempts to restore the previous node image version, which belongs to a different OS SKU and is rejected. To revert an OS SKU change, use the [`az aks nodepool update --os-sku`](/cli/azure/aks/nodepool#az-aks-nodepool-update) command instead.
