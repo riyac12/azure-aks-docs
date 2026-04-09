@@ -634,6 +634,27 @@ You can modify these settings for all Istio `Gateways` at a `GatewayClass` level
     updated-per-gateway
     ```
 
+## Enable access logs for the Gateway pods
+
+With managed Istio enabled on the cluster, the `Telemetry` CRDs are installed automatically. You can use these CRDs to configure access logging for gateway pods by creating a `Telemetry` resource.
+
+Create the resource in the `aks-istio-system` namespace to enable access logs for all gateways in the mesh, or in a specific namespace to enable access logs only for gateways in that namespace.
+
+The following example shows a `Telemetry` resource that enables gateway access logging:
+
+```yaml
+apiVersion: telemetry.istio.io/v1
+kind: Telemetry
+metadata:
+  name: mesh-default
+  namespace: aks-istio-system
+spec:
+  accessLogging:
+  - providers:
+    - name: envoy
+
+```
+
 ## Clean up resources
 
 If you no longer need the resources created in this article, you can delete them to avoid incurring any charges.
