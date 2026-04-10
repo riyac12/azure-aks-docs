@@ -141,7 +141,10 @@ Each row shows whether the outbound type can be migrated to the types listed acr
 ```azurecli-interactive
 az aks update --resource-group <resourceGroup> --name <clusterName> --outbound-type managedNATGatewayV2 --nat-gateway-managed-outbound-ipv6-count <number of managed outbound ipv6>
 ```
-
+> [!IMPORTANT]
+> The `managedNATGatewayV2` outbound type is currently in PREVIEW.
+> See the [Supplemental Terms of Use for Microsoft Azure Previews](https://azure.microsoft.com/support/legal/preview-supplemental-terms/) for legal terms that apply to Azure features that are in beta, preview, or otherwise not yet released into general availability. For more information on to register, see [using NAT gateway with AKS](nat-gateway.md).
+> 
 ### Update cluster from `managedNATGateway` to `loadbalancer`
 
 ```azurecli-interactive
