@@ -56,8 +56,6 @@ zone_pivot_groups: azure-cli-bicep-portal-terraform
 
 :::zone target="docs" pivot="terraform"
 
-:::zone pivot="terraform"
-
 ## Create the Terraform configuration file
 
 Terraform configuration files define the infrastructure that Terraform creates and manages.
@@ -201,6 +199,8 @@ resource "azapi_resource" "aks_automatic" {
  }
 }
 ```
+
+:::zone-end
 
 :::zone target="docs" pivot="bicep"
 
