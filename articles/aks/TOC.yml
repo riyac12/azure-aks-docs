@@ -126,6 +126,8 @@
           href: extended-zones.md
         - name: Deploy a cluster with a fully managed resource group
           href: node-resource-group-lockdown.md
+        - name: Deploy a production-ready cluster using Terraform with an Azure Verified Module (AVM)
+          href: deploy-cluster-terraform-verified-module.md
         - name: Configure private clusters
           items:
             - name: Create a private cluster
@@ -1134,6 +1136,14 @@
               href: agentic-cli-for-aks-faq.yml
             - name: Service account and workload identity setup
               href: agentic-cli-for-aks-service-account-workload-identity-setup.md
+        - name: Container Network Insight Agent
+          items:
+            - name: Overview
+              href: container-network-insight-agent-overview.md
+            - name: Install and use the Container Network Insight Agent
+              href: how-to-configure-container-network-insight-agent.md
+            - name: Troubleshoot Container Network Insight Agent issues
+              href: troubleshoot-container-network-insight-agent.md
         - name: AKS MCP server
           href: aks-model-context-protocol-server.md
         - name: Work with clusters using Copilot
