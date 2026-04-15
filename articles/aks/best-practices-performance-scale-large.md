@@ -299,4 +299,4 @@ As you scale your AKS clusters to larger scale points, keep the following networ
 
 <!-- LINKS - External -->
 [throttling-policies]: https://azure.microsoft.com/blog/api-management-advanced-caching-and-throttling-policies/
-- For more cluster upgrade information, see [Upgrade an AKS cluster](upgrade-cluster.md).
+
