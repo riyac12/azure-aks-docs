@@ -22,10 +22,13 @@ The following table outlines available Azure Kubernetes Application Network vers
 
 | Application Network version | Istio version | End of life          | Compatible AKS versions                   |
 |-----------------------------|---------------|----------------------|-------------------------------------------|
-| 1.1                         | 1.26          | March 2026           | 1.29, 1.30, 1.31, 1.32, 1.33, 1.34        |
-| 1.2                         | 1.27          | ~May 2026 (expected) | 1.29, 1.30, 1.31, 1.32, 1.33, 1.34, 1.35  |
+| 1.1                         | 1.26          | April 2026           | 1.30, 1.31, 1.32, 1.33, 1.34        |
+| 1.2                         | 1.27          | ~May 2026 (expected) | 1.30, 1.31, 1.32, 1.33, 1.34, 1.35  |
 | 1.3                         | 1.28          | ~Aug 2026 (expected) | 1.30, 1.31, 1.32, 1.33, 1.34, 1.35        |
 | 1.4                         | 1.29          | ~Sep 2026 (expected) | 1.31, 1.32, 1.33, 1.34, 1.35              |
+
+> [!IMPORTANT]
+> Application Network does not manage upgrades of your AKS cluster. To stay in support, please select a compatible version during onboarding and ensure it is frequently upgraded to maintain compatibility with Application Network. Refer to the [AKS Kuberenetes release calendar][aks-release-calendar] for AKS version end-of-life dates.
 
 ## List available versions in your region
 
@@ -43,3 +46,4 @@ For more information about Application Network version selection or keeping your
 
 <!--- LINKS --->
 [az-appnet-list-versions]: /cli/azure/appnet#az-appnet-list-versions
+[aks-release-calendar]: /articles/aks/supported-kubernetes-versions.md#aks-kubernetes-release-calendar
