@@ -139,7 +139,7 @@ kubectl delete ns gadget
 - [Inspektor Gadget Desktop on GitHub](https://github.com/inspektor-gadget/ig-desktop)
 - [Report issues or provide feedback for AKS desktop](https://github.com/Azure/aks-desktop/issues)
 - [AKS desktop cluster requirements](.aks-desktop-install-cluster-setup.md)
-- [AKS desktop overview](aks-desktop-overview.md)
+- [AKS desktop overview](./aks-desktop-overview.md)
 
 
 

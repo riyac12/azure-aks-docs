@@ -1,5 +1,5 @@
 ---
-title: "Quickstart: Deploy an application using AKS Automatic with AKS desktop"
+title: "Quickstart: Get Started Deploying and managing application using AKS Automatic with AKS desktop"
 description: Learn how to deploy and manage a containerized application on Azure Kubernetes Service (AKS) using AKS desktop without writing Kubernetes manifests.
 ms.service: azure-kubernetes-service
 ms.subservice: aks-developer
@@ -11,7 +11,7 @@ ms.author: danis
 # Customer intent: As a developer, I want to deploy an application to Azure Kubernetes Service using AKS desktop, so that I can quickly deploy and manage my containerized applications without writing detailed Kubernetes manifests.
 ---
 
-# Deploy an application using AKS desktop
+# Quickstart: Deploy and Managed application using AKS desktop
 
 Deploying and managing Kubernetes applications typically requires writing YAML manifests, running kubectl commands, and switching between multiple tools. AKS desktop removes this complexity with guided workflows that let developers and DevOps engineers deploy, monitor, troubleshoot, and clean up applications without deep Kubernetes expertise.
 

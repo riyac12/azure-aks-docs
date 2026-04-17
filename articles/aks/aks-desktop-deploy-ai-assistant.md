@@ -74,7 +74,10 @@ By default, the AKS Agentic CLI connects to a hosted LLM endpoint using a custom
    - Go to **Settings** > **Plugins** > **AI Assistant**.
    - Enable the **AI tool Kubernetes Requests** toggle.
 
-![AKS desktop AI Assistant settings showing the AI tool Kubernetes Requests toggle in the enabled state](./media/aks-desktop-app/aks-desktop-enable-k8s-api-reqs.png)
+
+   > [!NOTE]
+      > The requests the Agent can make to the Kubernetes API server, 'fetch, create, update or delete' resources, use with caution!
+
 
 ## Set the AI Assistant to use the AKS Agentic CLI Agent
 1. Open the AI Assistant.

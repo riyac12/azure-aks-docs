@@ -190,7 +190,6 @@ This enables VPA recommendations in the Scaling tab.
 > These commands may take several minutes to complete. Each addon may incur additional Azure costs. See [AKS pricing](https://azure.microsoft.com/pricing/details/kubernetes-service/) for details.
 
 ## About Projects in AKS desktop
-![AKS desktop project creation options showing New Namespace, AKS Managed Namespace, and Use Existing Namespace](./media/aks-desktop-app/image.png)
 The **Projects** feature simplifies Kubernetes management by grouping related resources, such as workloads, services, configurations and Azure Resources into logical units. This approach streamlines navigation, improves visibility, and supports teamwork by providing an application-focused view across namespaces and clusters. It also provides ownership attribution and the basis for cost management.
 
 There are 3 options when you create a Project:
