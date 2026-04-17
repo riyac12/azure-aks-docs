@@ -187,7 +187,7 @@ lease_duration > renew_deadline > retry_period
 > [!NOTE]
 > You can analyze API server traffic and client behavior through Kube Audit logs. For more information, see [Troubleshoot the Kubernetes control plane](/troubleshoot/azure/azure-kubernetes/troubleshoot-apiserver-etcd).
 
-### Etcd Optimizations
+### etcd Optimizations
 
 - **Keep the overall etcd size small and don't use etcd as a general-purpose database**. AKS provides 8 GB of etcd storage by default, but larger etcd databases increase defragmentation time, which can lead to read and write performance issues. Larger etcd databases can also increase the probability of API server and etcd reliability issues if an unoptimized client fetches large numbers of objects from etcd frequently. If your etcd database size exceeds 2 GB, consider using the object size reduction techniques listed below.
 - To reduce pod specification sizes, move environment variables from pod specifications to ConfigMaps.
