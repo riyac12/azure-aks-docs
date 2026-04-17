@@ -416,10 +416,18 @@
           items:
             - name: AKS desktop overview
               href: aks-desktop-overview.md
-            - name: Set up permissions in AKS desktop
-              href: aks-desktop-permissions.md
+            - name: AKS desktop Quickstart
+              href: aks-desktop-quickstart-auto.md
+            - name: Set up Cluster and projects for AKS desktop
+              href: aks-desktop-install-cluster-setup.md
             - name: Deploy an application using AKS desktop
               href: aks-desktop-app.md
+            - name: Set up permissions in AKS desktop
+              href: aks-desktop-permissions.md
+            - name: Troubleshoot an application
+              href: aks-desktop-deploy-troubleshooting.md
+            - name: Using AI with AKS desktop
+              href: aks-desktop-deploy-ai-assistant.md
         - name: Use cluster extensions
           items:
             - name: About cluster extensions
