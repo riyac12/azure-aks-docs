@@ -59,7 +59,6 @@ To confirm if your control plane has been scaled up, look for the configmap `lar
 
 ```bash
 kubectl describe configmap large-cluster-control-plane-scaling-status -n kube-system
-
 ```
 
 ## Kubernetes Scale Envelope and Control Plane Considerations
@@ -138,7 +137,8 @@ Use watch with a `resourceVersion` set to be the most recent known value receive
 - **Use pagination** to reduce the size of LIST responses if the client must fetch data from etcd. The following example uses the limit argument to restrict the response to 100 objects.
 
 ```
-/api/v1/namespaces/default/pods?fieldSelector=status.phase=Running&limit=100```
+/api/v1/namespaces/default/pods?fieldSelector=status.phase=Running&limit=100
+```
 
 If you want the LIST to continue returning all the pod objects in the example above use the continue argument with limit.
 
