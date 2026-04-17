@@ -13,7 +13,7 @@ ms.author: danis
 
 # Set up a cluster and projects for AKS desktop
 
-Setting up a cluster for AKS desktop requires configuring specific AKS features the tool depends on for project management, Azure RBAC-based access control, and application monitoring. Without these requirements, AKS desktop features such as metrics, network policies, and Role-based Access Control (RBAC) will be unavailable or degraded. This article covers the minimum cluster requirements for AKS desktop, recommended optional addons, and how to create and import projects.
+Setting up a cluster for AKS desktop requires configuring specific AKS features the tool depends on for AKS desktop project management, Azure RBAC-based access control, and application monitoring. Without these requirements, AKS desktop features such as metrics, network policies, and Role-based Access Control (RBAC) are unavailable or degraded. This article covers the minimum cluster requirements for AKS desktop, recommended optional addons, and how to create and import projects.
 
 
 The minimum and fastest way to deploy apps with AKS desktop is with:
@@ -34,10 +34,10 @@ The minimum and fastest way to deploy apps with AKS desktop is with:
 
 ## AKS desktop cluster support
 
-AKS desktop builds on top of several AKS features — including AKS Deployment Safeguards, Managed Prometheus for metrics, and Entra ID-based permission management — all of which must be configured on your cluster to ensure applications are deployed to best practices.
+AKS desktop builds on top of several AKS features, including AKS Deployment Safeguards, Managed Prometheus for metrics, and Entra ID-based permission management — all of which must be configured on your cluster to ensure applications are deployed to best practices.
 
 ### AKS Automatic clusters
-[AKS Automatic clusters](intro-aks-automatic.md) come with all of the above features preconfigured and require no more setup. If you want less management and get started quickly, AKS Automatic is the easiest path to a fully compatible cluster.
+[AKS Automatic clusters](intro-aks-automatic.md) come with all of the above features preconfigured and require no extra setup. If you want less management and get started quickly, AKS Automatic is the easiest path to a fully compatible cluster.
 
 See the [official feature comparison](intro-aks-automatic.md#aks-automatic-and-standard-feature-comparison) for a complete breakdown of differences between AKS Automatic and AKS Standard.
 
@@ -85,30 +85,30 @@ az acr build --resource-group $myResourceGroup --registry $registryName --image 
 ```
 
 ### New and Existing AKS Standard clusters
-You can use an existing AKS Standard cluster but you need to ensure it has the AKS features enabled for AKS desktop.
+You can use an existing AKS Standard cluster but that needs to have some AKS features enabled for AKS desktop.
 
 #### Minimum requirements - required for AKS desktop to function with your cluster
 
-| Requirement | Why it is needed | How to check | How to enable |
+| Requirement | Why it's needed | How to check | How to enable |
 | --- | --- | --- | --- |
-| **Microsoft Entra ID (AAD) authentication** | Required for Azure RBAC and managed namespace role assignments. Clusters without Entra ID authentication enabled do not appear in the AKS desktop cluster picker. | `az aks show -g <rg> -n <cluster> --query aadProfile` -- must not be `null` | Must be set at cluster creation: `--enable-aad --enable-azure-rbac` |
+| **Microsoft Entra ID (AAD) authentication** | Required for Azure RBAC and managed namespace role assignments. Clusters without Entra ID authentication enabled don't appear in the AKS desktop cluster picker. | `az aks show -g <rg> -n <cluster> --query aadProfile` -- must not be `null` | Must be set at cluster creation: `--enable-aad --enable-azure-rbac` |
 | **Azure RBAC for Kubernetes authorization** | Required for assigning users to projects with Admin, Writer, or Reader roles. | `az aks show -g <rg> -n <cluster> --query aadProfile.enableAzureRbac` -- must be `true` | Must be set at cluster creation: `--enable-azure-rbac` |
 
 #### Recommended configuration for Standard AKS clusters
 
-These addons and settings are optional but strongly recommended. Without them, specific AKS desktop features will be unavailable or degraded.
+These addons and settings are optional but recommended. Without them, specific AKS desktop features will be unavailable or degraded.
 
 | Feature | What it enables in AKS desktop | Can be enabled after cluster creation? | How to enable |
 | --- | --- | --- | --- |
-| **Network policy engine** (Cilium recommended) | Ingress and egress network policies on managed namespaces. Without a network policy engine, policies are silently ignored. | **No** -- must be set at cluster creation. | `--network-plugin azure --network-policy cilium` |
+| **Network policy engine** (Cilium recommended) | Ingress and egress network policies on managed namespaces. Without a network policy engine, policies are silently ignored. | **No**--must be set at cluster creation. | `--network-plugin azure --network-policy cilium` |
 | **Azure Monitor Metrics** (Managed Prometheus) | Metrics tab (CPU, memory, and request-rate charts) and the Scaling chart (CPU %). | Yes | `az aks update -g <rg> -n <cluster> --enable-azure-monitor-metrics` |
-| **Managed Grafana** | Visualization for metrics dashboards. | Yes | Enabled alongside Azure Monitor Metrics when using the Azure Portal. Via CLI, link a Grafana workspace with `--enable-azure-monitor-metrics --azure-monitor-workspace-resource-id <id>`. |
+| **Managed Grafana** | Visualization for metrics dashboards. | Yes | Enabled alongside Azure Monitor Metrics when using the Azure portal. Via CLI, link a Grafana workspace with `--enable-azure-monitor-metrics --azure-monitor-workspace-resource-id <id>`. |
 | **KEDA** | Kubernetes Event-Driven Autoscaling in the Scaling tab. | Yes | `az aks update -g <rg> -n <cluster> --enable-keda` |
 | **VPA** (Vertical Pod Autoscaler) | Vertical pod autoscaling recommendations in the Scaling tab. | Yes | `az aks update -g <rg> -n <cluster> --enable-vpa` |
 
 ### Feature availability matrix
 
-The table below is a quick reference showing which AKS desktop features work when specific cluster addons are missing.
+Here is a quick reference showing which AKS desktop features work when specific cluster addons are missing.
 
 | AKS desktop feature | Works without addon? | Required addon | Can be enabled after cluster creation? |
 | --- | --- | --- | --- |
@@ -141,7 +141,7 @@ az aks create \
   --generate-ssh-keys
 ```
 
-Replace `<resource-group>`, `<cluster-name>`, and `<location>` with your own values. A cluster created with these flags will support every AKS desktop feature without additional configuration.
+Replace `<resource-group>`, `<cluster-name>`, and `<location>` with your own values. A cluster created with these flags support every AKS desktop feature without extra configuration.
 
 To attach an existing ACR to the cluster after creation, run:
 ```bash
@@ -156,7 +156,7 @@ az aks update \
 Some features can be added to an existing cluster after creation. However, the **network policy engine cannot be changed after cluster creation**.
 
 > [!IMPORTANT]
-> If your cluster was created without a network policy engine, you must create a new cluster with the `--network-policy cilium` flag for full network policy support. This cannot be enabled on an existing cluster.
+> If your cluster was created without a network policy engine, you must create a new cluster with the `--network-policy cilium` flag for full network policy support. This feature can't be enabled on an existing cluster.
 
 #### Enable Azure Monitor Metrics (Managed Prometheus)
 
@@ -164,7 +164,7 @@ Some features can be added to an existing cluster after creation. However, the *
 az aks update -g <rg> -n <cluster> --enable-azure-monitor-metrics
 ```
 
-This enables the Metrics tab and the Scaling chart (CPU %) in AKS desktop.
+This addon enables the Metrics tab and the Scaling chart (CPU %) in AKS desktop.
 
 #### Enable KEDA addon
 
@@ -174,7 +174,7 @@ This enables the Metrics tab and the Scaling chart (CPU %) in AKS desktop.
 az aks update -g <rg> -n <cluster> --enable-keda
 ```
 
-This enables KEDA-based autoscaling in the Scaling tab.
+This addon enables KEDA-based autoscaling in the Scaling tab.
 
 #### Enable VPA addon
 
@@ -184,31 +184,31 @@ The [Vertical Pod Autoscaler (VPA)](vertical-pod-autoscaler.md) automatically ad
 az aks update -g <rg> -n <cluster> --enable-vpa
 ```
 
-This enables VPA recommendations in the Scaling tab.
+This addon enables VPA recommendations in the Scaling tab.
 
 > [!NOTE]
-> These commands may take several minutes to complete. Each addon may incur additional Azure costs. See [AKS pricing](https://azure.microsoft.com/pricing/details/kubernetes-service/) for details.
+> These commands may take several minutes to complete. Each addon may incur extra Azure costs. See [AKS pricing](https://azure.microsoft.com/pricing/details/kubernetes-service/) for details.
 
 ## About Projects in AKS desktop
-The **Projects** feature simplifies Kubernetes management by grouping related resources, such as workloads, services, configurations and Azure Resources into logical units. This approach streamlines navigation, improves visibility, and supports teamwork by providing an application-focused view across namespaces and clusters. It also provides ownership attribution and the basis for cost management.
+The **Projects** feature simplifies Kubernetes management by grouping related resources, such as workloads, services, configurations, and Azure Resources into logical units. This approach streamlines navigation, improves visibility, and supports teamwork by providing an application-focused view across namespaces and clusters. It also provides ownership attribution and the basis for cost management.
 
-There are 3 options when you create a Project:
+There are three options when you create a Project:
 * Use Existing namespace
 * Create a New Namespace
 * Create a New AKS Managed Namespace
 
 ### New Namespace
-This creates a standard Kubernetes namespace and can be used across any types of Kubernetes cluster supported by [Headlamp](https://headlamp.dev/docs/latest/learn/projects), this provides basic functionality of seeing application resources, their properties and map.
+This option creates a standard Kubernetes namespace, this provides basic functionality of seeing application resources, their properties, and map. This option is also supported by [Headlamp projects](https://headlamp.dev/docs/latest/learn/projects).
 
 ### AKS Managed Namespace
-In AKS desktop, this enhanced project type is directly linked by default to an [AKS managed namespace](concepts-managed-namespaces.md), which is a way to logically isolate workloads and teams within a cluster. This feature enables administrators to enforce resource quotas, apply network policies, and manage access control at the namespace level. Therefore a Managed Namespace attributes Azure Resources and Kubernetes resources together, this is useful for ownership attribution, cost management and a way of identifying everything that is part of your application. A Project can consist of one or more applications, note in most examples we only show one app to keep it simple.
+In AKS desktop, this enhanced project type is directly linked by default to an [AKS managed namespace](concepts-managed-namespaces.md), which is a way to logically isolate workloads and teams within a cluster. This feature enables administrators to enforce resource quotas, apply network policies, and manage access control at the namespace level. A Managed Namespace groups Azure resources and Kubernetes resources together, which is useful for ownership attribution, cost management, and identifying everything that belongs to your application. A Project can consist of one or more applications, note in most examples we only show one app to keep it simple.
 
 ## Use Existing namespace / Importing existing namespaces into AKS desktop projects
-When you open this, AKS desktop will scan:
-* AKS Managed Namespaces (MNS) that you have permissions to. You don't need to have registered the cluster they're deployed to — you only need MNS permissions to access them.
-* Regular Kubernetes namespaces across the clusters you have registered, note, you will only be shown namespaces you have access to.
+When you open this, AKS desktop scans:
+* AKS Managed Namespaces (MNS) that you have permissions to. You don't need to register the cluster they're deployed to, you only need MNS RBAC permissions to access them from AKS desktop.
+* Regular Kubernetes namespaces across the clusters you register, note, you'll only see namespaces you have access to.
 
-It will indicate for both if they are part of an AKS Project already, this means there is metadata on the namespace (labels) with project information. If you import the namespace it will add labels to the namespace, you will then see the namespace represented as a project and observe the overview.
+AKS desktop shows whether each namespace is already part of a project. When you import a namespace, AKS desktop adds Kubernetes labels to it and shows it as a project.
 
 
 ## Project Overview in AKS desktop

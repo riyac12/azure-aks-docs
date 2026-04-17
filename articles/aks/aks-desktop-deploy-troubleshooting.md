@@ -14,9 +14,9 @@ ms.author: danis
 > [!NOTE]
 > This feature is currently in Preview/Alpha and is subject to updates. To raise issues, see the [AKS desktop issue tracker](https://github.com/Azure/aks-desktop/issues).
 
-Troubleshooting a Kubernetes application typically means working across multiple CLI tools, dashboards, and documentation — all in real time, which adds friction and risk.
+Troubleshooting a Kubernetes application typically means to work across multiple CLI tools, dashboards, and documentation, and performing this in real time adds friction and risk.
 
-Azure Kubernetes Service (AKS) desktop includes an integrated troubleshooting suite called **Insights**, powered by [Inspektor Gadget](https://inspektor-gadget.io/) — an open-source eBPF (extended Berkeley Packet Filter)-based debugging tool. Without modifying your code or restarting anything, it lets you understand network traffic between pods, trace DNS failures, and explore running processes to spot unexpected or resource-heavy activity, all through an intuitive UI with a few clicks.
+Azure Kubernetes Service (AKS) desktop includes an integrated troubleshooting suite called **Insights**, powered by [Inspektor Gadget](https://inspektor-gadget.io/), an open-source eBPF (extended Berkeley Packet Filter)-based debugging tool. Without modifying your code or restarting anything, it lets you understand network traffic between pods, trace DNS failures, and explore running processes to spot unexpected or resource-heavy activity, all through an intuitive UI with a few clicks.
 
 This article walks you through enabling Insights and using it to diagnose common application issues in your AKS cluster.
 
@@ -52,7 +52,7 @@ In the left-hand navigation, select the **Project** you want to use Insights wit
 
 ### Step 4: Deploy Inspektor Gadget to the Cluster
 
-On the Insights tab, you're prompted to deploy **Inspektor Gadget** to your cluster if it is not already installed.
+On the Insights tab, you're prompted to deploy **Inspektor Gadget** to your cluster if it isn't already installed.
 1. Select **Deploy Inspektor Gadget**.
 2. AKS desktop deploys the Inspektor Gadget DaemonSet to the `gadget` namespace on your cluster.
 3. Wait for the deployment to complete. A status indicator confirms when Inspektor Gadget is ready.
@@ -71,7 +71,7 @@ Once Inspektor Gadget is deployed, the Insights tab populates with live observab
 The Processes view shows you every running process across your cluster's pods in real time, along with CPU, memory, and disk I/O usage. Use it to:
 
 - Identify which pods are consuming excessive CPU or memory
-- Spot abnormal block I/O activity — unusually high disk reads or writes that can indicate a misconfigured app, a runaway log writer, or a storage bottleneck
+- Spot abnormal block I/O activity, for example, unusually high disk reads or writes that can indicate a misconfigured app, a runaway log writer, or a storage bottleneck
 - Detect unexpected processes that shouldn't be running in a container
 
 ![Insights Processes view showing per-pod CPU, memory, and I/O metrics](./media/aks-desktop-app/aks-desktop-insights-processes.png)
@@ -79,7 +79,7 @@ The Processes view shows you every running process across your cluster's pods in
 
 ### Network visibility with Trace Transmission Control Protocol (TCP)
 
-Trace TCP captures live TCP connection events at the kernel level using eBPF — without a proxy or sidecar. Use it to:
+Trace TCP captures live TCP connection events at the kernel level using eBPF, without a proxy or sidecar. Use it to:
 
 - See which pods are opening outbound connections and to which destination IPs and ports
 - Detect unexpected or unauthorized connections that may indicate a misconfiguration or security issue
@@ -89,13 +89,13 @@ Trace TCP captures live TCP connection events at the kernel level using eBPF —
 
 
 > [!NOTE]
-> You must stop the trace when you have finished, click on the red stop button in the top right of the trace.
+> You must stop the trace when finished, click on the red stop button in the top right of the trace.
 
 ### Solve DNS issues with Trace DNS
 
 Trace DNS captures every DNS query and response made by pods in your cluster. Use it to:
 
-- Identify DNS queries that are failing to resolve — a common cause of pod-to-service connectivity failures
+- Identify DNS queries that are failing to resolve, a common cause of pod-to-service connectivity failures
 - Measure DNS latency to determine whether CoreDNS (the in-cluster DNS server) or an upstream DNS resolver is slow
 - Check the health of CoreDNS and whether external DNS resolution is working correctly
 
@@ -115,7 +115,7 @@ kubectl delete ns gadget
 ```
 
 > [!WARNING]
-> This command removes all resources in the `gadget` namespace, not only those created by Inspektor Gadget. If you have deployed other resources to this namespace, they'll also be deleted.
+> This command removes all resources in the `gadget` namespace, not only those created by Inspektor Gadget.
 ---
 
 ## Troubleshooting
