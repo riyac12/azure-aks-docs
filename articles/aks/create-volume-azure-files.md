@@ -778,23 +778,33 @@ For a list of supported `mountOptions`, see [NFS mount options][nfs-file-share-m
 
 [Encryption in Transit (EiT)](/azure/storage/files/encryption-in-transit-for-nfs-shares) ensures that all read and writes to the NFS file shares within the virtual network are encrypted, providing an extra layer of security.
 
-By setting `encryptInTransit: "true"` in the storage class parameters, you can enable data encryption in transit for NFS Azure file shares. For example:
+By setting `encryptInTransit: "true"` in the persistent volume (PV) parameters, you can enable data encryption in transit for NFS Azure file shares. For example:
 
 ```yaml
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
+apiVersion: v1
+kind: PersistentVolume
 metadata:
-  name: azurefile-csi-premiumv2-custom
-provisioner: file.csi.azure.com
-allowVolumeExpansion: true
-parameters:
-  protocol: nfs
-  skuName: PremiumV2_LRS  # SSD provisioned v2 (recommended). Alternatives: Premium_LRS, Premium_ZRS, PremiumV2_ZRS
-  encryptInTransit: "true"
-mountOptions:
-  - nconnect=4
-  - noresvport
-  - actimeo=30
+  name: pv-azurefile-eit
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - nconnect=4
+    - noresvport
+    - actimeo=30
+  storageClassName: azurefile-csi-premium # This has no impact regardless of which StorageClass is specified. It is only included for documentation/formatting purposes.
+  csi:
+    driver: file.csi.azure.com
+    volumeHandle: "{resource-group-name}#{account-name}#{file-share-name}"
+    volumeAttributes:
+      protocol: nfs
+      encryptInTransit: "true"
+      resourceGroup: "{resource-group-name}"
+      storageAccount: "{account-name}"
+      shareName: "{file-share-name}"
 ```
 
 ## Use managed identity to access Azure Files storage (preview)
