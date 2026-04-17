@@ -28,7 +28,7 @@ The following table outlines available Azure Kubernetes Application Network vers
 | 1.4                         | 1.29          | ~Sep 2026 (expected) | 1.31, 1.32, 1.33, 1.34, 1.35              |
 
 > [!IMPORTANT]
-> Application Network doesn't manage upgrades of your AKS cluster. To stay in support, select a compatible version during onboarding and ensure it's frequently upgraded to maintain compatibility with Application Network. Refer to the [AKS Kubernetes release calendar][aks-release-calendar] for AKS version end-of-life dates.
+> Application Network doesn't manage upgrades of your AKS cluster. To remain in support, select a compatible version during onboarding and upgrade it regularly to maintain compatibility with Application Network. Refer to the [AKS Kubernetes release calendar][aks-release-calendar] for AKS version end-of-life dates.
 
 ## List available versions in your region
 
