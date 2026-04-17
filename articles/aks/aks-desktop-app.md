@@ -84,7 +84,7 @@ To delete a cluster from AKS desktop and your kubeconfig, follow these steps:
 
 ## Create a new Project in AKS desktop
 
-When you create a Project on a cluster, any user with access to the associated namespace can view the Project. Namespace access and labeling determine which users can see each Project, since Projects are tied to namespaces. To learn more, see [About Projects in AKS desktop](./aks-desktop-install-cluster-setup.md#About-Projects-in-AKS-desktop)
+When you create a Project on a cluster, any user with access to the associated namespace can view the Project. Namespace access and labeling determine which users can see each Project, since Projects are tied to namespaces. To learn more, see [About Projects in AKS desktop](./aks-desktop-install-cluster-setup.md##-About-Projects-in-AKS-desktop)
 
 There are three methods you can choose from to deploy your application using AKS desktop: **AKS managed Project**, **YAML Project**, and **New Project**.
 

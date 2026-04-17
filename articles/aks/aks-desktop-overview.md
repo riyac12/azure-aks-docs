@@ -82,8 +82,8 @@ You just need an AKS cluster and an Azure Container Registry (ACR) to get starte
 
 
 ### Deploy applications through guided flows
-![Deploy application through guided workflow](./media/aks-desktop-app/aks-desktop-guided-app-dep.png)
-![alt text](image.png)
+![Deploy application through guided workflow](./media/aks-desktop-app/aks-desktop-select-app-src.png)
+
 
 ### View logs and debug applications
 ![View application logs](./media/aks-desktop-app/aks-desktop-view-app-logs.png)
