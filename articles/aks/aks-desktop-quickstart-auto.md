@@ -15,7 +15,7 @@ ms.author: danis
 
 Deploying and managing Kubernetes applications typically requires writing YAML manifests, running kubectl commands, and switching between multiple tools. AKS desktop removes this complexity with guided workflows that let developers and DevOps engineers deploy, monitor, troubleshoot, and clean up applications without deep Kubernetes expertise.
 
-This guide walks you through deploying a TypeScript application using AKS desktop — from registering a cluster through exploring logs, metrics, scaling, and built-in troubleshooting tools.
+This guide walks you through deploying a TypeScript application using AKS desktop, from creating a cluster through exploring application logs, metrics, scaling, and built-in troubleshooting tools.
 
 ## Prerequisites
 
@@ -82,19 +82,19 @@ This guide walks you through deploying a TypeScript application using AKS deskto
          - Project Name: `my-dev-frontend`
          - Subscription: `<your-subscription-name>`
          - Cluster: `<your-cluster-name>`
-      > [!NOTE]
-      > As you set the subscription and cluster, AKS desktop evaluates whether the cluster supports the features needed for the full experience and prompts you to enable any that are missing.
+         > [!NOTE]
+         > When set the Azure subscription and AKS cluster, AKS desktop checks for cluster and subscription feature support required for the AKS desktop experience.
 
-      - Networking Policies — You can leave this default. To expose the application publicly, change **Ingress** to `Allow all traffic`.
-      - Compute Quota - leave default for the test application.
-      - Access - add a colleague if you wish or delete the entry by deleting the line item, selecting the 'trash' icon on the right.
+      - Networking Policies—You can leave this default. To expose the application publicly, change **Ingress** to `Allow all traffic`.
+      - Compute Quota-leave default for the test application.
+      - Access-add a colleague if you wish or delete the entry by deleting the line item.
       - Review > Create Project
 
          ![Create new AKS desktop project](./media/aks-desktop-app/aks-desktop-new-project.png)
 
 
 4. **Deploy the Application**
-   - When the Project has been created, you can immediately deploy an app!
+   - Post Project creation, you can immediately deploy an app!
          ![Deploy Application screenshot](./media/aks-desktop-app/aks-desktop-deploy-app.png)
    - Provide an application name
    
@@ -102,7 +102,7 @@ This guide walks you through deploying a TypeScript application using AKS deskto
       ![Select Source screenshot](./media/aks-desktop-app/aks-desktop-select-app-src.png)
 
 6. **Configure Deployment**
-   - Accept the defaults unless you want to customize. Specific settings for the example app are listed below.
+   - Accept the defaults unless you want to customize.
    - Add your container image name from step 1, for example: `myacr.azurecr.io/contosoair:v1`
 
    > [!IMPORTANT]
@@ -110,7 +110,7 @@ This guide walks you through deploying a TypeScript application using AKS deskto
 
    - Networking
       - Target port: For the example container, set it to `3000`.
-      - Enable public access — set this if you want to access the application from a public URL.
+      - Enable public access — set if you want to access the application from a public URL.
    - HPA (Horizontal Pod Autoscaler)
       - Enable Horizontal Pod Autoscaler
 
@@ -123,16 +123,16 @@ This guide walks you through deploying a TypeScript application using AKS deskto
 
    Use the tabs in the Project view to explore your running application:
 
-   - **Resources** — view all Kubernetes resources for the application
-   - **Map** — visualize how all the Kubernetes resources interact and depend on each other
-   - **Logs** — see the pod logs
-   - **Metrics** — view core application resource consumption
-   - **Scaling** — view scaling events and make updates
-   - **Insights** — troubleshoot DNS failures, network traffic, and resource usage (preview). See [Troubleshoot an application using Insights](aks-desktop-deploy-troubleshooting.md).
-   - **Delete** — delete the project
-   - **AI assistant** — use natural language to diagnose and resolve issues in your cluster (preview). See [Use the AI troubleshooting assistant](aks-desktop-deploy-ai-assistant.md).
+   - **Resources**—view all Kubernetes resources for the application
+   - **Map**—visualize how all the Kubernetes resources interact and depend on each other
+   - **Logs**—see the pod logs
+   - **Metrics**—view core application resource consumption
+   - **Scaling**—view scaling events and make updates
+   - **Insights**—troubleshoot DNS failures, network traffic, and resource usage (preview). See [Troubleshoot an application using Insights](aks-desktop-deploy-troubleshooting.md).
+   - **Delete**—delete the project
+   - **AI assistant**—use natural language to diagnose and resolve issues in your cluster (preview). See [Use the AI troubleshooting assistant](aks-desktop-deploy-ai-assistant.md).
 
-9. **Clean up** — When you have finished, select **Delete** and select **Also delete the namespaces**. This removes the Kubernetes resources and the Azure Managed Namespace Resource.
+9. **Clean up**—to remove the project, select **Delete** and if you want to remove the underlying Azure Managed Namespace Resource, select **Also delete the namespaces**. 
 
 ## Next steps
 

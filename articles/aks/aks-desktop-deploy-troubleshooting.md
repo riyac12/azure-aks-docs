@@ -1,40 +1,40 @@
 ---
-title: Troubleshoot an application using AKS Desktop
-description: Learn how to troubleshoot Kubernetes applications in AKS Desktop using the built-in Insights feature powered by Inspektor Gadget.
+title: Troubleshoot an application using AKS desktop
+description: Learn how to troubleshoot Kubernetes applications in AKS desktop using the built-in Insights feature powered by Inspektor Gadget.
 ms.service: azure-kubernetes-service
 ms.subservice: aks-developer
 author: danielsollondon
 ms.topic: how-to
 ms.date: 04/16/2026
 ms.author: danis
-# Customer intent: As a developer, platform engineer, SRE, or Kubernetes operator, I want to troubleshoot an application running in Azure Kubernetes Service using AKS Desktop, so I can identify DNS issues, understand network traffic between pods, and explore running processes to spot unexpected or resource-heavy activity through a UI with a few clicks.
+# Customer intent: As a developer, platform engineer, SRE, or Kubernetes operator, I want to troubleshoot an application running in Azure Kubernetes Service (AKS) using AKS desktop, so I can identify DNS issues, understand network traffic between pods, and explore running processes to spot unexpected or resource-heavy activity through a UI with a few clicks.
 ---
 # Troubleshoot an application using AKS desktop
 
 > [!NOTE]
-> This feature is currently in Preview/Alpha and is subject to updates. To raise issues, see the [AKS Desktop issue tracker](https://github.com/Azure/aks-desktop/issues).
+> This feature is currently in Preview/Alpha and is subject to updates. To raise issues, see the [AKS desktop issue tracker](https://github.com/Azure/aks-desktop/issues).
 
-Troubleshooting a Kubernetes application typically means identifying a problem, reviewing resources, and then reaching for a mix of CLI tools, dashboards, and documentation to piece together what went wrong. This often involves many tools, switching between screens, and doing all of this in real time — which introduces friction and risk.
+Troubleshooting a Kubernetes application typically means working across multiple CLI tools, dashboards, and documentation — all in real time, which adds friction and risk.
 
-AKS Desktop includes an integrated troubleshooting suite called **Insights**, powered by [Inspektor Gadget](https://inspektor-gadget.io/) — an open-source eBPF (extended Berkeley Packet Filter)-based debugging tool. Without modifying your code or restarting anything, it lets you understand network traffic between pods, trace DNS failures, and explore running processes to spot unexpected or resource-heavy activity, all through an intuitive UI with a few clicks.
+Azure Kubernetes Service (AKS) desktop includes an integrated troubleshooting suite called **Insights**, powered by [Inspektor Gadget](https://inspektor-gadget.io/) — an open-source eBPF (extended Berkeley Packet Filter)-based debugging tool. Without modifying your code or restarting anything, it lets you understand network traffic between pods, trace DNS failures, and explore running processes to spot unexpected or resource-heavy activity, all through an intuitive UI with a few clicks.
 
 This article walks you through enabling Insights and using it to diagnose common application issues in your AKS cluster.
 
 ## Prerequisites
 
-- **AKS Desktop** installed and signed in to your AKS cluster. See [Set up an AKS cluster for AKS desktop](aks-desktop-install-cluster-setup.md) or [Deploy applications with AKS Automatic using AKS desktop](aks-desktop-quickstart-auto.md).
-- **Cluster-admin** or equivalent RBAC permissions on the target AKS cluster. Installing Inspektor Gadget requires creating a `ClusterRole`, `ClusterRoleBinding`, and a privileged `DaemonSet`.
-- Your cluster nodes must run **Linux** with kernel version **≥ 5.4**. Windows node pools are not supported.
+- **AKS desktop** installed and signed in to your AKS cluster. See [Set up an AKS cluster for AKS desktop](aks-desktop-install-cluster-setup.md) or [Deploy applications with AKS Automatic using AKS desktop](aks-desktop-quickstart-auto.md).
+- **Cluster-admin** or equivalent Role-Based Access Control (RBAC) permissions on the target AKS cluster. Installing Inspektor Gadget requires creating a `ClusterRole`, `ClusterRoleBinding`, and a privileged `DaemonSet`.
+- Your cluster nodes must run **Linux** with kernel version **≥ 5.4**. Windows node pools aren't supported.
 - If your cluster uses Azure Policy or OPA Gatekeeper with restricted pod security, add an exemption for the `gadget` namespace to allow privileged pods.
 - The target cluster must be an AKS Standard cluster.
 
 ## Enabling Insights
 
-Follow these steps to enable the Insights feature in AKS Desktop:
+Follow these steps to enable the Insights feature in AKS desktop:
 
-### Step 1: Open AKS Desktop
+### Step 1: Open AKS desktop
 
-Launch the AKS Desktop application and ensure you are signed in and connected to your AKS cluster.
+Launch the AKS Desktop application and ensure you're signed in and connected to your AKS cluster.
 
 ### Step 2: Enable the Insights Plugin
 
@@ -52,10 +52,9 @@ In the left-hand navigation, select the **Project** you want to use Insights wit
 
 ### Step 4: Deploy Inspektor Gadget to the Cluster
 
-On the Insights tab, you are prompted to deploy **Inspektor Gadget** to your cluster if it is not already installed.
-
+On the Insights tab, you're prompted to deploy **Inspektor Gadget** to your cluster if it is not already installed.
 1. Select **Deploy Inspektor Gadget**.
-2. AKS Desktop deploys the Inspektor Gadget DaemonSet to the `gadget` namespace on your cluster.
+2. AKS desktop deploys the Inspektor Gadget DaemonSet to the `gadget` namespace on your cluster.
 3. Wait for the deployment to complete. A status indicator confirms when Inspektor Gadget is ready.
 
 
@@ -78,7 +77,7 @@ The Processes view shows you every running process across your cluster's pods in
 ![Insights Processes view showing per-pod CPU, memory, and I/O metrics](./media/aks-desktop-app/aks-desktop-insights-processes.png)
 
 
-### Network visibility with Trace TCP
+### Network visibility with Trace Transmission Control Protocol (TCP)
 
 Trace TCP captures live TCP connection events at the kernel level using eBPF — without a proxy or sidecar. Use it to:
 
@@ -116,7 +115,7 @@ kubectl delete ns gadget
 ```
 
 > [!WARNING]
-> This command removes all resources in the `gadget` namespace, not only those created by Inspektor Gadget. If you have deployed other resources to this namespace, they will also be deleted.
+> This command removes all resources in the `gadget` namespace, not only those created by Inspektor Gadget. If you have deployed other resources to this namespace, they'll also be deleted.
 ---
 
 ## Troubleshooting
@@ -136,7 +135,7 @@ kubectl delete ns gadget
 ## Related content
 
 - [Inspektor Gadget on GitHub](https://github.com/inspektor-gadget/inspektor-gadget)
-- [Inspektor Gadget Desktop on GitHub](https://github.com/inspektor-gadget/ig-desktop)
+- [Inspektor Gadget desktop on GitHub](https://github.com/inspektor-gadget/ig-desktop)
 - [Report issues or provide feedback for AKS desktop](https://github.com/Azure/aks-desktop/issues)
 - [AKS desktop cluster requirements](.aks-desktop-install-cluster-setup.md)
 - [AKS desktop overview](./aks-desktop-overview.md)

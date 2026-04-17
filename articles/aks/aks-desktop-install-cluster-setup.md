@@ -13,7 +13,7 @@ ms.author: danis
 
 # Set up a cluster and projects for AKS desktop
 
-Setting up a cluster for AKS desktop requires configuring specific AKS features the tool depends on for project management, Azure RBAC-based access control, and application monitoring. Without these requirements, AKS desktop features such as metrics, network policies, and RBAC-based access will be unavailable or degraded. This article covers the minimum cluster requirements for AKS desktop, recommended optional addons, and how to create and import projects.
+Setting up a cluster for AKS desktop requires configuring specific AKS features the tool depends on for project management, Azure RBAC-based access control, and application monitoring. Without these requirements, AKS desktop features such as metrics, network policies, and Role-based Access Control (RBAC) will be unavailable or degraded. This article covers the minimum cluster requirements for AKS desktop, recommended optional addons, and how to create and import projects.
 
 
 The minimum and fastest way to deploy apps with AKS desktop is with:
@@ -37,7 +37,7 @@ The minimum and fastest way to deploy apps with AKS desktop is with:
 AKS desktop builds on top of several AKS features — including AKS Deployment Safeguards, Managed Prometheus for metrics, and Entra ID-based permission management — all of which must be configured on your cluster to ensure applications are deployed to best practices.
 
 ### AKS Automatic clusters
-[AKS Automatic clusters](intro-aks-automatic.md) come with all of the above features preconfigured and require no additional setup. If you want less management and get started quickly, AKS Automatic is the easiest path to a fully compatible cluster.
+[AKS Automatic clusters](intro-aks-automatic.md) come with all of the above features preconfigured and require no more setup. If you want less management and get started quickly, AKS Automatic is the easiest path to a fully compatible cluster.
 
 See the [official feature comparison](intro-aks-automatic.md#aks-automatic-and-standard-feature-comparison) for a complete breakdown of differences between AKS Automatic and AKS Standard.
 
@@ -85,16 +85,16 @@ az acr build --resource-group $myResourceGroup --registry $registryName --image 
 ```
 
 ### New and Existing AKS Standard clusters
-You can use an existing AKS Standard cluster but that will need have AKS features enabled for AKS desktop.
+You can use an existing AKS Standard cluster but you need to ensure it has the AKS features enabled for AKS desktop.
 
-These are hard requirements. AKS desktop will not function with AKS clusters that lack them.
+#### Minimum requirements - required for AKS desktop to function with your cluster
 
 | Requirement | Why it is needed | How to check | How to enable |
 | --- | --- | --- | --- |
 | **Microsoft Entra ID (AAD) authentication** | Required for Azure RBAC and managed namespace role assignments. Clusters without Entra ID authentication enabled do not appear in the AKS desktop cluster picker. | `az aks show -g <rg> -n <cluster> --query aadProfile` -- must not be `null` | Must be set at cluster creation: `--enable-aad --enable-azure-rbac` |
 | **Azure RBAC for Kubernetes authorization** | Required for assigning users to projects with Admin, Writer, or Reader roles. | `az aks show -g <rg> -n <cluster> --query aadProfile.enableAzureRbac` -- must be `true` | Must be set at cluster creation: `--enable-azure-rbac` |
 
-### Recommended configuration for Standard AKS clusters
+#### Recommended configuration for Standard AKS clusters
 
 These addons and settings are optional but strongly recommended. Without them, specific AKS desktop features will be unavailable or degraded.
 
@@ -229,7 +229,7 @@ The following table describes the key features available in the Project Overview
 | **Logs** | Access streaming logs for your application. |
 | **Metrics** | View detailed metrics such as CPU, memory, and resource usage for your application. |
 | **Scaling** | Configure application scaling using Horizontal Pod Autoscaler (HPA) or manual settings. |
-| **Insights** | Run eBPF-based diagnostics (Processes, Trace TCP, Trace DNS) to troubleshoot application issues without code changes or pod restarts. See [Troubleshoot an application using Insights](aks-desktop-deploy-troubleshooting.md). |
+| **Insights** | Run eBPF-based diagnostics (Processes, Trace Transmission Control Protocol (TCP), Trace DNS) to troubleshoot application issues without code changes or pod restarts. See [Troubleshoot an application using Insights](aks-desktop-deploy-troubleshooting.md). |
 
 
 ## Next steps

@@ -1,6 +1,6 @@
 ---
-title: Troubleshoot AKS workloads with natural language in AKS Desktop
-description: Learn how to use the AI-powered troubleshooting assistant in AKS Desktop to diagnose and resolve Kubernetes issues using natural language.
+title: Troubleshoot AKS workloads with natural language in AKS desktop
+description: Learn how to use the AI-powered troubleshooting assistant in AKS desktop to diagnose and resolve Kubernetes issues using natural language.
 ms.service: azure-kubernetes-service
 ms.subservice: aks-developer
 author: danielsollondon
@@ -14,13 +14,13 @@ ms.author: danis
 
 Troubleshooting Kubernetes workloads is often complex and time consuming, it typically relies on a mix of CLI commands, dashboards, and documentation to piece together what went wrong. Common issues like DNS failures, pod crashes, and upgrade blockers can be difficult to diagnose, especially when the root cause is buried across logs, events, and configurations.
 
-Now using a single tool, this new AI-powered in-context experience is designed to help developers and Kubernetes operators diagnose and resolve issues in AKS clusters faster and with greater confidence, where AKS desktop AI knows what you're looking at, and can now investigate problems using guided, explainable insights, all within the familiar AKS desktop interface.
+Now using a single tool, this new AI-powered in-context experience is designed to help developers and Kubernetes operators diagnose and resolve issues in AKS (Azure Kubernetes Service) clusters faster and with greater confidence, where AKS desktop AI knows what you're looking at, and can now investigate problems using guided, explainable insights, all within the familiar AKS desktop interface.
 
 > [!NOTE]
-> This feature is currently in Preview/Alpha and is subject to updates. To raise issues, see the [AKS Desktop issue tracker](https://github.com/Azure/aks-desktop/issues).
+> This feature is currently in Preview/Alpha and is subject to updates. To raise issues, see the [AKS desktop issue tracker](https://github.com/Azure/aks-desktop/issues).
 
 ## Functionality and usage
-The AKS desktop troubleshooting assistant is built into [AKS desktop](aks-desktop-overview.md) and provides a guided experience for diagnosing issues in your cluster. You can:
+The AKS (Azure Kubernetes Service) desktop troubleshooting assistant is built into [AKS desktop](aks-desktop-overview.md) and provides a guided experience for diagnosing issues in your cluster. You can:
 - Select a project, namespace, or workload to investigate.
 - Run scoped diagnostics that analyze logs, events, and metrics.
 - Receive AI-generated summaries with clear reasoning and evidence.
@@ -35,12 +35,12 @@ The AKS desktop troubleshooting assistant is built into [AKS desktop](aks-deskto
 There are two options for enabling this functionality:
 1. **Utilize the [Azure AKS Agentic CLI Agent](https://blog.aks.azure.com/2025/08/15/cli-agent-for-aks)** - (recommended for AKS), this an AI-powered tool that acts as an intelligent sidekick to diagnose, troubleshoot, and optimize AKS clusters using natural language queries. It provides root cause analysis by connecting to your AKS cluster (using your permissions) and remediation suggestions. This is backed by a LLM of your choice.
 
-Here AKS Desktop connects to the Agentic CLI Agent endpoint running in your selected cluster to send troubleshooting queries and receive AI-generated analysis.
+Here AKS desktop connects to the Agentic CLI Agent endpoint running in your selected cluster to send troubleshooting queries and receive AI-generated analysis.
 
 2. **AKS desktop Agent** - AKS desktop will act as an Agent itself, providing context to your model of your choice. 
 
 ### What is the difference between these?
-Asking a standalone LLM a question is similar to asking an expert for advice based only on what you tell them. In contrast, the AKS Agentic CLI integrates the HolmesGPT agentic framework with the AKS Model Context Protocol (MCP) server. Combined, they know which tools, troubleshooting techniques, and other MCP servers to use, enabling the agent to securely access live cluster state, logs, metrics, and Azure resource data to perform iterative, context-aware investigations within role-based access control (RBAC) boundaries rather than relying solely on static user-provided input. 
+Asking a standalone LLM a question is similar to asking an expert for advice based only on what you tell them. In contrast, the AKS Agentic CLI integrates the HolmesGPT agentic framework with the AKS Model Context Protocol (MCP) server. Combined, they know which tools, troubleshooting techniques, and other MCP servers to use, enabling the agent to securely access live cluster state, logs, metrics, and Azure resource data to perform iterative, context-aware investigations within Role-Based Access Control (RBAC) boundaries rather than relying solely on static user-provided input. 
 
 ### Should I use a hosted model or host my own?
 By default, the AKS Agentic CLI connects to a hosted LLM endpoint using a customer‑provided API key, but organizations with strict data residency or compliance requirements may instead choose to deploy a model within their own environment. Below we will walk you through an end to end example of setting up a model in your own environment.
