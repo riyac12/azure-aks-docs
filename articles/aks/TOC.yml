@@ -414,19 +414,19 @@
           href: cluster-container-registry-integration.md
         - name: AKS desktop
           items:
-            - name: AKS desktop overview
+            - name: Overview
               href: aks-desktop-overview.md
-            - name: AKS desktop Quickstart
+            - name: Quickstart
               href: aks-desktop-quickstart-auto.md
-            - name: Set up Cluster and projects for AKS desktop
+            - name: Set up cluster and projects
               href: aks-desktop-install-cluster-setup.md
-            - name: Deploy an application using AKS desktop
+            - name: Deploy an application
               href: aks-desktop-app.md
-            - name: Set up permissions in AKS desktop
+            - name: Set up permissions
               href: aks-desktop-permissions.md
             - name: Troubleshoot an application
               href: aks-desktop-deploy-troubleshooting.md
-            - name: Using AI with AKS desktop
+            - name: Use AI with AKS desktop
               href: aks-desktop-deploy-ai-assistant.md
         - name: Use cluster extensions
           items:
