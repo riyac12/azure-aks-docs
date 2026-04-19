@@ -838,40 +838,36 @@
           href: concepts-identity.md
         - name: Authentication and authorization concepts
           href: concepts-authentication-authorization.md
+        - name: AKS service permissions reference
+          href: aks-service-permissions.md
         - name: Use managed identities
           href: use-managed-identity.md
         - name: Create service principal
           href: kubernetes-service-principal.md
-        - name: Microsoft Entra ID integration
-          items:
-            - name: Enable Entra ID authentication to control plane
-              href: entra-id-control-plane-authentication.md
-            - name: Manage local accounts
-              href: local-accounts.md
-            - name: Cluster and node access control with Conditional Access
-              href: access-control-managed-azure-ad.md
-            - name: Cluster and node access control with Privileged Identity Management
-              href: privileged-identity-management.md
-            - name: Microsoft Entra integration (legacy)
-              href: azure-ad-integration-cli.md
-            - name: Enable GMSA integration
-              href: use-group-managed-service-accounts.md
+        - name: Enable Entra ID authentication to control plane
+          href: entra-id-control-plane-authentication.md
+        - name: Microsoft Entra integration (legacy)
+          href: azure-ad-integration-cli.md
+        - name: Enable GMSA integration
+          href: use-group-managed-service-accounts.md
+        - name: External identity provider authentication overview
+          href: external-identity-provider-authentication-overview.md
+        - name: Configure external identity providers
+          href: external-identity-provider-authentication-configure.md
         - name: Use Microsoft Entra ID authorization for the Kubernetes API
           href: manage-entra-id-authorization.md
         - name: Use Kubernetes RBAC with Microsoft Entra integration
           href: kubernetes-rbac-entra-id.md
+        - name: Manage local accounts
+          href: local-accounts.md
+        - name: Cluster and node access control with Conditional Access
+          href: access-control-managed-azure-ad.md
+        - name: Cluster and node access control with Privileged Identity Management
+          href: privileged-identity-management.md
         - name: Update cluster credentials
           href: update-credentials.md
         - name: Limit access to cluster configuration file
           href: control-kubeconfig-access.md
-        - name: AKS service permissions reference
-          href: aks-service-permissions.md
-        - name: External identity providers
-          items:
-            - name: External identity provider authentication overview
-              href: external-identity-provider-authentication-overview.md
-            - name: Configure external identity providers
-              href: external-identity-provider-authentication-configure.md
         - name: Control deployments with Azure Policy
           href: /azure/governance/policy/concepts/policy-for-kubernetes?toc=/azure/aks/toc.json&bc=/azure/aks/breadcrumb/toc.json
     - name: Application security
