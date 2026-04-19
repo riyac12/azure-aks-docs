@@ -83,6 +83,9 @@ The kubelet managed identity assigned to AKS nodes is used to pull images from A
 > |---|---|
 > | `Microsoft.ContainerRegistry/registries/pull/read` | Required to pull container images from Azure Container Registry. |
 
+> [!NOTE]
+> If the target Azure Container Registry uses **RBAC Registry + ABAC Repository Permissions** mode, the legacy `AcrPull` role isn't honored. Instead, assign the kubelet identity the `Container Registry Repository Reader` role (optionally scoped to specific repositories with ABAC conditions), plus the `Container Registry Repository Catalog Lister` role if catalog listing is required. ABAC-enabled mode is becoming the default for new Azure Container Registries. For more information, see [Azure ABAC repository permissions in Azure Container Registry](/azure/container-registry/container-registry-rbac-abac-repository-permissions).
+
 ## Next steps
 
 * [Access and identity options for AKS](concepts-identity.md)
