@@ -80,9 +80,7 @@ By default, node access isn't required for AKS. The following access is needed f
 
 | Access | Reason |
 |---|---|
-| `kubelet` | Required to grant MSI access to ACR. |
-| `http app routing` | Required for write permission to "random name".aksapp.io. |
-| `container insights` | Required to grant permission to the Log Analytics workspace. |
+| Kubelet managed identity | Required to pull images from Azure Container Registry. |
 
 ## Next steps
 
