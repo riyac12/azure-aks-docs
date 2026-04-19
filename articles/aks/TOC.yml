@@ -836,20 +836,17 @@
       items:
         - name: Access and identity concepts
           href: concepts-identity.md
-          items:
-            - name: Kubernetes API authorization concepts
-              href: concepts-kubernetes-api-authorization.md
-        - name: Authentication and authorization best practices
-          href: operator-best-practices-identity.md
+        - name: Authentication and authorization concepts
+          href: concepts-authentication-authorization.md
         - name: Use managed identities
           href: use-managed-identity.md
         - name: Create service principal
           href: kubernetes-service-principal.md
-        - name: Enable Microsoft Entra integration
+        - name: Microsoft Entra ID integration
           items:
-            - name: AKS-managed Microsoft Entra ID
+            - name: Entra ID authentication to control plane
               items:
-                - name: Enable AKS-managed Microsoft Entra integration
+                - name: Enable Entra ID authentication
                   href: entra-id-control-plane-authentication.md
                 - name: Manage local accounts
                   href: local-accounts.md

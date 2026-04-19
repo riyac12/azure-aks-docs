@@ -1,17 +1,18 @@
 ---
-title: Enable AKS-managed Microsoft Entra integration on an Azure Kubernetes Service cluster
-description: Learn how to enable AKS-managed Microsoft Entra integration on an Azure Kubernetes Service cluster with kubelogin.
+title: Enable Microsoft Entra ID authentication for the AKS control plane
+description: Learn how to enable Microsoft Entra ID authentication for the Kubernetes API server (control plane) on an Azure Kubernetes Service (AKS) cluster.
 ms.topic: how-to
 ms.subservice: aks-security
-ms.date: 10/07/2025
+ms.date: 04/19/2026
 ms.custom: devx-track-azurecli
 author: shashankbarsin
 ms.author: shasb
+ai-usage: ai-assisted
 
-# Customer intent: As an Azure Kubernetes Service (AKS) administrator, I want to enable AKS-managed Microsoft Entra integration for my AKS cluster with kubelogin and configure Kubernetes role-based access control (Kubernetes RBAC).
+# Customer intent: As an Azure Kubernetes Service (AKS) administrator, I want to enable Microsoft Entra ID authentication for my AKS cluster's Kubernetes API server so that cluster users sign in with their organizational identities.
 ---
 
-# Enable AKS-managed Microsoft Entra integration for Kubernetes clusters with kubelogin
+# Enable Microsoft Entra ID authentication for the AKS control plane
 
 The AKS-managed Microsoft Entra integration simplifies the Microsoft Entra integration process. Previously, you were required to create a client and server app, and the Microsoft Entra tenant had to assign [Directory Readers][directory-readers-rbac-role] role permissions. Now, the Azure Kubernetes Service (AKS) resource provider manages the client and server apps for you.
 

@@ -21,6 +21,16 @@
             "redirect_document_id": false
         },
         {
+            "source_path_from_root": "/articles/aks/operator-best-practices-identity.md",
+            "redirect_url": "/azure/aks/concepts-authentication-authorization",
+            "redirect_document_id": false
+        },
+        {
+            "source_path_from_root": "/articles/aks/concepts-kubernetes-api-authorization.md",
+            "redirect_url": "/azure/aks/concepts-authentication-authorization",
+            "redirect_document_id": false
+        },
+        {
             "source_path_from_root": "/articles/aks/acs-aks-migration.md",
             "redirect_url": "/azure/aks/aks-migration",
             "redirect_document_id": false

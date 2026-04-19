@@ -20,7 +20,7 @@ AKS uses identity in four distinct scenarios. Each scenario answers a different 
 | Scenario | Question it answers | Deep-dive docs |
 |---|---|---|
 | **A. Control-plane authentication** | Who is the caller hitting the Kubernetes API? | [Microsoft Entra integration](#microsoft-entra-integration), [external identity providers](external-identity-provider-authentication-overview.md) |
-| **B. Control-plane authorization** | What is the caller allowed to do once authenticated? | [Kubernetes API authorization concepts](concepts-kubernetes-api-authorization.md) |
+| **B. Control-plane authorization** | What is the caller allowed to do once authenticated? | [Kubernetes API authorization concepts](concepts-authentication-authorization.md) |
 | **C. Cluster identity (cluster → Azure)** | How does the AKS cluster act on Azure to manage resources on your behalf? | [Managed identities in AKS](use-managed-identity.md) |
 | **D. Workload identity (pod → Azure)** | How do pods authenticate to Azure services such as Key Vault or Storage? | [Microsoft Entra Workload ID overview](workload-identity-overview.md) |
 
@@ -48,7 +48,7 @@ Authentication uses OpenID Connect on top of OAuth 2.0. The Kubernetes API serve
 1. Microsoft Entra ID issues an access token.
 1. `kubectl` sends the token to the API server.
 1. The API server's authentication webhook verifies the token signature against Microsoft Entra public signing keys.
-1. The API server makes an authorization decision (see [Kubernetes API authorization concepts](concepts-kubernetes-api-authorization.md)).
+1. The API server makes an authorization decision (see [Kubernetes API authorization concepts](concepts-authentication-authorization.md)).
 
 For setup, see [Use AKS-managed Microsoft Entra integration](entra-id-control-plane-authentication.md). For Conditional Access and Privileged Identity Management with cluster access, see [Cluster and node access control with Conditional Access](access-control-managed-azure-ad.md) and [Cluster and node access control with PIM](privileged-identity-management.md).
 
@@ -59,7 +59,7 @@ After a caller is authenticated, AKS authorizes the request using one (or both) 
 * **Kubernetes RBAC.** The native Kubernetes `Role` / `ClusterRole` / `RoleBinding` model evaluated by the API server. Permissions live in the cluster as Kubernetes manifests.
 * **Microsoft Entra ID authorization.** An AKS authorization webhook delegates authorization decisions to Microsoft Entra ID using Azure role assignments, optionally extended with Azure ABAC conditions. Permissions are managed centrally in Microsoft Entra ID and can govern many clusters from a single role assignment at subscription, management group, or resource group scope.
 
-For a side-by-side comparison and guidance on when to use each model, see [Kubernetes API authorization concepts](concepts-kubernetes-api-authorization.md).
+For a side-by-side comparison and guidance on when to use each model, see [Kubernetes API authorization concepts](concepts-authentication-authorization.md).
 
 <a name='kubernetes-rbac'></a>
 <a name='azure-rbac-for-kubernetes-authorization'></a>
@@ -105,8 +105,7 @@ AKS needs certain Azure permissions to create and operate clusters on your behal
 
 ## Next steps
 
-* [Best practices for authentication and authorization in AKS][operator-best-practices-identity]
-* [Kubernetes API authorization concepts](concepts-kubernetes-api-authorization.md)
+* [Authentication and authorization concepts](concepts-authentication-authorization.md)
 * [Use Microsoft Entra ID authorization for the Kubernetes API](manage-entra-id-authorization.md)
 * [Managed identities in AKS](use-managed-identity.md)
 * [Microsoft Entra Workload ID overview](workload-identity-overview.md)
@@ -125,4 +124,3 @@ For more information on core Kubernetes and AKS concepts, see the following arti
 [aks-concepts-scale]: concepts-scale.md
 [aks-concepts-storage]: concepts-storage.md
 [aks-concepts-network]: concepts-network.md
-[operator-best-practices-identity]: operator-best-practices-identity.md
