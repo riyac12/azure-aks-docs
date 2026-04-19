@@ -19,7 +19,7 @@ AKS uses identity in four distinct scenarios. Each scenario answers a different 
 
 | Scenario | Question it answers | Deep-dive docs |
 |---|---|---|
-| **A. Control-plane authentication** | Who is the caller hitting the Kubernetes API? | [Microsoft Entra integration](#microsoft-entra-integration), [external identity providers](external-identity-provider-authentication-overview.md) |
+| **A. Control-plane authentication** | Who is the caller hitting the Kubernetes API? | [Cluster authentication concepts](concepts-cluster-authentication.md), [external identity providers](external-identity-provider-authentication-overview.md) |
 | **B. Control-plane authorization** | What is the caller allowed to do once authenticated? | [Cluster authorization concepts](concepts-cluster-authorization.md) |
 | **C. Cluster identity (cluster → Azure)** | How does the AKS cluster act on Azure to manage resources on your behalf? | [Managed identities in AKS](use-managed-identity.md) |
 | **D. Workload identity (pod → Azure)** | How do pods authenticate to Azure services such as Key Vault or Storage? | [Microsoft Entra Workload ID overview](workload-identity-overview.md) |

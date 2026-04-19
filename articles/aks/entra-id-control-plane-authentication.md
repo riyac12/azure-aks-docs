@@ -18,7 +18,7 @@ The AKS-managed Microsoft Entra integration simplifies the Microsoft Entra integ
 
 Cluster administrators can configure Kubernetes role-based access control (Kubernetes RBAC) based on a user's identity or directory group membership. Microsoft Entra authentication is provided to AKS clusters with OpenID Connect. OpenID Connect is an identity layer built on top of the OAuth 2.0 protocol. For more information on OpenID Connect, see the [OpenID Connect documentation][open-id-connect].
 
-Learn more about the Microsoft Entra integration flow in the [Microsoft Entra documentation](concepts-identity.md#azure-ad-integration).
+Learn more about the Microsoft Entra integration flow in the [Microsoft Entra documentation](concepts-cluster-authentication.md).
 
 ## Limitations
 
