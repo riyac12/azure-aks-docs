@@ -864,6 +864,8 @@
           href: update-credentials.md
         - name: Limit access to cluster configuration file
           href: control-kubeconfig-access.md
+        - name: AKS service permissions reference
+          href: aks-service-permissions.md
         - name: External identity providers
           items:
             - name: External identity provider authentication overview
