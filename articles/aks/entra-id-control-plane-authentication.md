@@ -191,7 +191,7 @@ If you lack administrative access to a valid Microsoft Entra group, you can foll
 
 ## Next steps
 
-- Learn about [Microsoft Entra integration with Kubernetes RBAC][azure-ad-rbac].
+- Learn about [Microsoft Entra integration with Kubernetes RBAC][kubernetes-rbac-entra-id].
 - Learn more about [AKS and Kubernetes identity concepts][aks-concepts-identity].
 - Learn how to [use kubelogin][kubelogin-authentication] for all supported Microsoft Entra authentication methods in AKS.
 - Use [Azure Resource Manager templates][aks-arm-template] to create AKS-managed Microsoft Entra ID enabled clusters.
@@ -205,7 +205,7 @@ If you lack administrative access to a valid Microsoft Entra group, you can foll
 <!-- LINKS - Internal -->
 [directory-readers-rbac-role]: /entra/identity/role-based-access-control/permissions-reference#directory-readers
 [aks-concepts-identity]: concepts-identity.md
-[azure-ad-rbac]: azure-ad-rbac.md
+[kubernetes-rbac-entra-id]: kubernetes-rbac-entra-id.md
 [az-aks-create]: /cli/azure/aks#az-aks-create
 [az-aks-get-credentials]: /cli/azure/aks#az-aks-get-credentials
 [az-group-create]: /cli/azure/group#az-group-create

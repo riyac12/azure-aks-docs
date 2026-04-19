@@ -424,7 +424,7 @@ For more information, see the following articles:
 <!-- LINKS -->
 [licensing-fundamentals]: /entra/id-governance/licensing-fundamentals
 [aad-pricing]: https://azure.microsoft.com/pricing/details/active-directory/
-[create-aks-managed-cluster]: ./enable-authentication-microsoft-entra-id.md
+[create-aks-managed-cluster]: ./entra-id-control-plane-authentication.md
 [manage-ssh-node-access]: ./manage-ssh-node-access.md
 [az-aks-show]: /cli/azure/aks#az-aks-show
 [az-group-show]: /cli/azure/group#az-group-show
@@ -442,4 +442,4 @@ For more information, see the following articles:
 [revoke-refresh-token]: /powershell/module/azuread/revoke-azureaduserallrefreshtoken
 [conditional-access]: ./access-control-managed-azure-ad.md
 [what-is-pim]: /entra/id-governance/privileged-identity-management/pim-configure
-[aks-rbac]: ./azure-ad-rbac.md
+[aks-rbac]: ./kubernetes-rbac-entra-id.md

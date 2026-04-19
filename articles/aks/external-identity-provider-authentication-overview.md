@@ -131,6 +131,6 @@ For more information about structured authentication and related features, see t
 [oidc-spec]: https://openid.net/specs/openid-connect-core-1_0.html
 
 <!-- LINKS - internal -->
-[aks-managed-entra-id]: enable-authentication-microsoft-entra-id.md
+[aks-managed-entra-id]: entra-id-control-plane-authentication.md
 [configure-structured-auth]: external-identity-provider-authentication-configure.md
 [monitor-resource-logs]: monitor-aks-reference.md#resource-logs

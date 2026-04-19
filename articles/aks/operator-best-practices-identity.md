@@ -63,7 +63,7 @@ For built-in roles, custom role definitions, and step-by-step setup, see [Use Mi
 >
 > Use Kubernetes RBAC alongside Entra ID authorization for permissions that need to live as code with workload manifests, or for in-cluster service accounts.
 
-Kubernetes RBAC is the right tool for intra-cluster, per-namespace permissions managed via GitOps and for the service accounts that workloads use to call the Kubernetes API. Use Microsoft Entra users and groups as subjects in Kubernetes `RoleBinding` and `ClusterRoleBinding` objects so that human identities still come from your central directory. For details, see [Use Kubernetes RBAC with Microsoft Entra integration](azure-ad-rbac.md).
+Kubernetes RBAC is the right tool for intra-cluster, per-namespace permissions managed via GitOps and for the service accounts that workloads use to call the Kubernetes API. Use Microsoft Entra users and groups as subjects in Kubernetes `RoleBinding` and `ClusterRoleBinding` objects so that human identities still come from your central directory. For details, see [Use Kubernetes RBAC with Microsoft Entra integration](kubernetes-rbac-entra-id.md).
 
 ## Restrict custom resource access with ABAC conditions
 
@@ -83,7 +83,7 @@ For background and step-by-step setup, see [Restrict custom resource access usin
 
 Local accounts use a built-in cluster admin certificate that bypasses Entra ID, breaking centralized audit and Conditional Access. Disable local accounts to ensure all cluster access is governed by your Entra ID policies. For details, see:
 
-* [Manage local accounts in AKS](manage-local-accounts-managed-azure-ad.md)
+* [Manage local accounts in AKS](local-accounts.md)
 * [Cluster and node access control with Conditional Access](access-control-managed-azure-ad.md)
 * [Cluster and node access control with Privileged Identity Management](privileged-identity-management.md)
 
@@ -91,7 +91,7 @@ Local accounts use a built-in cluster admin certificate that bypasses Entra ID, 
 
 * [Use AKS-managed Microsoft Entra integration][aks-aad]
 * [Use Microsoft Entra ID authorization for the Kubernetes API](manage-entra-id-authorization.md)
-* [Use Kubernetes RBAC with Microsoft Entra integration][azure-ad-rbac]
+* [Use Kubernetes RBAC with Microsoft Entra integration][kubernetes-rbac-entra-id]
 * [Kubernetes API authorization concepts](concepts-kubernetes-api-authorization.md)
 * [Managed identities in AKS](use-managed-identity.md)
 * [Microsoft Entra Workload ID overview](workload-identity-overview.md)
@@ -103,8 +103,8 @@ For more information about cluster operations in AKS, see the following best pra
 * [Advanced Kubernetes scheduler features][aks-best-practices-advanced-scheduler]
 
 <!-- INTERNAL LINKS -->
-[aks-aad]: enable-authentication-microsoft-entra-id.md
-[azure-ad-rbac]: azure-ad-rbac.md
+[aks-aad]: entra-id-control-plane-authentication.md
+[kubernetes-rbac-entra-id]: kubernetes-rbac-entra-id.md
 [aks-best-practices-scheduler]: operator-best-practices-scheduler.md
 [aks-best-practices-advanced-scheduler]: operator-best-practices-advanced-scheduler.md
 [aks-best-practices-cluster-isolation]: operator-best-practices-cluster-isolation.md

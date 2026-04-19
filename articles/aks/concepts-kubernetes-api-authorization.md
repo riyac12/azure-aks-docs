@@ -33,7 +33,7 @@ Use Kubernetes RBAC when you want:
 
 Kubernetes RBAC permissions are scoped to a single cluster. To apply the same policy to many clusters, you must apply the manifests to each cluster (typically through GitOps).
 
-For background on the Kubernetes RBAC model, see the [upstream Kubernetes RBAC documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/). To use Microsoft Entra ID users and groups as subjects in Kubernetes `RoleBinding` and `ClusterRoleBinding` objects, see [Use Kubernetes RBAC with Microsoft Entra integration](azure-ad-rbac.md).
+For background on the Kubernetes RBAC model, see the [upstream Kubernetes RBAC documentation](https://kubernetes.io/docs/reference/access-authn-authz/rbac/). To use Microsoft Entra ID users and groups as subjects in Kubernetes `RoleBinding` and `ClusterRoleBinding` objects, see [Use Kubernetes RBAC with Microsoft Entra integration](kubernetes-rbac-entra-id.md).
 
 ## Option 2: Microsoft Entra ID authorization for the Kubernetes API
 
@@ -102,6 +102,6 @@ Use Entra ID authorization when you want:
 ## Next steps
 
 * [Use Microsoft Entra ID authorization for the Kubernetes API](manage-entra-id-authorization.md) — step-by-step setup, role assignment, and ABAC conditions how-to.
-* [Use Kubernetes RBAC with Microsoft Entra integration](azure-ad-rbac.md) — bind Microsoft Entra users and groups in Kubernetes RBAC `RoleBinding` objects.
+* [Use Kubernetes RBAC with Microsoft Entra integration](kubernetes-rbac-entra-id.md) — bind Microsoft Entra users and groups in Kubernetes RBAC `RoleBinding` objects.
 * [Access and identity options for AKS](concepts-identity.md) — overview of the four identity scenarios in AKS.
 * [What are Azure role assignment conditions?](/azure/role-based-access-control/conditions-overview)

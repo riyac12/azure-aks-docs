@@ -30,8 +30,8 @@ The rest of this article gives a brief orientation to each scenario.
 
 Control-plane authentication establishes the identity of a user or service principal calling the Kubernetes API server. AKS supports:
 
-* **Microsoft Entra ID (recommended).** Use Entra ID identities and groups to sign in to the cluster. AKS-managed Entra integration provisions and rotates the integration on your behalf. To enable, see [Use AKS-managed Microsoft Entra integration](enable-authentication-microsoft-entra-id.md).
-* **Local accounts.** A built-in cluster admin certificate that bypasses Entra ID. We recommend disabling local accounts in production. See [Manage local accounts](manage-local-accounts-managed-azure-ad.md).
+* **Microsoft Entra ID (recommended).** Use Entra ID identities and groups to sign in to the cluster. AKS-managed Entra integration provisions and rotates the integration on your behalf. To enable, see [Use AKS-managed Microsoft Entra integration](entra-id-control-plane-authentication.md).
+* **Local accounts.** A built-in cluster admin certificate that bypasses Entra ID. We recommend disabling local accounts in production. See [Manage local accounts](local-accounts.md).
 * **External identity providers.** Use an OIDC-compliant identity provider other than Microsoft Entra ID. See [External identity provider authentication](external-identity-provider-authentication-overview.md).
 
 <a name='azure-ad-integration'></a>
@@ -50,7 +50,7 @@ Authentication uses OpenID Connect on top of OAuth 2.0. The Kubernetes API serve
 1. The API server's authentication webhook verifies the token signature against Microsoft Entra public signing keys.
 1. The API server makes an authorization decision (see [Kubernetes API authorization concepts](concepts-kubernetes-api-authorization.md)).
 
-For setup, see [Use AKS-managed Microsoft Entra integration](enable-authentication-microsoft-entra-id.md). For Conditional Access and Privileged Identity Management with cluster access, see [Cluster and node access control with Conditional Access](access-control-managed-azure-ad.md) and [Cluster and node access control with PIM](privileged-identity-management.md).
+For setup, see [Use AKS-managed Microsoft Entra integration](entra-id-control-plane-authentication.md). For Conditional Access and Privileged Identity Management with cluster access, see [Cluster and node access control with Conditional Access](access-control-managed-azure-ad.md) and [Cluster and node access control with PIM](privileged-identity-management.md).
 
 ## B. Control-plane authorization
 
@@ -89,10 +89,10 @@ Don't use the deprecated [Microsoft Entra pod-managed identity](use-azure-ad-pod
 
 | Goal | Use these docs |
 |---|---|
-| Sign users into the cluster with Microsoft Entra ID | [Enable AKS-managed Entra integration](enable-authentication-microsoft-entra-id.md) |
+| Sign users into the cluster with Microsoft Entra ID | [Enable AKS-managed Entra integration](entra-id-control-plane-authentication.md) |
 | Govern who can do what in the Kubernetes API across many clusters | [Use Microsoft Entra ID authorization for the Kubernetes API](manage-entra-id-authorization.md) |
 | Restrict access to specific custom resource types | [ABAC conditions in Entra ID authorization](manage-entra-id-authorization.md#restrict-custom-resource-access-using-abac-conditions-preview) |
-| Author per-cluster, per-namespace permissions as Kubernetes manifests | [Use Kubernetes RBAC with Entra integration](azure-ad-rbac.md) |
+| Author per-cluster, per-namespace permissions as Kubernetes manifests | [Use Kubernetes RBAC with Entra integration](kubernetes-rbac-entra-id.md) |
 | Let the cluster pull from ACR or attach disks | [Managed identities in AKS](use-managed-identity.md) |
 | Let pods reach Key Vault or Storage without secrets | [Microsoft Entra Workload ID overview](workload-identity-overview.md) |
 | Restrict who can download the cluster `kubeconfig` | [Limit access to cluster configuration file](control-kubeconfig-access.md) |

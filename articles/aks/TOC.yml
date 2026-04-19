@@ -850,9 +850,9 @@
             - name: AKS-managed Microsoft Entra ID
               items:
                 - name: Enable AKS-managed Microsoft Entra integration
-                  href: enable-authentication-microsoft-entra-id.md
+                  href: entra-id-control-plane-authentication.md
                 - name: Manage local accounts
-                  href: manage-local-accounts-managed-azure-ad.md
+                  href: local-accounts.md
                 - name: Cluster and node access control with Conditional Access
                   href: access-control-managed-azure-ad.md
                 - name: Cluster and node access control with Privileged Identity Management
@@ -864,7 +864,7 @@
         - name: Use Microsoft Entra ID authorization for the Kubernetes API
           href: manage-entra-id-authorization.md
         - name: Use Kubernetes RBAC with Microsoft Entra integration
-          href: azure-ad-rbac.md
+          href: kubernetes-rbac-entra-id.md
         - name: Update cluster credentials
           href: update-credentials.md
         - name: Limit access to cluster configuration file

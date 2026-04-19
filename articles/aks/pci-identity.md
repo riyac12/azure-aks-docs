@@ -167,7 +167,7 @@ Based on roles and responsibilities, assign roles to the infrastructure's role-b
 
 Suppose you need to give permissions to the cluster operators (mapped to the infrastructure operator role). All people who are assigned the infrastructure operator responsibilities belong to a Microsoft Entra group. As established in 7.1.1, this role requires the highest privilege in the cluster. Kubernetes has built-in RBAC roles, such as `cluster-admin`, that meets those requirements. You'll need to bind the Microsoft Entra group for infrastructure operator to `cluster-admin` by creating role bindings by choosing the built-in roles. If the built-in roles don't meet your requirements (for example, they might be overly permissive), you can create custom roles for your bindings.
 
-The reference implementation demonstrates the preceding example by using native Kubernetes RBAC. The same association can be accomplished with Azure RBAC. For more information, see [Control access to cluster resources using Kubernetes role-based access control and Microsoft Entra identities in Azure Kubernetes Service (AKS)](/azure/aks/azure-ad-rbac).
+The reference implementation demonstrates the preceding example by using native Kubernetes RBAC. The same association can be accomplished with Azure RBAC. For more information, see [Control access to cluster resources using Kubernetes role-based access control and Microsoft Entra identities in Azure Kubernetes Service (AKS)](/azure/aks/kubernetes-rbac-entra-id).
 
 You can choose the scope of permission at the cluster level or at the namespace level. For roles that have scoped responsibilities, such as application operators, the permissions are assigned at the namespace level for the workload.
 

@@ -118,7 +118,7 @@ To learn more about AKS Automatic, follow the quickstart to create a cluster.
 [stop-cluster-upgrade-api-breaking-changes]: stop-cluster-upgrade-api-breaking-changes.md
 [planned-maintenance]: planned-maintenance.md
 [azure-rbac-for-k8s-auth]: manage-entra-id-authorization.md
-[k8s-rbac-with-entra]: azure-ad-rbac.md
+[k8s-rbac-with-entra]: kubernetes-rbac-entra-id.md
 [workload-identity]: workload-identity-overview.md
 [oidc-issuer]: use-oidc-issuer.md
 [image-cleaner]: image-cleaner.md
