@@ -845,8 +845,6 @@
               href: enable-host-encryption.md
             - name: FIPS-compliant node pools
               href: enable-fips-nodes.md
-            - name: Confidential VM nodes
-              href: use-cvm.md
             - name: Azure Dedicated Hosts for AKS nodes
               href: use-azure-dedicated-hosts.md
             - name: Restrict access to IMDS
@@ -882,14 +880,6 @@
               href: considerations-pod-sandboxing.md
             - name: Deploy Pod Sandboxing
               href: use-pod-sandboxing.md
-        - name: Confidential containers
-          items:
-            - name: Confidential Containers (preview)
-              href: confidential-containers-overview.md
-            - name: Deploy with default policy
-              href: deploy-confidential-containers-default-policy.md
-            - name: Confidential Containers security policy
-              href: /azure/confidential-computing/confidential-containers-aks-security-policy?toc=/azure/aks/toc.json&bc=/azure/aks/breadcrumb/toc.json
         - name: Network policies
           items:
             - name: Secure pod traffic with network policies
@@ -908,6 +898,18 @@
               href: csi-secrets-store-identity-access.md
             - name: Configure and troubleshoot the Azure Key Vault provider for Secrets Store CSI Driver
               href: csi-secrets-store-configuration-options.md
+    - name: Confidential workloads
+      items:
+        - name: Confidential VM nodes
+          href: use-cvm.md
+        - name: Confidential containers
+          items:
+            - name: Confidential Containers (preview)
+              href: confidential-containers-overview.md
+            - name: Deploy with default policy
+              href: deploy-confidential-containers-default-policy.md
+            - name: Confidential Containers security policy
+              href: /azure/confidential-computing/confidential-containers-aks-security-policy?toc=/azure/aks/toc.json&bc=/azure/aks/breadcrumb/toc.json
     - name: Vulnerability management
       items:
         - name: Vulnerability management overview
