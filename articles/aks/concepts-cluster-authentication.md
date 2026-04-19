@@ -32,7 +32,10 @@ We recommend deploying AKS clusters with [Microsoft Entra ID authentication for 
 
 ![Microsoft Entra integration with AKS clusters](media/concepts-identity/aad-integration.png)
 
-For setup, see [Enable Microsoft Entra ID authentication for the AKS control plane][entra-id-cp-auth].
+For setup, see [Enable Microsoft Entra ID authentication for the AKS control plane][entra-id-cp-auth]. Note the following:
+
+* The Microsoft Entra tenant configured for cluster authentication must be the same as the tenant of the subscription that holds the AKS cluster.
+* For non-interactive logins or older `kubectl` versions, use the [`kubelogin`](https://github.com/Azure/kubelogin) plugin.
 
 ## Disable local accounts
 
@@ -51,11 +54,6 @@ Beyond authenticating to the Kubernetes API, you might also need to authenticate
 * **Local user SSH**: Traditional SSH key–based access. Use this only when Entra ID based SSH isn't an option, and rotate keys regularly.
 
 For setup and per-mode configuration steps, see [Manage SSH access on AKS cluster nodes](manage-ssh-node-access.md).
-
-## Requirements and limitations
-
-* The Microsoft Entra tenant configured for cluster authentication must be the same as the tenant of the subscription that holds the AKS cluster.
-* For non-interactive logins or older `kubectl` versions, use the [`kubelogin`](https://github.com/Azure/kubelogin) plugin.
 
 ## Next steps
 
