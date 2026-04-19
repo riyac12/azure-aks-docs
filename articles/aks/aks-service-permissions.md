@@ -78,6 +78,11 @@ When creating a cluster with specific attributes, you will need the following ad
 
 The kubelet managed identity assigned to AKS nodes is used to pull images from Azure Container Registry.
 
+> [!div class="mx-tableFixed"]
+> | Permission | Reason |
+> |---|---|
+> | `Microsoft.ContainerRegistry/registries/pull/read` | Required to pull container images from Azure Container Registry. |
+
 ## Next steps
 
 * [Access and identity options for AKS](concepts-identity.md)
