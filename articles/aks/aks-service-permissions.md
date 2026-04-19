@@ -76,15 +76,24 @@ When creating a cluster with specific attributes, you will need the following ad
 
 ## AKS node mapped identity
 
-The kubelet managed identity assigned to AKS nodes is used to pull images from Azure Container Registry.
+The kubelet managed identity assigned to AKS nodes is used to pull images from Azure Container Registry. The required data actions depend on the registry's [role assignment permissions mode](/azure/container-registry/container-registry-rbac-built-in-roles-overview).
+
+### Registries configured with "RBAC Registry Permissions"
 
 > [!div class="mx-tableFixed"]
 > | Permission | Reason |
 > |---|---|
-> | `Microsoft.ContainerRegistry/registries/pull/read` | Required to pull container images from Azure Container Registry. |
+> | `Microsoft.ContainerRegistry/registries/pull/read` | Required to pull container images from Azure Container Registry. Granted by the [`AcrPull`](/azure/role-based-access-control/built-in-roles/containers#acrpull) built-in role. |
 
-> [!NOTE]
-> If the target Azure Container Registry uses **RBAC Registry + ABAC Repository Permissions** mode, the legacy `AcrPull` role isn't honored. Instead, assign the kubelet identity the `Container Registry Repository Reader` role (optionally scoped to specific repositories with ABAC conditions), plus the `Container Registry Repository Catalog Lister` role if catalog listing is required. ABAC-enabled mode is becoming the default for new Azure Container Registries. For more information, see [Azure ABAC repository permissions in Azure Container Registry](/azure/container-registry/container-registry-rbac-abac-repository-permissions).
+### Registries configured with "RBAC Registry + ABAC Repository Permissions"
+
+ABAC-enabled mode is becoming the default for new Azure Container Registries. In this mode, the legacy `AcrPull` role isn't honored and you must grant the equivalent ABAC-enabled role permissions to the kubelet identity. For more information, see [Azure ABAC repository permissions in Azure Container Registry](/azure/container-registry/container-registry-rbac-abac-repository-permissions).
+
+> [!div class="mx-tableFixed"]
+> | Permission | Reason |
+> |---|---|
+> | `Microsoft.ContainerRegistry/registries/repositories/content/read` <br/> `Microsoft.ContainerRegistry/registries/repositories/metadata/read` | Required to pull container images and read image tags and metadata from repositories. Granted by the [`Container Registry Repository Reader`](/azure/container-registry/container-registry-rbac-built-in-roles-directory-reference#container-registry-repository-reader) built-in role, which can be optionally scoped to specific repositories using ABAC conditions. |
+> | `Microsoft.ContainerRegistry/registries/catalog/repositories/read` | Required only if the kubelet identity needs to list all repositories in the registry. Granted by the [`Container Registry Repository Catalog Lister`](/azure/container-registry/container-registry-rbac-built-in-roles-directory-reference#container-registry-repository-catalog-lister) built-in role. This role doesn't support ABAC conditions. |
 
 ## Next steps
 
