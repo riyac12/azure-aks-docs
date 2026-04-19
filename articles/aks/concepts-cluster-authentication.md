@@ -1,7 +1,7 @@
 ---
 title: Cluster authentication concepts in Azure Kubernetes Service (AKS)
 titleSuffix: Azure Kubernetes Service
-description: Learn how Azure Kubernetes Service (AKS) authenticates Kubernetes API requests using Microsoft Entra ID, and how to lock down break-glass access with Conditional Access and PIM.
+description: Learn how Azure Kubernetes Service (AKS) authenticates Kubernetes API requests using Microsoft Entra ID, and how to disable local cluster admin accounts in production.
 ms.topic: concept-article
 ms.subservice: aks-security
 ms.date: 04/19/2026
@@ -34,13 +34,13 @@ We recommend deploying AKS clusters with [Microsoft Entra ID authentication for 
 
 For setup, see [Enable Microsoft Entra ID authentication for the AKS control plane][entra-id-cp-auth].
 
-## Disable local accounts and enforce Conditional Access
+## Disable local accounts
 
-Local accounts use a built-in cluster admin certificate that bypasses Entra ID, breaking centralized audit and Conditional Access. In production, disable local accounts on AKS clusters so that all access flows through Microsoft Entra ID. Apply Conditional Access policies (multifactor authentication, location restrictions) and use Privileged Identity Management for break-glass access. For details, see:
+Local accounts use a built-in cluster admin certificate that bypasses Microsoft Entra ID. Any caller who can list this credential gets full cluster admin access without going through Entra ID, which breaks centralized audit, Conditional Access, and Privileged Identity Management. In production, disable local accounts so that all access flows through Microsoft Entra ID.
 
-* [Manage local accounts in AKS](local-accounts.md)
-* [Cluster and node access control with Conditional Access](access-control-managed-azure-ad.md)
-* [Cluster and node access control with Privileged Identity Management](privileged-identity-management.md)
+To enforce this at scale across many clusters, assign the built-in Azure Policy **Azure Kubernetes Service Clusters should have local authentication methods disabled** at a subscription or management group scope. The policy audits or denies clusters that are created or updated with local accounts enabled. For the full list of AKS-related built-in policies, see [Azure Policy built-in definitions for AKS](/azure/governance/policy/samples/built-in-policies#kubernetes).
+
+For details, see [Manage local accounts in AKS](local-accounts.md).
 
 ## Requirements and limitations
 
