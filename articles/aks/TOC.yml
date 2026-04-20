@@ -739,8 +739,12 @@
       items:
         - name: Access and identity overview
           href: concepts-identity.md
-        - name: AKS service permissions reference
-          href: aks-service-permissions.md
+        - name: Manage access to the AKS resource
+          items:
+            - name: AKS service permissions reference
+              href: aks-service-permissions.md
+            - name: Control access to kubeconfig
+              href: control-kubeconfig-access.md
         - name: Cluster authentication
           items:
             - name: Cluster authentication concepts
@@ -755,8 +759,6 @@
               href: privileged-identity-management.md
             - name: Disable local cluster admin accounts
               href: local-accounts.md
-            - name: Control access to kubeconfig
-              href: control-kubeconfig-access.md
             - name: External identity provider authentication to cluster (overview)
               href: external-identity-provider-authentication-overview.md
             - name: Set up external identity provider authentication to cluster
