@@ -112,7 +112,7 @@ This example creates an image from the [Contoso Air sample application](https://
 1. Enter the name of your Azure subscription if you have more than one. (Alternatively, select the arrow to open the drop-down list, then select your Azure subscription.)
 1. Select your cluster, and then select **Register Cluster**
 
-![A video demonstrating how to add a cluster to the AKS desktop app.](./media/aks-desktop-app/aks-desktop-app-add-cluster.gif)
+    ![A video demonstrating how to add a cluster to the AKS desktop app.](./media/aks-desktop-app/aks-desktop-app-add-cluster.gif)
 
 ## Create a managed Project in AKS desktop
 
@@ -135,17 +135,17 @@ This example creates an image from the [Contoso Air sample application](https://
 
 1. Under **Review**, verify the settings for your Project, and then select **Create Project**.
 
-![Create new AKS desktop project](./media/aks-desktop-app/aks-desktop-new-project.png)
+    :::image type="content" source="./media/aks-desktop-app/aks-desktop-new-project.png" alt-text="Screenshot of creating a new Project in AKS desktop.":::
 
 ## Deploy an application
 
 1. Provide an application name, and then select **Create Application**.
 
-    ![Deploy Application screenshot](./media/aks-desktop-app/aks-desktop-deploy-app.png)
+    :::image type="content" source="./media/aks-desktop-app/aks-desktop-deploy-app.png" alt-text="Screenshot of creating a new application in AKS desktop.":::
 
 1. Select a source for your application. For this example, select **Container Image** > **Next**.
 
-    ![Select Source screenshot](./media/aks-desktop-app/aks-desktop-select-app-src.png)
+    :::image type="content" source="./media/aks-desktop-app/aks-desktop-select-app-src.png" alt-text="Screenshot of selecting a source for a new application in AKS desktop.":::
 
 1. Configure the following application settings. You can accept the defaults or update them as needed.
 
@@ -164,7 +164,7 @@ This example creates an image from the [Contoso Air sample application](https://
 
 1. Select **Deploy** to deploy the application. It might take a few minutes for the application to finish deploying. You can view the deployment status on the Project overview page. Wait until all resources show a healthy state before [exploring the application](#explore-the-application).
 
-    ![Project overview](./media/aks-desktop-app/aks-desktop-project-overview.png)
+    :::image type="content" source="./media/aks-desktop-app/aks-desktop-project-overview.png" alt-text="Screenshot of a Project overview screen in AKS desktop.":::
 
 ## Explore the application
 

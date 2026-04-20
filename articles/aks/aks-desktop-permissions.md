@@ -1,9 +1,9 @@
 ---
-title: Set up permissions and role-based access control (RBAC) in AKS desktop
+title: Set up Permissions and Role-Based Access Control (RBAC) in AKS Desktop
 description: Learn how to configure RBAC permissions for AKS desktop based on your role as a cluster operator or developer.
 ms.subservice: aks-developer
 ms.service: azure-kubernetes-service
-ms.editor: schaffererin
+ms.reviewer: schaffererin
 author: danielsollondon
 ms.topic: how-to
 ms.date: 04/16/2026
@@ -13,16 +13,12 @@ zone_pivot_groups: aks-desktop
 ---
 
 # Set up permissions and role-based access control (RBAC) in AKS desktop
-![Diagram showing AKS desktop RBAC role assignments for cluster operator and developer roles](./media/aks-desktop-app/aks-desktop-role-based-security.png)
 
-[AKS desktop (preview)](aks-desktop-overview.md) is a Visual Studio Code extension that lets you deploy and manage applications on an AKS cluster without writing Kubernetes manifests. Managing team access across projects requires configuring the correct Azure RBAC roles for each team member. AKS desktop maps these roles to Azure built-in roles, giving you a straightforward way to control who can create projects, deploy applications, and monitor workloads.
+:::image type="content" source="./media/aks-desktop-app/aks-desktop-role-based-security.png" alt-text="Screenshot of a diagram showing AKS desktop RBAC role assignments for cluster operator and developer roles":::
 
+Depending on your role as a cluster operator or developer, you can provide an environment (Project) in AKS desktop for developers to deploy, migrate, or manage applications, or allow them to self-serve deploying and managing applications on a dedicated AKS cluster. Alternatively, you might want to grant more developers access to manage, observe, and troubleshoot applications.
 
-Depending on your role as a cluster operator or developer, you can provide an environment (project) for developers to deploy, migrate, or manage applications, or allow them to self-serve deploying and managing applications on a dedicated AKS cluster. Alternatively, you may want to grant more developers access to manage, observe, and troubleshoot applications. 
-
-
-By default, when you create a Project in AKS desktop you can share this with other people in your organization and it will set the permissions for you, however you may need to maintain permissions over time or automate them or define an operating model by setting the appropriate permissions.
-
+By default, when you create a Project in AKS desktop you can share this with other people in your organization, and it sets the permissions for you. However, you might need to maintain permissions over time or automate them or define an operating model by setting the appropriate permissions.
 
 This article describes how to manage RBAC permissions to enable team members to work with AKS desktop.
 
@@ -35,11 +31,11 @@ This article describes how to manage RBAC permissions to enable team members to 
 ## Prerequisites
 
 - An Azure subscription. If you don't have an Azure subscription, you can create a free [Azure account](https://azure.microsoft.com/free).
-- Ensure you have Azure CLI version 2.64.0 or later installed and configured. Check your version using the [`az --version`](/cli/azure/reference-index#az-version) command. To install or upgrade, see [Install Azure CLI](/cli/azure/install-azure-cli).
+- Azure CLI version 2.64.0 or later installed and configured. Check your version using the [`az --version`](/cli/azure/reference-index#az-version) command. To install or upgrade, see [Install Azure CLI](/cli/azure/install-azure-cli).
 - The `aks-preview` Azure CLI extension. Install it using the `az extension add --name aks-preview` command.
 - A basic understanding of Azure role-based access control (RBAC), see [What is Azure RBAC?](/azure/role-based-access-control/overview) and [Azure built-in roles](/azure/role-based-access-control/built-in-roles).
 - An Azure resource group that contains your AKS cluster and any AKS managed Projects created through AKS desktop.
-- An [AKS Standard cluster](./aks-desktop-install-cluster-setup.md) that meets AKS desktop requirements or [AKS Automatic cluster](intro-aks-automatic.md), which is the Kubernetes cluster where your applications run.
+- An [AKS Standard cluster](./aks-desktop-install-cluster-setup.md) that meets AKS desktop requirements or an [AKS Automatic cluster](intro-aks-automatic.md), which is the Kubernetes cluster where your applications run.
 - An [Azure Container Registry (ACR)](/azure/container-registry/container-registry-intro) to store your container images for deployment.
 
 :::zone pivot="cluster-operator"
@@ -76,36 +72,36 @@ To create the infrastructure resources, you need permissions to create resources
 
 ## Integrate ACR with your AKS cluster
 
-- Attach your Azure container registry with your AKS cluster using the [`az aks update`](/cli/azure/aks#az-aks-update) command.
+Attach your Azure container registry with your AKS cluster using the [`az aks update`](/cli/azure/aks#az-aks-update) command.
 
-    ```azurecli-interactive
-    az aks update \
-        --resource-group $RESOURCE_GROUP \
-        --name $CLUSTER_NAME \
-        --attach-acr $ACR_NAME
-    ```
+```azurecli-interactive
+az aks update \
+    --resource-group $RESOURCE_GROUP \
+    --name $CLUSTER_NAME \
+    --attach-acr $ACR_NAME
+```
 
 ## Select a Project creation model
 
 As a cluster operator, you have two options for how developers work with Projects in AKS desktop:
 
-- **Self-service model**: Developers create and manage their own Projects. This approach gives developers full autonomy but requires granting them the **Azure Kubernetes Service Namespace Contributor** role. When developers create their own Projects, they automatically receive **Owner** role on the managed namespace and can immediately start deploying applications.
-- **Managed model**: You create Projects for developers and grant them access, currently this can be done by the UI during project creation. This approach provides more control over Project creation but if you need to assign more team members to the project post creation you will need to assign them the permissions below.
+- **[Self-service model](#self-service-model-allow-developers-to-create-their-own-projects)**: Developers create and manage their own Projects. This approach gives developers full autonomy but requires granting them the **Azure Kubernetes Service Namespace Contributor** role. When developers create their own Projects, they automatically receive **Owner** role on the managed namespace and can immediately start deploying applications.
+- **[Managed model](#managed-model-create-projects-for-developers-and-assign-access)**: You create Projects for developers and grant them access. Currently, you can configure this during Project creation. This approach provides more control over Project creation, but if you need to assign more team members to the Project post creation, you need to assign them the necessary permissions using the Azure portal or Azure CLI as described in the next sections.
 
-## [Self-service model: Allow developers to create their own Projects](#tab/self-service)
+### Self-service model: Allow developers to create their own Projects
 
 To allow developers to create their own Projects, assign them the **Azure Kubernetes Service Namespace Contributor** role on the AKS cluster. AKS desktop Projects create [AKS managed namespaces](concepts-managed-namespaces.md) behind the scenes, and this role grants the necessary permissions.
 
-- Assign developers the **Azure Kubernetes Service Namespace Contributor** role using the [`az role assignment create`][az-role-assignment-create] command. Make sure to replace the placeholder with the appropriate user or service principal ID.
+Assign developers the **Azure Kubernetes Service Namespace Contributor** role using the [`az role assignment create`][az-role-assignment-create] command. Make sure to replace the placeholder with the appropriate user or service principal ID.
 
-    ```azurecli-interactive
-    az role assignment create \
-        --role "Azure Kubernetes Service Namespace Contributor" \
-        --assignee <developer-user-id> \
-        --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ContainerService/managedClusters/$CLUSTER_NAME
-    ```
+```azurecli-interactive
+az role assignment create \
+    --role "Azure Kubernetes Service Namespace Contributor" \
+    --assignee <developer-user-id> \
+    --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ContainerService/managedClusters/$CLUSTER_NAME
+```
 
-## [Managed model: Create Projects for developers and assign access](#tab/managed)
+### Managed model: Create Projects for developers and assign access
 
 If you prefer to create Projects on behalf of developers, you must assign three essential roles to enable them to access the cluster and work within their assigned namespace:
 
@@ -115,31 +111,31 @@ If you prefer to create Projects on behalf of developers, you must assign three 
 
 All three roles are required for developers to successfully access and work with their Projects in AKS desktop. Without the **Azure Kubernetes Service Cluster User Role**, developers can't download the kubeconfig file needed to connect to the cluster.
 
-### Assign cluster access
+#### Assign cluster access
 
-- Assign the **Azure Kubernetes Service Cluster User Role** to enable kubeconfig download using the [`az role assignment create`][az-role-assignment-create] command. Make sure to replace the placeholder with the appropriate user or service principal ID.
+Assign the **Azure Kubernetes Service Cluster User Role** to enable kubeconfig download using the [`az role assignment create`][az-role-assignment-create] command. Make sure to replace the placeholder with the appropriate user or service principal ID.
 
-    ```azurecli-interactive
-    az role assignment create \
-        --role "Azure Kubernetes Service Cluster User Role" \
-        --assignee <developer-user-id> \
-        --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ContainerService/managedClusters/$CLUSTER_NAME
-    ```
+```azurecli-interactive
+az role assignment create \
+    --role "Azure Kubernetes Service Cluster User Role" \
+    --assignee <developer-user-id> \
+    --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ContainerService/managedClusters/$CLUSTER_NAME
+```
 
-### Assign namespace access
+#### Assign namespace access
 
-- Assign **Azure Kubernetes Service Namespace User** role for the specific Project/namespace using the [`az role assignment create`][az-role-assignment-create] command. Make sure to replace the placeholder with the appropriate user or service principal ID.
+Assign **Azure Kubernetes Service Namespace User** role for the specific Project/namespace using the [`az role assignment create`][az-role-assignment-create] command. Make sure to replace the placeholder with the appropriate user or service principal ID.
 
-    ```azurecli-interactive
-    export NAMESPACE_NAME=<namespace-or-project-name>
-    
-    az role assignment create \
-        --role "Azure Kubernetes Service Namespace User" \
-        --assignee <developer-user-id> \
-        --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ContainerService/managedClusters/$CLUSTER_NAME/namespaces/$NAMESPACE_NAME
-    ```
+```azurecli-interactive
+export NAMESPACE_NAME=<namespace-or-project-name>
 
-### Assign Kubernetes RBAC role
+az role assignment create \
+    --role "Azure Kubernetes Service Namespace User" \
+    --assignee <developer-user-id> \
+    --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ContainerService/managedClusters/$CLUSTER_NAME/namespaces/$NAMESPACE_NAME
+```
+
+#### Assign Kubernetes RBAC role
 
 Assign the appropriate Kubernetes RBAC role based on what the developer needs to do:
 
@@ -166,20 +162,18 @@ Assign the appropriate Kubernetes RBAC role based on what the developer needs to
         --scope $AKS_ID/namespaces/$NAMESPACE_NAME
     ```
 
----
-
 ## Allow Project creators to assign access permissions (optional)
 
 If you want Project creators to be able to assign access permissions to other users, grant them the [User Access Administrator](/azure/role-based-access-control/built-in-roles/privileged#user-access-administrator) role. This permission allows the user to set permissions on any resources in the infrastructure resource group.
 
-- Assign the **User Access Administrator** role using the [`az role assignment create`][az-role-assignment-create] command. Make sure to replace the placeholder with the appropriate user or service principal ID.
+Assign the **User Access Administrator** role using the [`az role assignment create`][az-role-assignment-create] command. Make sure to replace the placeholder with the appropriate user or service principal ID.
 
-    ```azurecli-interactive
-    az role assignment create \
-        --role "User Access Administrator" \
-        --assignee <user-id> \
-        --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP
-    ```
+```azurecli-interactive
+az role assignment create \
+    --role "User Access Administrator" \
+    --assignee <user-id> \
+    --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP
+```
 
 :::zone-end
 
@@ -228,9 +222,9 @@ In the Project home screen, you can view metrics for your application, such as C
 
 To view metrics, you need the **Monitoring Data Reader** role on the Azure Monitor workspace. This role grants access to all metrics for the cluster, not just your specific Projects.
 
-Your cluster operator can assign this permission by following these steps:
+Your cluster operator can assign this permission using the following steps:
 
-1. Identify the Azure Monitor workspace used by your cluster using the [`az alerts-management prometheus-rule-group list`](/cli/azure/alerts-management/prometheus-rule-group#az-alerts-management-prometheus-rule-group-list) command:
+1. Identify the Azure Monitor workspace used by your cluster using the [`az alerts-management prometheus-rule-group list`](/cli/azure/alerts-management/prometheus-rule-group#az-alerts-management-prometheus-rule-group-list) command.
 
    ```azurecli-interactive
    export WORKSPACE_ACC_FOR_PROM_RULES=$(az alerts-management prometheus-rule-group list \
@@ -254,27 +248,27 @@ Currently, AKS desktop doesn't provide a UI option to modify Project permissions
 
 ### Assign cluster access
 
-- Assign the **Azure Kubernetes Service Cluster User Role** to enable kubeconfig download using the [`az role assignment create`][az-role-assignment-create] command. Make sure to replace the placeholder with the appropriate user or service principal ID.
+Assign the **Azure Kubernetes Service Cluster User Role** to enable kubeconfig download using the [`az role assignment create`][az-role-assignment-create] command. Make sure to replace the placeholder with the appropriate user or service principal ID.
 
-    ```azurecli-interactive
-    az role assignment create \
-        --role "Azure Kubernetes Service Cluster User Role" \
-        --assignee <developer-user-id> \
-        --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ContainerService/managedClusters/$CLUSTER_NAME
-    ```
+```azurecli-interactive
+az role assignment create \
+    --role "Azure Kubernetes Service Cluster User Role" \
+    --assignee <developer-user-id> \
+    --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ContainerService/managedClusters/$CLUSTER_NAME
+```
 
 ### Assign namespace access
 
-- Assign **Azure Kubernetes Service Namespace User** role for the specific Project/namespace using the [`az role assignment create`][az-role-assignment-create] command. Make sure to replace the placeholder with the appropriate user or service principal ID.
+Assign **Azure Kubernetes Service Namespace User** role for the specific Project/namespace using the [`az role assignment create`][az-role-assignment-create] command. Make sure to replace the placeholder with the appropriate user or service principal ID.
 
-    ```azurecli-interactive
-    export NAMESPACE_NAME=<namespace-or-project-name>
-    
-    az role assignment create \
-        --role "Azure Kubernetes Service Namespace User" \
-        --assignee <developer-user-id> \
-        --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ContainerService/managedClusters/$CLUSTER_NAME/namespaces/$NAMESPACE_NAME
-    ```
+```azurecli-interactive
+export NAMESPACE_NAME=<namespace-or-project-name>
+
+az role assignment create \
+    --role "Azure Kubernetes Service Namespace User" \
+    --assignee <developer-user-id> \
+    --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP/providers/Microsoft.ContainerService/managedClusters/$CLUSTER_NAME/namespaces/$NAMESPACE_NAME
+```
 
 ### Assign Kubernetes RBAC role
 
@@ -309,15 +303,14 @@ To grant permissions to view metrics, follow the steps in the [View application 
 
 :::zone-end
 
-## Next steps
+## Related content
 
-- Learn how to [Deploy an application with AKS desktop](aks-desktop-app.md)
-- Learn more about [Managed namespaces in AKS](concepts-managed-namespaces.md)
-- Learn more about [AKS desktop overview](aks-desktop-overview.md)
+- [Deploy an application with AKS desktop](aks-desktop-app.md)
+- [Managed namespaces in AKS](concepts-managed-namespaces.md)
+- [AKS desktop overview](aks-desktop-overview.md)
 - [Troubleshoot an application using Insights (preview)](aks-desktop-deploy-troubleshooting.md)
 - [Use the AI troubleshooting assistant (preview)](aks-desktop-deploy-ai-assistant.md)
 
 <!--- LINKS --->
 [az-role-assignment-create]: /cli/azure/role/assignment#az-role-assignment-create
 [az-aks-get-credentials]: /cli/azure/aks#az-aks-get-credentials
-

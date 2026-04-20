@@ -414,11 +414,13 @@
           href: cluster-container-registry-integration.md
         - name: AKS desktop
           items:
-            - name: Overview
+            - name: Overview pf AKS desktop
               href: aks-desktop-overview.md
+            - name: Projects in AKS desktop
+              href: aks-desktop-projects.md
             - name: Quickstart
               href: aks-desktop-quickstart-auto.md
-            - name: Set up cluster and projects
+            - name: Set up a cluster for AKS desktop
               href: aks-desktop-install-cluster-setup.md
             - name: Deploy an application
               href: aks-desktop-app.md

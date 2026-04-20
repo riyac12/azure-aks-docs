@@ -26,30 +26,11 @@ Kubernetes workflows often require writing and maintaining YAML, switching betwe
 
 AKS desktop simplifies this process using [**Projects**](#projects-in-aks-desktop), which group everything your application needs into a single, manageable unit, and provides guided workflows for deploying, monitoring, scaling, and troubleshooting applications.
 
-![Application focused dashboard](./media/aks-desktop-app/aks-desktop-app-overview-screen.png)
+:::image type="content" source="./media/aks-desktop-app/aks-desktop-app-overview-screen.png" alt-text="Screenshot of the AKS desktop overview screen.":::
 
 AKS desktop works within your existing environment and tools, including Visual Studio Code, GitHub, and CI/CD pipelines. It connects to your existing AKS clusters and supports multi-environment scenarios across dev, test, staging, and production, including Azure hybrid and edge deployments.
 
-## Projects in AKS desktop
-
-Projects are the primary units for managing applications in AKS desktop. A Project groups related Kubernetes resources, such as deployments, services, and configuration, into a single logical unit.
-
-Projects make it easier to:
-
-- Understand application boundaries.
-- Manage access using RBAC.
-- View all resources in one place.
-- Attribute ownership of Kubernetes and Azure resources and manage costs.
-
-The following table compares Projects in AKS desktop to Kubernetes Namespaces, which are a more traditional way to group resources in Kubernetes:
-
-| Concept | AKS desktop Project | Kubernetes Namespace |
-| ------- | ------------------- | -------------------- |
-| Purpose | Application-level grouping | Resource isolation |
-| Abstraction level | High (developer-friendly) | Low (infrastructure-focused) |
-| Mapping | Typically 1:1 | Native Kubernetes concept |
-
-## Key capabilities
+## Key capabilities of AKS desktop
 
 The following table summarizes the key capabilities of AKS desktop that help development teams deploy and manage applications on AKS without deep Kubernetes expertise:
 
@@ -78,6 +59,10 @@ AKS desktop is designed for development teams who want to deploy and manage appl
   - Debug issues using logs, metrics, live tracing, and visualizations.
   - Observe, scale, and monitor applications in real time.
 
+## Projects in AKS desktop
+
+Projects are the primary units for managing applications in AKS desktop. A Project groups related Kubernetes resources, such as deployments, services, and configuration, into a single logical unit. For more information on Projects, see [Overview of Projects in AKS desktop](aks-desktop-projects.md).
+
 ## Frequently asked questions (FAQ)
 
 ### I'm already using Headlamp. How is AKS desktop different?
@@ -86,7 +71,7 @@ AKS desktop is built on Headlamp but includes additional features, integrations,
 
 ### Can I manage existing applications with AKS desktop?
 
-Yes, you can import them into AKS desktop. For more information, see [Import existing namespaces into AKS desktop Projects](aks-desktop-install-cluster-setup.md#use-existing-namespace--importing-existing-namespaces-into-aks-desktop-projects).
+Yes, you can import them into AKS desktop. For more information, see [Namespace labeling and access for Projects in AKS desktop](aks-desktop-projects.md#namespace-labeling-and-access-for-projects).
 
 ### Can I view all the deployed resources outside of AKS desktop?
 
@@ -94,7 +79,7 @@ Yes. Once you deploy your application, you can view it using other Kubernetes to
 
 ### Does AKS desktop support Standard AKS clusters?
 
-AKS desktop supports Standard AKS clusters that meet specific requirements. For more information, see [New and existing AKS Standard clusters](aks-desktop-install-cluster-setup.md#new-and-existing-aks-standard-clusters).
+AKS desktop supports Standard AKS clusters that meet specific requirements. For more information, see [AKS Standard clusters for AKS desktop](aks-desktop-install-cluster-setup.md#aks-standard-clusters).
 
 ## Related content
 
