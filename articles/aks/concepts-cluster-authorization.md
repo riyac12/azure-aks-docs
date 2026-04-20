@@ -91,18 +91,9 @@ For Kubernetes API authorization, you can filter access to custom resources by t
 
 For background on Azure ABAC, see [What are Azure role assignment conditions?](/azure/role-based-access-control/conditions-overview). For step-by-step setup, see [Restrict custom resource access using ABAC conditions](manage-entra-id-authorization.md#restrict-custom-resource-access-using-abac-conditions-preview).
 
-## Requirements and limitations
-
-* Entra ID authorization for the Kubernetes API requires Microsoft Entra ID authentication to be enabled on the cluster. To enable, see [Enable Microsoft Entra ID authentication for the AKS control plane][entra-id-cp-auth].
-* The Microsoft Entra tenant configured for cluster authentication must be the same as the tenant of the subscription that holds the AKS cluster.
-* ABAC conditions are in preview.
-
 ## Next steps
 
 * [Use Microsoft Entra ID authorization for the Kubernetes API](manage-entra-id-authorization.md)
 * [Use Kubernetes RBAC with Microsoft Entra integration](kubernetes-rbac-entra-id.md)
 * [Cluster authentication concepts](concepts-cluster-authentication.md)
 * [What are Azure role assignment conditions?](/azure/role-based-access-control/conditions-overview)
-
-<!-- INTERNAL LINKS -->
-[entra-id-cp-auth]: entra-id-control-plane-authentication.md
