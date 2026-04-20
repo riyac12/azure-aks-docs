@@ -420,6 +420,7 @@ For more information, see the following articles:
 - [Control cluster access using Conditional Access with Microsoft Entra integration][conditional-access]
 - [Microsoft Entra Privileged Identity Management overview][what-is-pim]
 - [Use Kubernetes role-based access control with Microsoft Entra ID in AKS][aks-rbac]
+- Use just-in-time elevation for node sign-in with Microsoft Entra ID based SSH; see [Manage SSH access on AKS cluster nodes][manage-ssh-node-access].
 
 <!-- LINKS -->
 [licensing-fundamentals]: /entra/id-governance/licensing-fundamentals

@@ -128,6 +128,7 @@ For more information, see the following articles:
 
 * Use [kubelogin](https://github.com/Azure/kubelogin) to access features for Azure authentication that aren't available in kubectl.
 * [Use Privileged Identity Management (PIM) to control access to your Azure Kubernetes Service (AKS) clusters][pim-aks].
+* Configure node-side access modes that inherit Conditional Access, including Microsoft Entra ID based SSH, with [Manage SSH access on AKS cluster nodes][manage-ssh-node-access].
 
 <!-- LINKS - External -->
 [aad-pricing]: https://azure.microsoft.com/pricing/details/active-directory/
@@ -137,3 +138,4 @@ For more information, see the following articles:
 [licensing-fundamentals]: /entra/id-governance/licensing-fundamentals
 [az-aks-get-credentials]: /cli/azure/aks#az-aks-get-credentials
 [pim-aks]: ./privileged-identity-management.md
+[manage-ssh-node-access]: ./manage-ssh-node-access.md
