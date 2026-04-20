@@ -1,5 +1,5 @@
 ---
-title: Troubleshoot an Application using Insights in AKS desktop (preview)
+title: Troubleshoot an Application using Insights in AKS Desktop (preview)
 description: Learn how to troubleshoot Kubernetes applications in AKS desktop using the built-in Insights feature powered by Inspektor Gadget.
 ms.service: azure-kubernetes-service
 ms.subservice: aks-developer

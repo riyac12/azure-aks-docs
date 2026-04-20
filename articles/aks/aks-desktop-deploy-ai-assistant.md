@@ -1,5 +1,5 @@
 ---
-title: Troubleshoot Azure Kubernetes Service (AKS) Workloads with Natural Language in AKS desktop (preview)
+title: Troubleshoot Azure Kubernetes Service (AKS) Workloads with Natural Language in AKS Desktop (preview)
 description: Learn how to use the AI-powered troubleshooting assistant in AKS desktop to diagnose and resolve Kubernetes issues using natural language.
 ms.service: azure-kubernetes-service
 ms.subservice: aks-developer
