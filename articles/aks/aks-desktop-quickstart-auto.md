@@ -57,7 +57,7 @@ az group create --name $myResourceGroup --location $myLocation
 
 ### Create an Azure container registry
 
-Create an Azure container registry using the [`az acr create`](/cli/azure/acr/registry#az-acr-create) command.
+Create an Azure container registry using the [`az acr create`](/cli/azure/acr#az-acr-create) command.
 
 ```azurecli-interactive
 az acr create --resource-group $myResourceGroup --name $registryName --sku Basic
@@ -100,7 +100,7 @@ This example creates an image from the [Contoso Air sample application](https://
     cd contoso-air/src/web
     ```
 
-1. Build and push the container image to your container registry using the [`az acr build`](/cli/azure/acr/registry#az-acr-build) command. If you're using a different image, make sure to update the image name and path accordingly.
+1. Build and push the container image to your container registry using the [`az acr build`](/cli/azure/acr#az-acr-build) command. If you're using a different image, make sure to update the image name and path accordingly.
 
     ```azurecli-interactive
     az acr build --resource-group $myResourceGroup --registry $registryName --image contosoair:v1 .
