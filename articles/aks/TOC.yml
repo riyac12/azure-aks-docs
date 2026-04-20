@@ -308,6 +308,8 @@
           href: windows-containerd.md
         - name: Use HostProcess containers
           href: use-windows-hpc.md
+        - name: Use Group Managed Service Accounts
+          href: use-group-managed-service-accounts.md
         - name: Use Windows Annual Channel for Containers
           href: windows-annual-channel.md
         - name: Upgrade Windows OS version
@@ -745,20 +747,16 @@
               href: concepts-cluster-authentication.md
             - name: Microsoft Entra ID authentication to cluster control plane
               href: entra-id-control-plane-authentication.md
+            - name: Authenticate with kubelogin
+              href: kubelogin-authentication.md
             - name: Conditional Access for cluster and node access
               href: access-control-managed-azure-ad.md
             - name: Privileged Identity Management for cluster and node access
               href: privileged-identity-management.md
-            - name: Manage SSH access to nodes
-              href: manage-ssh-node-access.md
-            - name: Group Managed Service Accounts (Windows)
-              href: use-group-managed-service-accounts.md
-            - name: Authenticate with kubelogin
-              href: kubelogin-authentication.md
-            - name: Control access to kubeconfig
-              href: control-kubeconfig-access.md
             - name: Disable local cluster admin accounts
               href: local-accounts.md
+            - name: Control access to kubeconfig
+              href: control-kubeconfig-access.md
             - name: External identity provider authentication to cluster (overview)
               href: external-identity-provider-authentication-overview.md
             - name: Set up external identity provider authentication to cluster
