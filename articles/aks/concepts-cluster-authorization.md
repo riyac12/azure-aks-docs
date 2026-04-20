@@ -95,7 +95,7 @@ For background on Azure ABAC, see [What are Azure role assignment conditions?](/
 
 * Entra ID authorization for the Kubernetes API requires Microsoft Entra ID authentication to be enabled on the cluster. To enable, see [Enable Microsoft Entra ID authentication for the AKS control plane][entra-id-cp-auth].
 * The Microsoft Entra tenant configured for cluster authentication must be the same as the tenant of the subscription that holds the AKS cluster.
-* ABAC conditions are in preview. To use ABAC conditions, enable Entra ID authorization at cluster creation. Some clusters that have Entra ID authorization enabled post-creation might not evaluate ABAC conditions in the authorization webhook.
+* ABAC conditions are in preview.
 
 ## Next steps
 
