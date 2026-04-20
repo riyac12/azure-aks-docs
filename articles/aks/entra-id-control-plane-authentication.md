@@ -157,12 +157,37 @@ A successful migration of an Microsoft Entra ID cluster has the following sectio
 
 Clusters running Kubernetes 1.24 or later automatically use the `kubelogin` exec-plugin format, so no manual `kubeconfig` conversion is needed for interactive Azure CLI sign-in. For non-interactive scenarios such as CI pipelines, or to use a different authentication method (service principal, managed identity, workload identity, or device code), see [Use kubelogin to authenticate users in AKS][kubelogin-authentication].
 
-## Troubleshoot access issues
+## Break-glass access when Microsoft Entra ID is unavailable
+
+If Microsoft Entra ID is unavailable to your cluster — for example, a tenant-wide outage or a network configuration that blocks the Kubernetes API server from reaching the Microsoft Entra OIDC endpoints — Entra-based sign-in to the Kubernetes API server stops working. In that case, you can fall back to the cluster's local admin account to recover.
+
+> [!NOTE]
+> This section is for Microsoft Entra *availability* issues only. If your problem is a misconfigured admin group (for example, the group was deleted or the wrong object ID was set), you don't need the local-accounts fallback — update the admin group directly with `az aks update --aad-admin-group-object-ids` using an account that has the `Microsoft.ContainerService/managedClusters/write` permission.
 
 > [!IMPORTANT]
-> The step described in this section suggests an alternative authentication method compared to the normal Microsoft Entra group authentication. Use this option only in an emergency.
+> This workflow bypasses Microsoft Entra authentication. Use it only to recover access, and disable local accounts again once Microsoft Entra sign-in is restored.
 
-If you lack administrative access to a valid Microsoft Entra group, you can follow this workaround. Sign in with an account that is a member of the [Azure Kubernetes Service Cluster Admin](/azure/role-based-access-control/built-in-roles#azure-kubernetes-service-cluster-admin-role) role and grant your group or tenant admin credentials to access your cluster.
+To use the break-glass path, you need the [Azure Kubernetes Service Cluster Admin](/azure/role-based-access-control/built-in-roles#azure-kubernetes-service-cluster-admin-role) role on the cluster resource. This role is evaluated by Azure Resource Manager, so it works even when Microsoft Entra sign-in to the Kubernetes API server is broken.
+
+1. If [local accounts](local-accounts.md) are disabled on the cluster, re-enable them temporarily.
+
+    ```azurecli-interactive
+    az aks update --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --enable-local-accounts
+    ```
+
+1. Retrieve the local cluster-admin credential using the [`az aks get-credentials`][az-aks-get-credentials] command with the `--admin` flag. This credential is a certificate-based kubeconfig that bypasses Microsoft Entra.
+
+    ```azurecli-interactive
+    az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin
+    ```
+
+1. Use `kubectl` to operate the cluster while Microsoft Entra is unavailable.
+
+1. Once Microsoft Entra sign-in is working again, [disable local accounts](local-accounts.md#disable-local-accounts) to return the cluster to its secure baseline.
+
+    ```azurecli-interactive
+    az aks update --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --disable-local-accounts
+    ```
 
 ## Next steps
 
