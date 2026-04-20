@@ -656,7 +656,7 @@ spec:
 ```
 
   > [!NOTE]
-  >  The above manifest enables access logging across the entire mesh including `Istio sidecars` and `Gateway`pods. Use selectors to target specific pods. Refer to the [Istio add-on documentation][istio-telemetry] for more details on how to configure access logging with the `Telemetry API`.
+  >  The above manifest enables access logging across the entire mesh, both for `Gateway` pods as well as sidecar proxies injected by Istio. Use selectors to target specific pods. Refer to the [Istio add-on documentation][istio-telemetry] for more details on how to configure access logging with the `Telemetry API`.
 
 ## Clean up resources
 
