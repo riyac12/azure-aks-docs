@@ -192,7 +192,7 @@ The following request attributes are available when authoring conditions for the
 
 ### Add an ABAC condition to a role assignment
 
-The following example creates an *AKS CRD Reader* custom role that grants read access to custom resources, then assigns it with a condition that only allows access to `constrainttemplates` in the `templates.gatekeeper.sh` group.
+The following example creates an *AKS CRD Reader* custom role that grants read access to custom resources, then assigns it with a condition that only allows access to `secretproviderclasses` in the `secrets-store.csi.x-k8s.io` group (the CRD used by the Azure Key Vault provider for the Secrets Store CSI Driver).
 
 1. Save the following role definition to a file named `crd-reader.json`, replacing `<YOUR SUBSCRIPTION ID>` with your own subscription ID.
 
@@ -227,9 +227,9 @@ The following example creates an *AKS CRD Reader* custom role that grants read a
      )
      OR
      (
-      @Request[Microsoft.ContainerService/managedClusters/customResources:group] StringEqualsIgnoreCase 'templates.gatekeeper.sh'
+      @Request[Microsoft.ContainerService/managedClusters/customResources:group] StringEqualsIgnoreCase 'secrets-store.csi.x-k8s.io'
       AND
-      @Request[Microsoft.ContainerService/managedClusters/customResources:kind] StringEqualsIgnoreCase 'constrainttemplates'
+      @Request[Microsoft.ContainerService/managedClusters/customResources:kind] StringEqualsIgnoreCase 'secretproviderclasses'
      )
     )
     ```
@@ -243,7 +243,7 @@ The following example creates an *AKS CRD Reader* custom role that grants read a
         --scope $AKS_ID \
         --condition "$(cat abac-condition.txt)" \
         --condition-version "2.0" \
-        --description "Allow reads on Gatekeeper constrainttemplates only"
+        --description "Allow reads on SecretProviderClass resources only"
     ```
 
 You can also add a condition through the Azure portal. On the **Add role assignment** page, select the **Conditions** tab, then select **Add condition** and use the visual editor to build the expression.
@@ -258,16 +258,16 @@ After the role assignment propagates (up to five minutes), sign in as the assign
     az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME
     ```
 
-1. List `constrainttemplates` from the `templates.gatekeeper.sh` group, which the condition allows. The command should succeed and return either the existing resources or an empty list (or a not-found error if the CRD isn't installed on the cluster).
+1. List `secretproviderclasses` from the `secrets-store.csi.x-k8s.io` group, which the condition allows. The command should succeed and return either the existing resources or an empty list (or a not-found error if the CRD isn't installed on the cluster).
 
     ```bash
-    kubectl get constrainttemplates.templates.gatekeeper.sh
+    kubectl get secretproviderclasses.secrets-store.csi.x-k8s.io --all-namespaces
     ```
 
-1. List `clusterpolicies` from the `kyverno.io` group, which the condition blocks. The command should fail with a `Forbidden` error from the Entra ID authorization webhook (assuming the Kyverno CRD is installed on the cluster; otherwise `kubectl` returns a not-found error before the API server reaches the authorization webhook).
+1. List `authorizationpolicies` from the Istio `security.istio.io` group, which the condition blocks. The command should fail with a `Forbidden` error from the Entra ID authorization webhook (assuming the Istio CRD is installed on the cluster; otherwise `kubectl` returns a not-found error before the API server reaches the authorization webhook).
 
     ```bash
-    kubectl get clusterpolicies.kyverno.io
+    kubectl get authorizationpolicies.security.istio.io --all-namespaces
     ```
 
 ## Clean up resources
