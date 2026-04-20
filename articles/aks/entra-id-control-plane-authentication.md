@@ -181,9 +181,7 @@ To use the break-glass path, you need the [Azure Kubernetes Service Contributor]
     az aks get-credentials --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --admin
     ```
 
-1. Use `kubectl` to operate the cluster while Microsoft Entra is unavailable.
-
-Once Microsoft Entra sign-in is working again, [disable local accounts](local-accounts.md#disable-local-accounts) to return the cluster to its secure baseline.
+1. Use `kubectl` to operate the cluster while Microsoft Entra is unavailable. Once Microsoft Entra sign-in is working again, [disable local accounts](local-accounts.md#disable-local-accounts) to return the cluster to its secure baseline.
 
     ```azurecli-interactive
     az aks update --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --disable-local-accounts
