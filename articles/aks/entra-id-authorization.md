@@ -181,12 +181,6 @@ Use this feature when you want to:
 * Centrally enforce custom resource access boundaries from Microsoft Entra ID without managing Kubernetes RBAC `Role` and `RoleBinding` objects on every cluster.
 * Distinguish between CRDs published by different operators (for example, allow `templates.gatekeeper.sh` while blocking `kyverno.io`).
 
-### Prerequisites
-
-* The cluster must have Entra ID authorization enabled. To enable it, see [Create a new AKS cluster with managed Microsoft Entra integration and Entra ID authorization](#create-a-new-aks-cluster-with-managed-microsoft-entra-integration-and-entra-id-authorization) or [Enable Entra ID authorization on an existing AKS cluster](#enable-entra-id-authorization-on-an-existing-aks-cluster).
-* Conditions must use condition syntax version `2.0`.
-* The role assignment must include the `Microsoft.ContainerService/managedClusters/customresources/read` Data Action, which is the action that ABAC conditions on custom resources target.
-
 ### Available condition attributes
 
 The following request attributes are available when authoring conditions for the Kubernetes API on an AKS cluster:
