@@ -32,10 +32,6 @@ To install the AKS addon, verify you have the following items:
 - You need `kubectl` with a minimum version of [1.18.1](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.18.md#v1181) or [`kubelogin`][kubelogin]. With the Azure CLI and the Azure PowerShell module, these two commands are included and automatically managed. Meaning, they're upgraded by default and running [`az aks install-cli`](/cli/azure/aks#az-aks-install-cli) isn't required or recommended. If you're using an automated pipeline, you need to manage upgrades for the correct or latest version. The difference between the minor versions of Kubernetes and `kubectl` shouldn't be more than *one* version. Otherwise, authentication issues occur on the wrong version.
 - This configuration requires you have a Microsoft Entra group for your cluster. This group is registered as an admin group on the cluster to grant admin permissions. If you don't have an existing Microsoft Entra group, you can create one using the [`az ad group create`](/cli/azure/ad/group#az-ad-group-create) command.
 
-> [!NOTE]
-> Microsoft Entra integrated clusters using a Kubernetes version newer than version 1.24 automatically use the `kubelogin` format. Beginning with Kubernetes version 1.24, the default format of the `clusterUser` credential for Microsoft Entra ID clusters is `exec`, which requires [`kubelogin`][kubelogin] binary in the execution `PATH`. There's no behavior change for non-Microsoft Entra clusters, or Microsoft Entra ID clusters running a version older than 1.24.
-> Existing downloaded `kubeconfig` continues to work. An optional query parameter `format` is included when getting `clusterUser` credential to overwrite the default behavior change. You can explicitly specify format to `azure` if you need to maintain the old `kubeconfig` format.
-
 ## Enable the integration on your AKS cluster
 
 First, set environment variables for the resource group, cluster name, Microsoft Entra admin group object IDs, and tenant ID. Reuse these variables in the commands that follow.
@@ -153,40 +149,13 @@ A successful migration of an Microsoft Entra ID cluster has the following sectio
 
 1. Follow your sign in instructions.
 
-1. Set `kubelogin` to use the Azure CLI.
-
-    ```azurecli-interactive
-    kubelogin convert-kubeconfig -l azurecli
-    ```
-
 1. View the nodes in the cluster with the `kubectl get nodes` command.
 
     ```azurecli-interactive
     kubectl get nodes
     ```
 
-## Non-interactive sign-in with kubelogin
-
-There are some non-interactive scenarios that don't support `kubectl`. In these cases, use [`kubelogin`][kubelogin] to connect to the cluster with a non-interactive service principal credential to perform continuous integration pipelines.
-
-> [!NOTE]
-> Microsoft Entra integrated clusters using a Kubernetes version newer than version 1.24 automatically use the `kubelogin` format. Beginning with Kubernetes version 1.24, the default format of the `clusterUser` credential for Microsoft Entra ID clusters is `exec`, which requires [`kubelogin`][kubelogin] binary in the execution PATH. There's no behavior change for non-Microsoft Entra clusters, or Microsoft Entra ID clusters running a version older than 1.24.
-> Existing downloaded `kubeconfig` continues to work. An optional query parameter `format` is included when getting `clusterUser` credential to overwrite the default behavior change. You can explicitly specify format to `azure` if you need to maintain the old `kubeconfig` format.
-
-When getting the `clusterUser` credential, you can use the `format` query parameter to overwrite the default behavior. You can set the value to `azure` to use the original `kubeconfig` format:
-
-```azurecli-interactive
-az aks get-credentials --format azure
-```
-
-If your Microsoft Entra integrated cluster uses Kubernetes version 1.24 or lower, you need to manually convert the `kubeconfig` format.
-
-```azurecli-interactive
-export KUBECONFIG=/path/to/kubeconfig
-kubelogin convert-kubeconfig
-```
-
-If you receive the message **error: The Azure auth plugin has been removed.**, you need to run the command `kubelogin convert-kubeconfig` to convert the `kubeconfig` format manually. For more information, see [Azure Kubelogin Known Issues][azure-kubelogin-known-issues].
+Clusters running Kubernetes 1.24 or later automatically use the `kubelogin` exec-plugin format, so no manual `kubeconfig` conversion is needed for interactive Azure CLI sign-in. For non-interactive scenarios such as CI pipelines, or to use a different authentication method (service principal, managed identity, workload identity, or device code), see [Use kubelogin to authenticate users in AKS][kubelogin-authentication].
 
 ## Troubleshoot access issues
 
@@ -206,7 +175,6 @@ If you lack administrative access to a valid Microsoft Entra group, you can foll
 <!-- LINKS - external -->
 [aks-arm-template]: /azure/templates/microsoft.containerservice/managedclusters
 [kubelogin]: https://github.com/Azure/kubelogin
-[azure-kubelogin-known-issues]: https://azure.github.io/kubelogin/known-issues.html
 
 <!-- LINKS - Internal -->
 [directory-readers-rbac-role]: /entra/identity/role-based-access-control/permissions-reference#directory-readers
