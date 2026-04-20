@@ -652,7 +652,6 @@ spec:
   accessLogging:
   - providers:
     - name: envoy
-
 ```
 
   > [!NOTE]
