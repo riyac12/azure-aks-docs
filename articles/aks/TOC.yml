@@ -236,8 +236,6 @@
           href: scale-down-mode.md
         - name: Connect securely to cluster nodes
           href: node-access.md
-        - name: Manage SSH access to nodes
-          href: manage-ssh-node-access.md
         - name: Deploy trusted launch on AKS
           href: use-trusted-launch.md
         - name: Use eTags for Concurrency Control
@@ -763,6 +761,8 @@
               href: external-identity-provider-authentication-overview.md
             - name: Set up external identity provider authentication to cluster
               href: external-identity-provider-authentication-configure.md
+            - name: Manage SSH access to nodes
+              href: manage-ssh-node-access.md
         - name: Cluster authorization
           items:
             - name: Cluster authorization concepts

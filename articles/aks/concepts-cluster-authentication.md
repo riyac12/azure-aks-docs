@@ -24,7 +24,9 @@ For the other identity scenarios in AKS, see:
 
 For an orientation across all four AKS identity scenarios, see [Access and identity options for AKS](concepts-identity.md).
 
-## Authenticate cluster users with Microsoft Entra ID
+## Authenticate to the Kubernetes API server (control plane)
+
+### Microsoft Entra ID (recommended)
 
 Kubernetes itself doesn't provide an identity directory. Without an external identity provider, you'd need to manage local credentials per cluster, which doesn't scale and creates audit gaps.
 
@@ -37,7 +39,15 @@ For setup, see [Enable Microsoft Entra ID authentication for the AKS control pla
 * The Microsoft Entra tenant configured for cluster authentication must be the same as the tenant of the subscription that holds the AKS cluster.
 * For non-interactive logins or older `kubectl` versions, use the [`kubelogin`](https://github.com/Azure/kubelogin) plugin.
 
-## Disable local accounts
+### External identity providers (preview)
+
+Some organizations need to authenticate cluster users with an OIDC-compliant identity provider other than Microsoft Entra ID — for example, GitHub, Google Workspace, Okta, or a self-hosted IdP. AKS supports this through structured authentication, which configures the Kubernetes API server's JWT authenticators to validate tokens issued by your external provider.
+
+Use this option only when you have a hard requirement to keep cluster identity outside Microsoft Entra ID. Otherwise, prefer the Microsoft Entra ID path for richer integration with Conditional Access, multifactor authentication, and Privileged Identity Management.
+
+For an overview, see [External identity provider authentication for AKS clusters][external-idp-overview]. For setup, see [Configure external identity providers with AKS structured authentication][external-idp-configure].
+
+### Disable local accounts
 
 Local accounts use a built-in cluster admin certificate that bypasses Microsoft Entra ID. Any caller who can list this credential gets full cluster admin access without going through Entra ID, which breaks centralized audit, Conditional Access, and Privileged Identity Management. In production, disable local accounts so that all access flows through Microsoft Entra ID.
 
@@ -45,7 +55,9 @@ To enforce this at scale across many clusters, assign the built-in Azure Policy 
 
 For details, see [Manage local accounts in AKS](local-accounts.md).
 
-## SSH access to cluster nodes
+## Authenticate to cluster nodes
+
+### SSH access modes
 
 Beyond authenticating to the Kubernetes API, you might also need to authenticate directly to a node over SSH for troubleshooting. AKS supports three SSH access modes that you set per cluster or node pool:
 
@@ -64,3 +76,5 @@ For setup and per-mode configuration steps, see [Manage SSH access on AKS cluste
 
 <!-- INTERNAL LINKS -->
 [entra-id-cp-auth]: entra-id-control-plane-authentication.md
+[external-idp-overview]: external-identity-provider-authentication-overview.md
+[external-idp-configure]: external-identity-provider-authentication-configure.md
