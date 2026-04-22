@@ -25,7 +25,6 @@ This article walks you through enabling Insights and using it to diagnose common
 - **Cluster admin** or equivalent Role-Based Access Control (RBAC) permissions on the target AKS cluster. Installing Inspektor Gadget requires creating a `ClusterRole`, `ClusterRoleBinding`, and a privileged `DaemonSet`.
 - Your cluster nodes must run **Linux** with kernel version **≥ 5.4**. Windows node pools aren't supported.
 - If your cluster uses Azure Policy or OPA Gatekeeper with restricted pod security, add an exemption for the `gadget` namespace to allow privileged pods.
-??
 - The target cluster must be an AKS Standard cluster.
 
 ## Enable Insights in AKS desktop
@@ -66,8 +65,7 @@ The Processes view shows you every running process across your cluster's pods in
 - Spot abnormal block I/O activity, for example, unusually high disk reads or writes that can indicate a misconfigured app, a runaway log writer, or a storage bottleneck.
 - Detect unexpected processes that shouldn't be running in a container.
 
-??
-:::image type="content" source="./media/aks-desktop-app/aks-desktop-insights-processes.png" alt-text="Screenshot of the Insights Processes view in AKS desktop showing per-pod CPU, memory, and I/O metrics.":::
+:::image type="content" source="./media/aks-desktop-app/aks-desktop-insights-process.png" alt-text="Screenshot of the Insights Processes view in AKS desktop showing per-pod CPU, memory, and I/O metrics.":::
 
 ### Network visibility with Trace Transmission Control Protocol (TCP)
 
@@ -77,8 +75,7 @@ Trace TCP captures live TCP connection events at the kernel level using eBPF, wi
 - Detect unexpected or unauthorized connections that might indicate a misconfiguration or security issue.
 - Correlate network anomalies with specific pods or workloads.
 
-??
-:::image type="content" source="./media/aks-desktop-app/aks-desktop-insights-trace-tcp.png" alt-text="Insights Trace TCP view in AKS desktop showing live pod-to-pod and external TCP connections.":::
+:::image type="content" source="./media/aks-desktop-app/aks-desktop-insights-tcp-trace.png" alt-text="Insights Trace TCP view in AKS desktop showing live pod-to-pod and external TCP connections.":::
 
 > [!NOTE]
 > You must stop the trace when finished, select the red stop button in the top-right of the trace.
@@ -91,8 +88,7 @@ Trace DNS captures every DNS query and response made by pods in your cluster. Us
 - Measure DNS latency to determine whether CoreDNS (the in-cluster DNS server) or an upstream DNS resolver is slow.
 - Check the health of CoreDNS and whether external DNS resolution is working correctly.
 
-??
-:::image type="content" source="./media/aks-desktop-app/aks-desktop-insights-trace-dns.png" alt-text="Insights Trace DNS view in AKS desktop showing DNS queries, responses, and latency per pod.":::
+:::image type="content" source="./media/aks-desktop-app/aks-desktop-insights-dns-trace.png" alt-text="Insights Trace DNS view in AKS desktop showing DNS queries, responses, and latency per pod.":::
 
 > [!NOTE]
 > You must stop the trace when finished, select the red stop button in the top-right of the trace.

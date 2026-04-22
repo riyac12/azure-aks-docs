@@ -26,7 +26,7 @@ Kubernetes workflows often require writing and maintaining YAML, switching betwe
 
 AKS desktop simplifies this process using [**Projects**](#projects-in-aks-desktop), which group everything your application needs into a single, manageable unit, and provides guided workflows for deploying, monitoring, scaling, and troubleshooting applications.
 
-:::image type="content" source="./media/aks-desktop-app/aks-desktop-app-overview-screen.png" alt-text="Screenshot of the AKS desktop overview screen.":::
+:::image type="content" source="./media/aks-desktop-app/aks-desktop-app-overview.png" alt-text="Screenshot of the AKS desktop overview screen.":::
 
 AKS desktop works within your existing environment and tools, including Visual Studio Code, GitHub, and CI/CD pipelines. It connects to your existing AKS clusters and supports multi-environment scenarios across dev, test, staging, and production, including Azure hybrid and edge deployments.
 

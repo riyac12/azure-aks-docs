@@ -25,10 +25,6 @@ This guide walks you through deploying a TypeScript application using AKS deskto
 - [AKS desktop](https://github.com/Azure/aks-desktop/releases) installed. AKS desktop supports the following operating systems (OS): Windows, Linux, and Mac.
 - If using an existing cluster, the cluster needs to be Microsoft Entra ID authenticated. To ensure your cluster is Microsoft Entra ID authenticated, use an [AKS Automatic cluster](intro-aks-automatic.md). You also need the [Azure Kubernetes Service RBAC Cluster Admin role](manage-azure-rbac.md#aks-built-in-roles) or equivalent permissions on the target cluster.
 
-??
-> [!NOTE]
-> If you create a new AKS cluster and Azure Container Registry (ACR) in step 1, compute and ACR Build task charges apply. Review [AKS pricing](https://azure.microsoft.com/pricing/details/kubernetes-service/) before proceeding.
-
 ## Create Azure resources
 
 If you don't have an existing AKS cluster and Azure Container Registry (ACR), you can create them using the Azure CLI. These sections show how to create a new resource group, AKS cluster, and ACR. If you already have these resources, you can skip to [Register your cluster with AKS desktop](#register-your-cluster-with-aks-desktop).

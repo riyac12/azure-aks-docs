@@ -414,7 +414,7 @@
           href: cluster-container-registry-integration.md
         - name: AKS desktop
           items:
-            - name: Overview pf AKS desktop
+            - name: AKS desktop overview
               href: aks-desktop-overview.md
             - name: Projects in AKS desktop
               href: aks-desktop-projects.md
