@@ -87,7 +87,7 @@ The assistant is context-aware. When you see errors or warnings highlighted in t
 1. Select **Agent** and start chatting.
 
     ??
-    :::image type="content" source="./media/aks-desktop-app/aks-desktop-use-ai-assistant.png" alt-text="Screenshot of a chat with natural language feature in AKS desktop.":::
+    :::image type="content" source="./media/aks-desktop-app/aks-desktop-ai-assistant.png" alt-text="Screenshot of a chat with natural language feature in AKS desktop.":::
 
 ## Related content
 

@@ -93,8 +93,7 @@ az aks update \
   --attach-acr <acr-name>
 ```
 
-??
-## Enable features on an existing cluster
+## Enable features on an existing AKS Standard cluster
 
 There are some features you can enable after cluster creation. There are other features that you can only enable at cluster creation time. For more information, see the [AKS desktop feature availability matrix](#aks-desktop-feature-availability-matrix).
 
@@ -102,7 +101,7 @@ These commands might take several minutes to complete. Each add-on might incur e
 
 ### Enable Azure Monitor metrics (Managed Prometheus)
 
-Enable Azure Monitor metrics using the [`az aks update`](/cli/azure/aks#az-aks-update) command with the `--enable-azure-monitor-metrics` flag. This add-on enables the Metrics tab and the Scaling chart (CPU %) in AKS desktop.
+Enable Azure Monitor metrics on an existing AKS Standard cluster using the [`az aks update`](/cli/azure/aks#az-aks-update) command with the `--enable-azure-monitor-metrics` flag. This add-on enables the Metrics tab and the Scaling chart (CPU %) in AKS desktop.
 
 ```azurecli-interactive
 az aks update --resource-group <resource-group-name> --name <cluster-name> --enable-azure-monitor-metrics
@@ -110,7 +109,7 @@ az aks update --resource-group <resource-group-name> --name <cluster-name> --ena
 
 ### Enable KEDA
 
-Enable Kubernetes Event-Driven Autoscaling (KEDA) in the Scaling tab of AKS desktop using the [`az aks update`](/cli/azure/aks#az-aks-update) command with the `--enable-keda` flag.
+Enable Kubernetes Event-Driven Autoscaling (KEDA) on an existing AKS Standard cluster using the [`az aks update`](/cli/azure/aks#az-aks-update) command with the `--enable-keda` flag. This add-on enables the Scaling tab in AKS desktop, which provides recommendations for scaling your workloads based on custom metrics.
 
 ```azurecli-interactive
 az aks update --resource-group <resource-group-name> --name <cluster-name> --enable-keda
@@ -118,7 +117,7 @@ az aks update --resource-group <resource-group-name> --name <cluster-name> --ena
 
 ### Enable VPA
 
-Enable Vertical Pod Autoscaler (VPA) recommendations in the Scaling tab of AKS desktop using the [`az aks update`](/cli/azure/aks#az-aks-update) command with the `--enable-vpa` flag.
+Enable the Vertical Pod Autoscaler (VPA) on an existing AKS Standard cluster using the [`az aks update`](/cli/azure/aks#az-aks-update) command with the `--enable-vpa` flag. This add-on enables vertical pod autoscaling recommendations in the Scaling tab of AKS desktop, which provides insights into how to optimize resource requests and limits for your workloads.
 
 ```azurecli-interactive
 az aks update --resource-group <resource-group-name> --name <cluster-name> --enable-vpa
