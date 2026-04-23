@@ -75,7 +75,7 @@ Trace TCP captures live TCP connection events at the kernel level using eBPF, wi
 - Detect unexpected or unauthorized connections that might indicate a misconfiguration or security issue.
 - Correlate network anomalies with specific pods or workloads.
 
-:::image type="content" source="./media/aks-desktop-app/aks-desktop-insights-tcp-trace.png" alt-text="Insights Trace TCP view in AKS desktop showing live pod-to-pod and external TCP connections.":::
+:::image type="content" source="./media/aks-desktop-app/aks-desktop-insights-tcp-trace.png" alt-text="Screenshot of the Insights Trace TCP view in AKS desktop showing live pod-to-pod and external TCP connections.":::
 
 > [!NOTE]
 > You must stop the trace when finished, select the red stop button in the top-right of the trace.
@@ -88,7 +88,7 @@ Trace DNS captures every DNS query and response made by pods in your cluster. Us
 - Measure DNS latency to determine whether CoreDNS (the in-cluster DNS server) or an upstream DNS resolver is slow.
 - Check the health of CoreDNS and whether external DNS resolution is working correctly.
 
-:::image type="content" source="./media/aks-desktop-app/aks-desktop-insights-dns-trace.png" alt-text="Insights Trace DNS view in AKS desktop showing DNS queries, responses, and latency per pod.":::
+:::image type="content" source="./media/aks-desktop-app/aks-desktop-insights-dns-trace.png" alt-text="Screenshot of the Insights Trace DNS view in AKS desktop showing DNS queries, responses, and latency per pod.":::
 
 > [!NOTE]
 > You must stop the trace when finished, select the red stop button in the top-right of the trace.

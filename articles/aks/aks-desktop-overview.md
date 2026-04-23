@@ -61,7 +61,7 @@ AKS desktop is designed for development teams who want to deploy and manage appl
 
 ## Projects in AKS desktop
 
-Projects are the primary units for managing applications in AKS desktop. A Project groups related Kubernetes resources, such as deployments, services, and configuration, into a single logical unit. For more information on Projects, see [Overview of Projects in AKS desktop](aks-desktop-projects.md).
+Projects are the primary units for managing applications in AKS desktop. Projects group related Kubernetes resources, such as deployments, services, and configuration, into a single logical unit. For more information on Projects, see [Overview of Projects in AKS desktop](aks-desktop-projects.md).
 
 ## Frequently asked questions (FAQ)
 

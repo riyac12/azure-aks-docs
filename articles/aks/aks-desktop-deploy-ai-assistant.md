@@ -35,7 +35,7 @@ The AKS desktop troubleshooting assistant is built into [AKS desktop](aks-deskto
 
 You have two options for enabling the AI troubleshooting assistant in AKS desktop:
 
-- Use the **[Azure AKS Agentic CLI Agent](https://blog.aks.azure.com/2025/08/15/cli-agent-for-aks)** (recommended for AKS): This is an AI-powered tool that helps diagnose, troubleshoot, and optimize AKS clusters using natural language queries. It provides root cause analysis by connecting to your AKS cluster (using your permissions) and remediation suggestions. This is backed by a LLM of your choice.
+- Use the **[Azure AKS Agentic CLI Agent](https://blog.aks.azure.com/2025/08/15/cli-agent-for-aks)** (recommended for AKS): This is an AI-powered tool that helps diagnose, troubleshoot, and optimize AKS clusters using natural language queries. It provides root cause analysis by connecting to your AKS cluster (using your permissions) and remediation suggestions. This is backed by an LLM of your choice.
 - Use the **AKS desktop Agent**: AKS desktop acts as an Agent itself, providing context to your model of your choice.
 
 ### Which option should I choose?
@@ -86,7 +86,6 @@ The assistant is context-aware. When you see errors or warnings highlighted in t
 1. Select the Kubernetes resource that's degraded or showing errors in the event log.
 1. Select **Agent** and start chatting.
 
-    ??
     :::image type="content" source="./media/aks-desktop-app/aks-desktop-ai-assistant.png" alt-text="Screenshot of a chat with natural language feature in AKS desktop.":::
 
 ## Related content
