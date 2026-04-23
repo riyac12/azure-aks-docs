@@ -416,10 +416,10 @@
           items:
             - name: AKS desktop overview
               href: aks-desktop-overview.md
-            - name: Projects in AKS desktop
-              href: aks-desktop-projects.md
             - name: Quickstart
               href: aks-desktop-quickstart-auto.md
+            - name: Projects in AKS desktop
+              href: aks-desktop-projects.md
             - name: Set up a cluster for AKS desktop
               href: aks-desktop-install-cluster-setup.md
             - name: Deploy an application
