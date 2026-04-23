@@ -10,6 +10,7 @@ ms.date: 05/02/2024
 ms.custom: template-how-to-pattern, devx-track-azurecli
 ---
 
+# Deploy WireGuard encryption with Advanced Container Networking Services
 
 This article shows you how to deploy WireGuard encryption with Advanced Container Networking Services in Azure Kubernetes Service (AKS) clusters.
 
