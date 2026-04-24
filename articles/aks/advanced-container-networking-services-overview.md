@@ -62,6 +62,11 @@ WireGuard Encryption leverages the WireGuard protocol to provide secure, encrypt
 
 For more information, see the [WireGuard encryption overview](./container-network-security-wireguard-encryption-concepts.md).
 
+### Cilium mTLS Encryption
+Cilium mTLS encryption provides transparent, mutual TLS (mTLS) encryption and authentication for pod-to-pod traffic in Kubernetes without requiring application changes or introducing any extra networking stack.
+
+For more information, see the [Cilium mTLS encryption overview](./container-network-security-cilium-mutual-tls-concepts.md).
+
 ## Container Network Performance
 
 Container Network Performance optimizes network performance for containerized applications running in AKS clusters. It leverages eBPF technology to enhance network routing and reduce latency, ensuring that applications can communicate efficiently and effectively. **Container Network Performance is available only on clusters with Azure CNI Powered by Cilium**.
