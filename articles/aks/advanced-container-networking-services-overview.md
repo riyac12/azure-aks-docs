@@ -56,7 +56,7 @@ Layer 7 policy enables application-layer traffic control, allowing you to define
 
 For more information, see the [Layer 7 policy overview](./container-network-security-l7-policy-concepts.md).
 
-### WireGuard Encryption (preview)
+### WireGuard Encryption
 
 WireGuard Encryption leverages the WireGuard protocol to provide secure, encrypted communication between Cilium-managed endpoints within your AKS cluster. This feature ensures that data transmitted over the network is protected from eavesdropping and tampering, enhancing the overall security of your containerized applications.
 
