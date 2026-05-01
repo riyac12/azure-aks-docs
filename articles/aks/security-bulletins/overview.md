@@ -80,7 +80,6 @@ Monitor the hotfix rollout status in [AKS Advisory](https://github.com/Azure/AKS
 
 ---
 
-
 ## AKS-2026-0002 gRPC-Go Authorization Bypass via Missing Leading Slash in :path 
 
 **Published Date**: March 20, 2026
