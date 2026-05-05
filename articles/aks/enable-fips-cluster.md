@@ -60,27 +60,25 @@ The following limitations apply when using FIPS-enabled AKS clusters.
   > This list applies only to AKS-managed components. Attempts to deploy or enable these components in a FIPS-enabled cluster will fail.
   > Customer application containers are not validated by AKS. 
 
-  - `<container-name-1>`
-  - `<container-name-2>`
-  - `<container-name-3>`
-  - `<container-name-4>`
-  - `<container-name-5>`
-  - `<container-name-6>`
-  - `<container-name-7>`
-  - `<container-name-8>`
-  - `<container-name-9>`
-  - `<container-name-10>`
-  - `<container-name-11>`
-  - `<container-name-12>`
-  - `<container-name-13>`
-  - `<container-name-14>`
-  - `<container-name-15>`
-  - `<container-name-16>`
-  - `<container-name-17>`
-  - `<container-name-18>`
-  - `<container-name-19>`
-  - `<container-name-20>`
-
+  - [`workload-identity`][workload-identity]
+  - [`cost-analysis`][cost-analysis]
+  - [`approuting`][approuting]
+  - [`azurepolicy`][azurepolicy]
+  - [`static-egress-gateway`][static-egress-gateway]
+  - [`ImageIntegrity`][image-integrity]
+  - [`defender`][defender]
+  - [`azure-monitor`][]azure-monitor]
+  - [`blob-csi`][blob-csi]
+  - [`AzureWindowsGPUDevicePlugin`][gpu-plugin]
+  - [`ImageCleaner`][image-cleaner]
+  - [`ACCSGXDevicePlugin`][sgx-device-plugin]
+  - [`IngressApplicationGateway`][ingress-app-gateway]
+  - [`cilium`][cilium]
+  - [`calico`][calico]
+  - [`azure-npm`][azure-npm]
+  - [`acns-observability`][acns-observability]
+  - [`podidentity`][pod-identity]
+  - [`OpenServiceMesh`][service-mesh]
   </details>
 
 - **All AKS extensions are currently blocked** in FIPS-enabled clusters. This includes both Microsoft and partner extensions. For more information about Microsoft AKS extensions, see: [Currently available extensions][extensions]
@@ -225,9 +223,27 @@ You can update an existing cluster to disable FIPS. When you disable FIPS mode:
 [az-aks-create]: /cli/azure/aks#az-aks-create
 [aks-best-practices-security]: operator-best-practices-cluster-security.md
 [aks-rdp]: rdp.md
+[approuting]: /azure/aks/app-routing
+[azurepolicy]: /azure/aks/use-azure-policy
+[azure-npm]: /azure/aks/use-network-policies#create-an-aks-cluster-with-azure-network-policy-manager-linux
+[azure-monitor]: /azure/azure-monitor/containers/kubernetes-monitoring-enable
+[acns-observability]: /azure/aks/container-network-observability-how-to
+[blob-csi]: /azure/aks/csi-storage-drivers?pivots=azure-blob
+[calico]: /azure/aks/use-network-policies#create-an-aks-cluster-with-calico
+[cilium]: /azure/aks/azure-cni-powered-by-cilium
+[cost-analysis]:/azure/aks/cost-analysis
+[defender]: /azure/defender-for-cloud/defender-for-containers-azure-enable-programmatically
 [extensions]: /azure/aks/cluster-extensions?tabs=azure-cli#currently-available-extensions
 [fips]: /azure/compliance/offerings/offering-fips-140-2
 [fips-node-pools]: /azure/aks/enable-fips-nodes?pivots=azure-cli
+[gpu-plugin]
+[image-cleaner]: /azure/aks/image-cleaner
+[image-integrity]: /azure/aks/image-integrity
+[ingress-app-gateway]: /azure/application-gateway/ingress-controller-overview
 [manage-aks-extensions]: /azure/aks/cluster-extensions
+[static-egress-gateway]: /azure/aks/configure-static-egress-gateway
+[sgx-device-plugin]: /azure/confidential-computing/confidential-nodes-aks-addon
+[service-mesh]: /azure/aks/open-service-mesh-about
 [upgrade-aks-cluster]: /azure/aks/tutorial-kubernetes-upgrade-cluster?tabs=azure-cli
 [update-fips-node-pools]: /azure/aks/enable-fips-nodes?pivots=azure-cli#update-an-existing-node-pool-to-enable-or-disable-fips
+[workload-identity]: /azure/aks/workload-identity-overview
